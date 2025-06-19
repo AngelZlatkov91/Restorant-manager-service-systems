@@ -2,6 +2,7 @@ package menu_service.menu_service.Api;
 
 import jakarta.validation.Valid;
 import menu_service.menu_service.Models.DTO.CreateCategory;
+import menu_service.menu_service.Models.DTO.ItemId;
 import menu_service.menu_service.Models.DTO.ResCategory;
 import menu_service.menu_service.Services.CategoryService;
 import org.springframework.http.ResponseEntity;
@@ -38,8 +39,8 @@ public class CategoryController {
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<String> deleteCategory(@RequestBody String categoryId) {
-        categoryService.deleteCategory(categoryId);
+    public ResponseEntity<String> deleteCategory(@RequestBody ItemId categoryId) {
+        categoryService.deleteCategory(categoryId.getItemId());
         return ResponseEntity.ok("Successfully deleted category - " + categoryId);
     }
 }

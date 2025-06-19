@@ -1,6 +1,7 @@
 package menu_service.menu_service.Api;
 
 import jakarta.validation.Valid;
+import menu_service.menu_service.Models.DTO.ItemId;
 import menu_service.menu_service.Models.DTO.MenuItemCreate;
 import menu_service.menu_service.Models.DTO.MenuItemRes;
 import menu_service.menu_service.Services.MenuItemService;
@@ -28,13 +29,13 @@ public class ItemController {
     }
 
     @GetMapping("/itemId")
-    public ResponseEntity<MenuItemRes> getById(@RequestBody String itemId) {
-        return ResponseEntity.ok(menuItemService.getMenuItem(itemId));
+    public ResponseEntity<MenuItemRes> getById(@RequestBody ItemId itemId) {
+        return ResponseEntity.ok(menuItemService.getMenuItem(itemId.getItemId()));
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<String> deleteItem(@RequestBody String itemId) {
-        menuItemService.deleteMenuItem(itemId);
+    public ResponseEntity<String> deleteItem(@RequestBody ItemId itemId) {
+        menuItemService.deleteMenuItem(itemId.getItemId());
         return ResponseEntity.ok().build();
     }
 

@@ -15,6 +15,6 @@ public class UniqueMenuNameValidator implements ConstraintValidator<UniqueMenuNa
 
     @Override
     public boolean isValid(String value, ConstraintValidatorContext constraintValidatorContext) {
-        return !menuItemRepository.getByName(value);
+        return menuItemRepository.findByName(value).isEmpty();
     }
 }
