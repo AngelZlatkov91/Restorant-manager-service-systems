@@ -101,8 +101,18 @@ public class MenuItemServiceImpl implements MenuItemService {
     @Override
     @Transactional
     public MenuItemRes updateMenuItem( MenuItemRes menuItemRes) {
-
-
-        return null;
+        Optional<MenuItem> byId =
+                menuItemRepository.findById(menuItemRes.getId());
+        Optional<Category> byName = categoryItemRepository.findByName(menuItemRes.getCategory());
+        if (byId.isEmpty() || byName.isEmpty()) {
+            throw new MenuItemDontExistExp("Menu item not found");
+        }
+           byId.get().setName(menuItemRes.getName());
+           byId.get().setDescription(menuItemRes.getDescription());
+           byId.get().setActive(menuItemRes.isActive());
+           byId.get().setPrice(menuItemRes.getPrice());
+           byId.get().setCategory(byName.get());
+           menuItemRepository.save(byId.get());
+        return getMenuItem(byId.get().getId());
     }
 }

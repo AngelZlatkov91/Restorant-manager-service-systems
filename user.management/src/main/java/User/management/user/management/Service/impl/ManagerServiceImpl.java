@@ -33,6 +33,7 @@ public class ManagerServiceImpl implements ManagerService {
     @Transactional
     public void changeProfileRole(UserChangeRoleDTO userChangeRoleDTO) {
         Optional<User> byEmail = userRepository.findByUsername(userChangeRoleDTO.getUsername());
+
         if (byEmail.isPresent()) {
             byEmail.get().setRole(userChangeRoleDTO.getRole());
             userRepository.save(byEmail.get());

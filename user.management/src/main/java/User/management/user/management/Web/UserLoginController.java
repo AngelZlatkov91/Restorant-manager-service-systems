@@ -28,12 +28,9 @@ public class UserLoginController {
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponseDTO> login(@RequestBody UserLoginDTO loginUserDTO) {
-
             Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginUserDTO.getUsername(), loginUserDTO.getPassword()));
             String token = tokenService.generateToken(authenticate);
             return ResponseEntity.ok
                     (new LoginResponseDTO("Login successful",  token));
-
-
     }
 }
