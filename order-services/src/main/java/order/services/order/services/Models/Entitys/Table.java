@@ -1,6 +1,20 @@
 package order.services.order.services.Models.Entitys;
 
-public class Table {
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-    private String table_name;
+@Entity
+@jakarta.persistence.Table
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
+public class Table extends BaseEntity{
+   @Column(nullable = false, unique = true)
+    private String tableName;
+    private boolean isEmpty;
+
+
 }

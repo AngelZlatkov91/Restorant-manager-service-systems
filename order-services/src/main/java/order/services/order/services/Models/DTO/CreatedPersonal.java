@@ -4,13 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
-public class CreateTable {
-
-    private String tableName;
-
-
-
+public class CreatedPersonal {
+    private String name;
+    private String password;
 }

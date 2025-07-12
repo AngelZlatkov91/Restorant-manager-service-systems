@@ -1,4 +1,19 @@
 package order.services.order.services.Repositories;
 
-public interface OrderRepositories {
+import order.services.order.services.Models.Entitys.Order;
+import order.services.order.services.Models.Entitys.Personal;
+import order.services.order.services.Models.OrderStatus;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+import java.util.Optional;
+
+@Repository
+public interface OrderRepositories extends JpaRepository<Order, Long> {
+
+
+    List<Order> findAllByPersonalAndOrderStatus(Personal personal, OrderStatus orderStatus);
+
+
 }

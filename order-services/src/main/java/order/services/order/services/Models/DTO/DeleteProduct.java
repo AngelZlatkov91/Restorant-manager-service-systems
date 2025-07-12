@@ -7,10 +7,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class CreateTable {
-
-    private String tableName;
-
-
-
+public class DeleteProduct {
+    private Long orderId;
+    private int indexProduct;
 }

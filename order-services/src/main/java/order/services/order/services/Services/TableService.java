@@ -1,17 +1,18 @@
 package order.services.order.services.Services;
 import order.services.order.services.Models.DTO.CreateTable;
+import order.services.order.services.Models.DTO.ResponseTable;
 
 import java.util.List;
 
 
 public interface TableService {
 
-    void createTable(String tableName);
-    void dropTable(String tableName);
+    void createTable(CreateTable tableName);
+    void dropTable(CreateTable tableName);
 
-    void updateTable(String tableName, CreateTable createTable);
+    void updateTable(ResponseTable tableName);
 
-    List<CreateTable> getTables();
+    List<ResponseTable> getTables();
 
 
 

@@ -1,5 +1,6 @@
 package order.services.order.services.Models.DTO;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,10 +8,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class CreateTable {
-
-    private String tableName;
-
-
-
+public class PersonalResponse {
+    private Long id;
+    private String name;
+    private String password;
 }
