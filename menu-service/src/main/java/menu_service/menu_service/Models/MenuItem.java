@@ -19,5 +19,6 @@ public class MenuItem {
     private String description;
     private BigDecimal price;
     private Category category;
+    private TypeProduct typeProduct;
     private boolean active;
 }

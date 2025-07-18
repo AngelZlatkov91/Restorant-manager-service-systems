@@ -5,6 +5,7 @@ import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import menu_service.menu_service.Models.TypeProduct;
 import menu_service.menu_service.Validation.UniqueMenuName;
 
 import java.math.BigDecimal;
@@ -22,5 +23,7 @@ public class MenuItemCreate {
     private BigDecimal price;
      @NotBlank
     private String category;
+     @NotBlank
+    private TypeProduct typeProduct;
 
 }

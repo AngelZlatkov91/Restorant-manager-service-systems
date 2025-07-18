@@ -45,6 +45,7 @@ public class MenuItemServiceImpl implements MenuItemService {
         item.setName(menuItem.getName());
         item.setDescription(menuItem.getDescription());
         item.setPrice(menuItem.getPrice());
+        item.setTypeProduct(menuItem.getTypeProduct());
         item.setActive(true);
         return item;
     }
@@ -77,6 +78,7 @@ public class MenuItemServiceImpl implements MenuItemService {
         item.setName(menuItem.getName());
         item.setDescription(menuItem.getDescription());
         item.setPrice(menuItem.getPrice());
+        item.setTypeProduct(menuItem.getTypeProduct());
         item.setActive(menuItem.isActive());
         item.setCategory(menuItem.getCategory().getName());
         return item;

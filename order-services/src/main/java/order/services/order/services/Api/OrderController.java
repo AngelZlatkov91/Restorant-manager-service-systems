@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 @RestController
 @RequestMapping("/api/order")
@@ -21,23 +22,23 @@ public class OrderController {
 
 
     @PostMapping("/create")
-    public ResponseEntity<String> createOrder(@RequestBody OrderDTO orderDto) {
+    public ResponseEntity<String> createOrder(@RequestBody OrderDTO orderDto) throws ExecutionException, InterruptedException {
         orderService.createOrder(orderDto);
         return new ResponseEntity<>("Order created", HttpStatus.CREATED);
     }
 
-    @GetMapping
-    public ResponseEntity<OrderResp> getOrder(@RequestParam Long orderId) {
-     return ResponseEntity.ok(orderService.getOrder(orderId));
+    @GetMapping("/{id}")
+    public ResponseEntity<OrderResp> getOrder(@PathVariable Long id) {
+     return ResponseEntity.ok(orderService.getOrder(id));
     }
 
     @PutMapping("/update")
-    public ResponseEntity<String> updateOrder(@RequestBody OrderResp orderDto) {
+    public ResponseEntity<String> updateOrder(@RequestBody OrderResp orderDto) throws ExecutionException, InterruptedException {
         orderService.updateOrder(orderDto);
         return new ResponseEntity<>("Order updated", HttpStatus.OK);
     }
 
-    @GetMapping("/getAll")
+    @PostMapping("/getAll")
     public ResponseEntity<List<CheckOrders>> getAllOrders(@RequestBody CheckOrders checkOrders) {
         return ResponseEntity.ok(orderService.checkOrders(checkOrders));
     }

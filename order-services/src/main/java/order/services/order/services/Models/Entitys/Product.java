@@ -22,6 +22,8 @@ public class Product extends BaseEntity {
     @Column(nullable = false)
     private BigDecimal price;
     @Column(nullable = false)
+    private String category;
+    @Column(nullable = false)
     private boolean isCheck;
     @Column(nullable = false)
     private int quantity;

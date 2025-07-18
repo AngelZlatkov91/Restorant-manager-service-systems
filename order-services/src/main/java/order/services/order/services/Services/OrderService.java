@@ -5,11 +5,12 @@ import order.services.order.services.Models.DTO.OrderDTO;
 import order.services.order.services.Models.DTO.OrderResp;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public interface OrderService {
 
-    void createOrder(OrderDTO order);
-    void updateOrder(OrderResp order);
+    void createOrder(OrderDTO order) throws ExecutionException, InterruptedException;
+    void updateOrder(OrderResp order) throws ExecutionException, InterruptedException;
 
     OrderResp getOrder(Long orderId);
 

@@ -11,6 +11,7 @@ import java.math.BigDecimal;
 @Data
 public class AddProductToTableDTO {
     private String name;
+    private String category;
     private BigDecimal price;
     private boolean isCheck;
     private int quantity;
