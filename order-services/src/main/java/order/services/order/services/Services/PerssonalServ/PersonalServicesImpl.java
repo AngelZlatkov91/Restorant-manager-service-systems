@@ -1,7 +1,8 @@
-package order.services.order.services.Services;
+package order.services.order.services.Services.PerssonalServ;
 
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import order.services.order.services.Models.DTO.CheckPersonal;
 import order.services.order.services.Models.DTO.CreatedPersonal;
 import order.services.order.services.Models.DTO.DeleteProduct;
 import order.services.order.services.Models.DTO.PersonalResponse;
@@ -70,5 +71,14 @@ public class PersonalServicesImpl implements PersonalServices {
         orderRepositories.findById(deleteProduct.getOrderId()).ifPresent(order -> {
             order.getProducts().remove(deleteProduct.getIndexProduct());
         });
+    }
+
+    @Override
+    public String checkPersonal(CheckPersonal checkPersonal) {
+        Optional<Personal> byPassword = personalRepositories.findByPassword(checkPersonal.getPassword());
+        if (byPassword.isEmpty()) {
+            throw new EntityNotFoundException("Personal with password " + checkPersonal.getPassword() + " not found");
+        }
+        return byPassword.get().getName();
     }
 }

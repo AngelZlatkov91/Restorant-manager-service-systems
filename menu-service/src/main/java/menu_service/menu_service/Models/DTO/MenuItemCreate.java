@@ -20,7 +20,7 @@ public class MenuItemCreate {
      @NotBlank
     private String description;
      @Positive
-    private BigDecimal price;
+    private Double price;
      @NotBlank
     private String category;
      @NotBlank

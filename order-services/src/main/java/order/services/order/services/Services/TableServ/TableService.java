@@ -1,4 +1,4 @@
-package order.services.order.services.Services;
+package order.services.order.services.Services.TableServ;
 import order.services.order.services.Models.DTO.CreateTable;
 import order.services.order.services.Models.DTO.ResponseTable;
 

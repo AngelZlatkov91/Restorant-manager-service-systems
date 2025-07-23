@@ -1,4 +1,4 @@
-package order.services.order.services.Services;
+package order.services.order.services.Services.TableServ;
 
 import jakarta.transaction.Transactional;
 import order.services.order.services.Models.DTO.CreateTable;

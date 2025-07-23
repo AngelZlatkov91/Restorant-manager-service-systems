@@ -31,7 +31,7 @@ spring:
               packages: "*"
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
-      group-id: smart-wallet-group
+      group-id: order-service
 
 logging:
   level:

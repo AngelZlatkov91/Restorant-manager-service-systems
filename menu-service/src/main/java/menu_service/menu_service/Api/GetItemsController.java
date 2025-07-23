@@ -1,7 +1,6 @@
 package menu_service.menu_service.Api;
 
 import menu_service.menu_service.Models.DTO.MenuItemRes;
-import menu_service.menu_service.Models.DTO.ResCategory;
 import menu_service.menu_service.Services.MenuItemService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

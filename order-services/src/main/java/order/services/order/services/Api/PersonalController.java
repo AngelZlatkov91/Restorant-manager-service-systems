@@ -1,9 +1,11 @@
 package order.services.order.services.Api;
+import jakarta.validation.Valid;
 import order.services.order.services.Models.DTO.CreatedPersonal;
 import order.services.order.services.Models.DTO.DeleteProduct;
 import order.services.order.services.Models.DTO.PersonalResponse;
-import order.services.order.services.Services.PersonalServices;
+import order.services.order.services.Services.PerssonalServ.PersonalServices;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -17,7 +19,10 @@ public class PersonalController {
 
 
     @PostMapping("/create")
-    public ResponseEntity<String> create(@RequestBody CreatedPersonal personal) {
+    public ResponseEntity<String> create(@RequestBody @Valid CreatedPersonal personal, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return ResponseEntity.badRequest().body(bindingResult.getFieldError().getDefaultMessage());
+        }
         personalServices.createPersonal(personal);
         return ResponseEntity.ok("Personal created");
     }

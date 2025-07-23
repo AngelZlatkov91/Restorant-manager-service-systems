@@ -5,9 +5,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-
-import java.math.BigDecimal;
-
 @Document(collection = "mune_items")
 @Data
 @NoArgsConstructor
@@ -17,7 +14,7 @@ public class MenuItem {
     private String id;
     private String name;
     private String description;
-    private BigDecimal price;
+    private Double price;
     private Category category;
     private TypeProduct typeProduct;
     private boolean active;

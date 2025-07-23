@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 public class AddProductToTableDTO {
     private String name;
     private String category;
-    private BigDecimal price;
+    private Double price;
     private boolean isCheck;
     private int quantity;
 

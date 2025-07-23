@@ -11,6 +11,6 @@ public class KafkaProducerConfig {
     @Bean
     public NewTopic newTopic() {
 
-        return TopicBuilder.name("kitchen-display-event.v1").build();
+        return TopicBuilder.name("sender-event.v1").build();
     }
 }
