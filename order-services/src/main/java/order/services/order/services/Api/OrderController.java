@@ -1,29 +1,34 @@
 package order.services.order.services.Api;
-import order.services.order.services.Models.DTO.CheckOrders;
-import order.services.order.services.Models.DTO.OrderDTO;
-import order.services.order.services.Models.DTO.OrderResp;
-import order.services.order.services.Services.OrderService;
+import order.services.order.services.Models.DTO.*;
+import order.services.order.services.Services.OrderServ.CompleteOrdersServ;
+import order.services.order.services.Services.OrderServ.CompleteOrdersServImpl;
+import order.services.order.services.Services.OrderServ.CreateAndUpdateOrderServ;
+import order.services.order.services.Services.OrderServ.OrderService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 @RestController
 @RequestMapping("/api/order")
 public class OrderController {
 
-    private final OrderService orderService ;
+    private final CreateAndUpdateOrderServ createAndUpdateOrderServ;
+    private final OrderService orderService;
+    private final CompleteOrdersServ completeOrdersServ;
 
-    public OrderController(OrderService orderService) {
-        this.orderService = orderService;
+
+    public OrderController(CreateAndUpdateOrderServ orderService, OrderService orderService1, CompleteOrdersServ completeOrdersServ) {
+        this.createAndUpdateOrderServ = orderService;
+        this.orderService = orderService1;
+        this.completeOrdersServ = completeOrdersServ;
     }
 
 
     @PostMapping("/create")
-    public ResponseEntity<String> createOrder(@RequestBody OrderDTO orderDto) throws ExecutionException, InterruptedException {
-        orderService.createOrder(orderDto);
+    public ResponseEntity<String> createOrder(@RequestBody OrderDTO orderDto) {
+        createAndUpdateOrderServ.createOrder(orderDto);
         return new ResponseEntity<>("Order created", HttpStatus.CREATED);
     }
 
@@ -33,8 +38,8 @@ public class OrderController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<String> updateOrder(@RequestBody OrderResp orderDto) throws ExecutionException, InterruptedException {
-        orderService.updateOrder(orderDto);
+    public ResponseEntity<String> updateOrder(@RequestBody OrderResp orderDto)  {
+        createAndUpdateOrderServ.updateOrder(orderDto);
         return new ResponseEntity<>("Order updated", HttpStatus.OK);
     }
 
@@ -43,6 +48,10 @@ public class OrderController {
         return ResponseEntity.ok(orderService.checkOrders(checkOrders));
     }
 
+    @PostMapping("/complete")
+    public ResponseEntity<CompleteOrderDTO> completeOrder(@RequestBody PaymentMethodDTO paymentMethodDTO) {
+       return ResponseEntity.ok(completeOrdersServ.completeOrder(paymentMethodDTO));
+    }
 
 
 
