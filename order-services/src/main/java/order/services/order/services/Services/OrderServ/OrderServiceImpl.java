@@ -17,18 +17,10 @@ public class OrderServiceImpl implements OrderService {
     private final OrderRepositories orderRepositories;
     private final PersonalRepositories personalRepositories;
 
-
-
-
     public OrderServiceImpl( OrderRepositories orderRepositories, PersonalRepositories personalRepositories) {
         this.orderRepositories = orderRepositories;
         this.personalRepositories = personalRepositories;
-
-
     }
-
-
-
 
 
     @Override
@@ -46,6 +38,7 @@ public class OrderServiceImpl implements OrderService {
               .toList();
 
     }
+
 
     private CheckOrders mapCheckOrders(Order order) {
         CheckOrders checkOrders = new CheckOrders();
@@ -73,6 +66,9 @@ public class OrderServiceImpl implements OrderService {
             addProductToTableDTO.setName(product.getName());
             addProductToTableDTO.setPrice(product.getPrice());
             addProductToTableDTO.setQuantity(product.getQuantity());
+            if (!product.getDescription().isBlank()) {
+                addProductToTableDTO.setDescription(product.getDescription());
+            }
             addProductToTableDTO.setCheck(product.isCheck());
             addProducts.add(addProductToTableDTO);
         }

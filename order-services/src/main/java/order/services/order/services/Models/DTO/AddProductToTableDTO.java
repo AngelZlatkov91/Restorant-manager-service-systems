@@ -12,5 +12,6 @@ public class AddProductToTableDTO {
     private Double price;
     private boolean isCheck;
     private int quantity;
+    private String description;
 
 }

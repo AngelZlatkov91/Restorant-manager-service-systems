@@ -1,7 +1,9 @@
 package order.services.order.services.Services.OrderServ;
 
-import order.services.order.services.Event.KitchenDTO;
-import order.services.order.services.Event.KitchenEvent;
+import jakarta.transaction.Transactional;
+import order.services.order.services.Event.Display.OrderProductsDTO;
+import order.services.order.services.Event.Display.ProductEventSentDTO;
+import order.services.order.services.Event.Display.DisplayEvent;
 import order.services.order.services.Models.DTO.AddProductToTableDTO;
 import order.services.order.services.Models.DTO.OrderDTO;
 import order.services.order.services.Models.DTO.OrderResp;
@@ -27,14 +29,16 @@ public class CreateAndUpdateOrderServImpl implements CreateAndUpdateOrderServ {
     private final ProductRepositories productRepositories;
     private final OrderRepositories orderRepositories;
     private final PersonalRepositories personalRepositories;
-    private final KitchenEvent kitchenEvent;
+    private final DisplayEvent displayEvent;
 
-    public CreateAndUpdateOrderServImpl(TableRepositories tableRepositories, ProductRepositories productRepositories, OrderRepositories orderRepositories, PersonalRepositories personalRepositories, KitchenEvent kitchenEvent) {
+
+    public CreateAndUpdateOrderServImpl(TableRepositories tableRepositories, ProductRepositories productRepositories, OrderRepositories orderRepositories, PersonalRepositories personalRepositories, DisplayEvent displayEvent) {
         this.tableRepositories = tableRepositories;
         this.productRepositories = productRepositories;
         this.orderRepositories = orderRepositories;
         this.personalRepositories = personalRepositories;
-        this.kitchenEvent = kitchenEvent;
+        this.displayEvent = displayEvent;
+
     }
 
 
@@ -42,39 +46,56 @@ public class CreateAndUpdateOrderServImpl implements CreateAndUpdateOrderServ {
     public void createOrder(OrderDTO order) {
         Optional<Personal> personal = personalRepositories.findByName(order.getPersonal_name());
         Optional<TableEn> byTableName = tableRepositories.findByTableName(order.getTable_name());
+
         if (personal.isEmpty() || byTableName.isEmpty()) {
             throw new NullPointerException("Personal or Table not found");
         }
+
         byTableName.get().setEmpty(false);
         tableRepositories.save(byTableName.get());
 
         Order orderEntity = mapToCreate(order, byTableName.get(), personal.get());
 
-        KitchenDTO kitchenDTO = sendToKitchen(orderEntity.getProducts());
-        kitchenDTO.setPersonal(personal.get().getName());
-        kitchenDTO.setTableName(byTableName.get().getTableName());
-        kitchenEvent.sendEvent(kitchenDTO);
+        sendEvents(orderEntity.getProducts(),order.getPersonal_name(),order.getTable_name());
 
         orderRepositories.save(orderEntity);
     }
 
-    private KitchenDTO sendToKitchen(List<Product> products) {
-        KitchenDTO kitchenDTO = new KitchenDTO();
-        for (Product product : products) {
-            if (product.getCategory().equals("KITCHEN")) {
-                AddProductToTableDTO addProductToTableDTO = new AddProductToTableDTO();
-                addProductToTableDTO.setName(product.getName());
-                addProductToTableDTO.setPrice(product.getPrice());
-                addProductToTableDTO.setQuantity(product.getQuantity());
-                addProductToTableDTO.setCategory(product.getCategory());
-                addProductToTableDTO.setCheck(true);
-                kitchenDTO.getProducts().add(addProductToTableDTO);
+    private void sendEvents(List<Product> products, String personalName, String tableName) {
+        ProductEventSentDTO kitchen = new ProductEventSentDTO();
+        ProductEventSentDTO bar = new ProductEventSentDTO();
+
+        products.forEach(product -> {
+            OrderProductsDTO orderProductsDTO = new OrderProductsDTO();
+            orderProductsDTO.setProductDescription("");
+            orderProductsDTO.setProductName(product.getName());
+            orderProductsDTO.setQuantity(product.getQuantity());
+            if (!product.getDescription().isBlank()) {
+                orderProductsDTO.setProductDescription(product.getDescription());
             }
+            if (product.getCategory().equals("BAR")) {
+                bar.getProducts().add(orderProductsDTO);
+            } else {
+                kitchen.getProducts().add(orderProductsDTO);
+            }
+        });
+
+        if (!bar.getProducts().isEmpty()) {
+            bar.setPersonal(personalName);
+            bar.setTableName(tableName);
+            displayEvent.barSendEvent(bar);
         }
-        return kitchenDTO;
+
+        if (!kitchen.getProducts().isEmpty()) {
+            kitchen.setPersonal(personalName);
+            kitchen.setTableName(tableName);
+            displayEvent.kitchenSendEvent(kitchen);
+        }
     }
 
+
     @Override
+    @Transactional
     public void updateOrder(OrderResp order) {
         Optional<Order> byId = orderRepositories.findById(order.getId());
         if (byId.isEmpty()) {
@@ -82,10 +103,9 @@ public class CreateAndUpdateOrderServImpl implements CreateAndUpdateOrderServ {
         }
         List<Product> products = mapProducts(order.getProducts());
         byId.get().getProducts().addAll(products);
-        KitchenDTO kitchenDTO = sendToKitchen(products);
-        kitchenDTO.setPersonal(byId.get().getPersonal().getName());
-        kitchenDTO.setTableName(byId.get().getTable_name().getTableName());
-        kitchenEvent.sendEvent(kitchenDTO);
+        
+        sendEvents(products,order.getPersonal_name(),order.getTable_name());
+
         orderRepositories.save(byId.get());
     }
 
@@ -110,10 +130,12 @@ public class CreateAndUpdateOrderServImpl implements CreateAndUpdateOrderServ {
                 productEntity.setQuantity(product.getQuantity());
                 productEntity.setName(product.getName());
                 productEntity.setCategory(product.getCategory());
+                if (!product.getDescription().isBlank()) {
+                    productEntity.setDescription(product.getDescription());
+                }
                 productRepositories.save(productEntity);
                 productEntities.add(productEntity);
             }
-
         }
         return productEntities;
     }

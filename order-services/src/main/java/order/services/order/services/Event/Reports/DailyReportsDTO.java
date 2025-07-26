@@ -1,4 +1,4 @@
-package order.services.order.services.Event;
+package order.services.order.services.Event.Reports;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,4 +1,4 @@
-package order.services.order.services.Event;
+package order.services.order.services.Event.Display;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,14 +10,14 @@ import java.util.List;
 
 @AllArgsConstructor
 @Data
-public class KitchenDTO {
+public class ProductEventSentDTO {
 
     private String tableName;
     private String personal;
-    private List<AddProductToTableDTO> products;
+    private List<OrderProductsDTO> products;
 
 
-    public KitchenDTO(){
+    public ProductEventSentDTO(){
         this.products = new ArrayList<>();
     }
 }

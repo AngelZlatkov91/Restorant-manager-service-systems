@@ -30,8 +30,7 @@ public class TableServiceImpl implements TableService {
     @Override
     @Transactional
     public void dropTable(CreateTable tableName) {
-        Optional<TableEn> byTableName = tableRepositories.findByTableName(tableName.getTableName());
-        tableRepositories.delete(byTableName.get());
+     tableRepositories.removeByTableName(tableName.getTableName());
     }
 
     @Override

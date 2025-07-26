@@ -35,6 +35,8 @@ public class Order  {
     private OrderStatus orderStatus;
     @Column(nullable = false)
     private LocalDateTime created_at;
+    @Column
+    private Double totalPrice;
 
     public Order(){
         products = new ArrayList<>();

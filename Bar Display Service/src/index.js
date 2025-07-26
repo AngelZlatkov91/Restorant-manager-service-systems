@@ -12,6 +12,8 @@ runConsumer((data) => {
     return;
   }
 
+   console.log(orders);
+
   printer.clear();
   printer.println(`Нова поръчка`);
   printer.drawLine();

@@ -1,4 +1,4 @@
-package order.services.order.services.Event;
+package order.services.order.services.Event.Reports;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

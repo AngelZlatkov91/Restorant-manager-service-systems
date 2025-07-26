@@ -27,5 +27,7 @@ public class Product extends BaseEntity {
     private boolean isCheck;
     @Column(nullable = false)
     private int quantity;
+    @Column
+    private String description;
 
 }
