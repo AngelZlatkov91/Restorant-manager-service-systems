@@ -1,6 +1,9 @@
 package order.services.order.services.Services.OrderServ;
 
 import jakarta.transaction.Transactional;
+import order.services.order.services.Event.CashEvent.CashReceiptDTO;
+import order.services.order.services.Event.CashEvent.CashReceiptEvent;
+import order.services.order.services.Event.CashEvent.ProductsToReceipt;
 import order.services.order.services.Event.Display.OrderProductsDTO;
 import order.services.order.services.Event.Reports.DailyReportsDTO;
 import order.services.order.services.Event.Reports.DailyReportsEvent;
@@ -29,15 +32,17 @@ public class CompleteOrdersServImpl implements CompleteOrdersServ {
     private final TableRepositories tableRepositories;
     private final InventoryEvent inventoryEvent;
     private final DailyReportsEvent dailyReportsEvent;
+    private final CashReceiptEvent cashReceiptEvent;
     private Double totalPrice;
 
 
-    public CompleteOrdersServImpl(OrderRepositories orderRepositories, PersonalRepositories personalRepositories, TableRepositories tableRepositories, InventoryEvent inventoryEvent, DailyReportsEvent dailyReportsEvent) {
+    public CompleteOrdersServImpl(OrderRepositories orderRepositories, PersonalRepositories personalRepositories, TableRepositories tableRepositories, InventoryEvent inventoryEvent, DailyReportsEvent dailyReportsEvent, CashReceiptEvent cashReceiptEvent) {
         this.orderRepositories = orderRepositories;
         this.personalRepositories = personalRepositories;
         this.tableRepositories = tableRepositories;
         this.inventoryEvent = inventoryEvent;
         this.dailyReportsEvent = dailyReportsEvent;
+        this.cashReceiptEvent = cashReceiptEvent;
         totalPrice = 0.0;
     }
 
@@ -46,6 +51,7 @@ public class CompleteOrdersServImpl implements CompleteOrdersServ {
     public CompleteOrderDTO completeOrder(PaymentMethodDTO paymentMethodDTO) {
         Optional<Order> byId = orderRepositories.findById(paymentMethodDTO.getId());
         Optional<Personal> byName = personalRepositories.findByName(paymentMethodDTO.getPersonal());
+
         if (byName.isEmpty() || byId.isEmpty() || byId.get().getOrderStatus() == OrderStatus.COMPLETED) {
             throw new NullPointerException("Order or Personal not found");
         }
@@ -55,6 +61,11 @@ public class CompleteOrdersServImpl implements CompleteOrdersServ {
 
         CompleteOrderDTO completeOrderDTO = mapOrderToDTO(byId.get());
         completeOrderDTO.setTotalPrice(totalPrice);
+
+        if (paymentMethodDTO.getPaymentMethod().equals("CASH")) {
+            cashReceiptEvent.printReceipt(printTheReceipt(byId.get().getId(),completeOrderDTO));
+        }
+
 
         inventoryEvent.sendEvent(sendInventory(completeOrderDTO.getProducts()));
 
@@ -70,6 +81,21 @@ public class CompleteOrdersServImpl implements CompleteOrdersServ {
 
         return completeOrderDTO;
     }
+
+    private CashReceiptDTO printTheReceipt(Long id, CompleteOrderDTO completeOrderDTO) {
+        CashReceiptDTO cashReceiptDTO = new CashReceiptDTO();
+        cashReceiptDTO.setOrderId(id);
+        cashReceiptDTO.setPaymentMethod("CASH");
+        cashReceiptDTO.setAmount(completeOrderDTO.getTotalPrice());
+
+        completeOrderDTO.getProducts().forEach(product -> {
+            ProductsToReceipt products = new ProductsToReceipt(product.getName(), product.getQuantity(), product.getPrice());
+            cashReceiptDTO.getProducts().add(products);
+        });
+
+        return cashReceiptDTO;
+    }
+
 
     private DailyReportsDTO sendReports(String name, String paymentMethod, Double totalPrice) {
         DailyReportsDTO dailyReportsDTO = new DailyReportsDTO();
