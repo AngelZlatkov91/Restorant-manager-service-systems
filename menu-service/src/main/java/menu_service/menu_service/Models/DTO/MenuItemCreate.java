@@ -8,8 +8,6 @@ import lombok.NoArgsConstructor;
 import menu_service.menu_service.Models.TypeProduct;
 import menu_service.menu_service.Validation.UniqueMenuName;
 
-import java.math.BigDecimal;
-
 @NoArgsConstructor
 @AllArgsConstructor
 @Data

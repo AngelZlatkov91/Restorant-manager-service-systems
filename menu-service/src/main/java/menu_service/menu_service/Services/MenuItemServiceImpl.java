@@ -2,6 +2,8 @@ package menu_service.menu_service.Services;
 
 import lombok.AllArgsConstructor;
 
+import menu_service.menu_service.Event.InventoryDTO;
+import menu_service.menu_service.Event.InventoryEvent;
 import menu_service.menu_service.Exception.MenuItemDontExistExp;
 import menu_service.menu_service.Models.Category;
 import menu_service.menu_service.Models.DTO.MenuItemCreate;
@@ -23,10 +25,12 @@ public class MenuItemServiceImpl implements MenuItemService {
     private final MenuItemRepository menuItemRepository;
 
     private final CategoryItemRepository categoryItemRepository;
+    private final InventoryEvent inventoryEvent;
 
-    public MenuItemServiceImpl(MenuItemRepository menuItemRepository, CategoryItemRepository categoryItemRepository) {
+    public MenuItemServiceImpl(MenuItemRepository menuItemRepository, CategoryItemRepository categoryItemRepository, InventoryEvent inventoryEvent) {
         this.menuItemRepository = menuItemRepository;
         this.categoryItemRepository = categoryItemRepository;
+        this.inventoryEvent = inventoryEvent;
     }
 
     @Override
@@ -35,6 +39,10 @@ public class MenuItemServiceImpl implements MenuItemService {
         Optional<Category> category = categoryItemRepository.findByName(menuItem.getCategory());;
         MenuItem newItem = mapData(menuItem);
         newItem.setCategory(category.get());
+
+        if (newItem.getTypeProduct().name().equals("BAR")) {
+            inventoryEvent.sendEvent(new InventoryDTO(newItem.getName()));
+        }
         menuItemRepository.save(newItem);
         return "Saved";
     }

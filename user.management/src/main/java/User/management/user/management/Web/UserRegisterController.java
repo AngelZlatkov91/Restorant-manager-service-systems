@@ -28,7 +28,7 @@ public class UserRegisterController {
                                                BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             List<ObjectError> allErrors = bindingResult.getAllErrors();
-            String defaultMessage = allErrors.get(0).getDefaultMessage();
+            String defaultMessage = allErrors.getFirst().getDefaultMessage();
             return ResponseEntity.badRequest().body(defaultMessage);
         }
             userService.registerUser(userRegistrationDTO);
