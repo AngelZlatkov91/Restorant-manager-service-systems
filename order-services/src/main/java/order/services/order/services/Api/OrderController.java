@@ -1,7 +1,6 @@
 package order.services.order.services.Api;
-import order.services.order.services.Models.DTO.*;
+import order.services.order.services.Models.DTO.Order.*;
 import order.services.order.services.Services.OrderServ.CompleteOrdersServ;
-import order.services.order.services.Services.OrderServ.CompleteOrdersServImpl;
 import order.services.order.services.Services.OrderServ.CreateAndUpdateOrderServ;
 import order.services.order.services.Services.OrderServ.OrderService;
 import org.springframework.http.HttpStatus;
@@ -49,8 +48,9 @@ public class OrderController {
     }
 
     @PostMapping("/complete")
-    public ResponseEntity<CompleteOrderDTO> completeOrder(@RequestBody PaymentMethodDTO paymentMethodDTO) {
-       return ResponseEntity.ok(completeOrdersServ.completeOrder(paymentMethodDTO));
+    public ResponseEntity<String> completeOrder(@RequestBody PaymentMethodDTO paymentMethodDTO) {
+        completeOrdersServ.completeOrder(paymentMethodDTO);
+       return ResponseEntity.ok("The order is pay!");
     }
 
 

@@ -9,9 +9,9 @@ import order.services.order.services.Event.Reports.DailyReportsDTO;
 import order.services.order.services.Event.Reports.DailyReportsEvent;
 import order.services.order.services.Event.Inventory.InventoryDTO;
 import order.services.order.services.Event.Inventory.InventoryEvent;
-import order.services.order.services.Models.DTO.AddProductToTableDTO;
-import order.services.order.services.Models.DTO.CompleteOrderDTO;
-import order.services.order.services.Models.DTO.PaymentMethodDTO;
+import order.services.order.services.Models.DTO.Order.AddProductToTableDTO;
+import order.services.order.services.Models.DTO.Order.CompleteOrderDTO;
+import order.services.order.services.Models.DTO.Order.PaymentMethodDTO;
 import order.services.order.services.Models.Entitys.Order;
 import order.services.order.services.Models.Entitys.Personal;
 import order.services.order.services.Models.Entitys.Product;
@@ -21,7 +21,6 @@ import order.services.order.services.Repositories.OrderRepositories;
 import order.services.order.services.Repositories.PersonalRepositories;
 import order.services.order.services.Repositories.TableRepositories;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -48,7 +47,7 @@ public class CompleteOrdersServImpl implements CompleteOrdersServ {
 
     @Override
     @Transactional
-    public CompleteOrderDTO completeOrder(PaymentMethodDTO paymentMethodDTO) {
+    public void completeOrder(PaymentMethodDTO paymentMethodDTO) {
         Optional<Order> byId = orderRepositories.findById(paymentMethodDTO.getId());
         Optional<Personal> byName = personalRepositories.findByName(paymentMethodDTO.getPersonal());
 
@@ -60,12 +59,12 @@ public class CompleteOrdersServImpl implements CompleteOrdersServ {
         tableRepositories.save(tableName);
 
         CompleteOrderDTO completeOrderDTO = mapOrderToDTO(byId.get());
-        completeOrderDTO.setTotalPrice(totalPrice);
+
 
         if (paymentMethodDTO.getPaymentMethod().equals("CASH")) {
             cashReceiptEvent.printReceipt(printTheReceipt(byId.get().getId(),completeOrderDTO));
         }
-
+        cashReceiptEvent.printTable(printTheReceipt(byId.get().getId(),completeOrderDTO));
 
         inventoryEvent.sendEvent(sendInventory(completeOrderDTO.getProducts()));
 
@@ -79,7 +78,6 @@ public class CompleteOrdersServImpl implements CompleteOrdersServ {
         totalPrice = 0.0;
         orderRepositories.save(byId.get());
 
-        return completeOrderDTO;
     }
 
     private CashReceiptDTO printTheReceipt(Long id, CompleteOrderDTO completeOrderDTO) {
@@ -125,8 +123,9 @@ public class CompleteOrdersServImpl implements CompleteOrdersServ {
         CompleteOrderDTO completeOrderDTO = new CompleteOrderDTO();
         completeOrderDTO.setPersonal(order.getPersonal().getName());
         completeOrderDTO.setTableName(order.getTable_name().getTableName());
-        completeOrderDTO.setTotalPrice(totalPrice);
         completeOrderDTO.setProducts(mapProductToDTO(order.getProducts()));
+        completeOrderDTO.setTotalPrice(totalPrice);
+
         return completeOrderDTO;
     }
 

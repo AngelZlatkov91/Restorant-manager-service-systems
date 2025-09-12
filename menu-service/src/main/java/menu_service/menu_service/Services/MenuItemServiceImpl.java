@@ -1,7 +1,6 @@
 package menu_service.menu_service.Services;
-
-import lombok.AllArgsConstructor;
-
+import menu_service.menu_service.Event.InventoryDTO;
+import menu_service.menu_service.Event.InventoryEvent;
 import menu_service.menu_service.Exception.MenuItemDontExistExp;
 import menu_service.menu_service.Models.Category;
 import menu_service.menu_service.Models.DTO.MenuItemCreate;
@@ -11,30 +10,32 @@ import menu_service.menu_service.Repositories.CategoryItemRepository;
 import menu_service.menu_service.Repositories.MenuItemRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
 @Service
-
 public class MenuItemServiceImpl implements MenuItemService {
 
     private final MenuItemRepository menuItemRepository;
 
     private final CategoryItemRepository categoryItemRepository;
+    private final InventoryEvent inventoryEvent;
 
-    public MenuItemServiceImpl(MenuItemRepository menuItemRepository, CategoryItemRepository categoryItemRepository) {
+    public MenuItemServiceImpl(MenuItemRepository menuItemRepository, CategoryItemRepository categoryItemRepository, InventoryEvent inventoryEvent) {
         this.menuItemRepository = menuItemRepository;
         this.categoryItemRepository = categoryItemRepository;
+        this.inventoryEvent = inventoryEvent;
     }
 
     @Override
     public String createMenuItem(MenuItemCreate menuItem) {
-
         Optional<Category> category = categoryItemRepository.findByName(menuItem.getCategory());;
         MenuItem newItem = mapData(menuItem);
         newItem.setCategory(category.get());
+
+        if (newItem.getTypeProduct().name().equals("BAR")) {
+            inventoryEvent.sendEvent(new InventoryDTO(newItem.getName()));
+        }
         menuItemRepository.save(newItem);
         return "Saved";
     }
@@ -43,7 +44,6 @@ public class MenuItemServiceImpl implements MenuItemService {
     private MenuItem mapData(MenuItemCreate menuItem) {
         MenuItem item = new MenuItem();
         item.setName(menuItem.getName());
-        item.setDescription(menuItem.getDescription());
         item.setPrice(menuItem.getPrice());
         item.setTypeProduct(menuItem.getTypeProduct());
         item.setActive(true);
@@ -76,7 +76,6 @@ public class MenuItemServiceImpl implements MenuItemService {
         MenuItemRes item = new MenuItemRes();
         item.setId(menuItem.getId());
         item.setName(menuItem.getName());
-        item.setDescription(menuItem.getDescription());
         item.setPrice(menuItem.getPrice());
         item.setTypeProduct(menuItem.getTypeProduct());
         item.setActive(menuItem.isActive());
@@ -110,11 +109,18 @@ public class MenuItemServiceImpl implements MenuItemService {
             throw new MenuItemDontExistExp("Menu item not found");
         }
            byId.get().setName(menuItemRes.getName());
-           byId.get().setDescription(menuItemRes.getDescription());
            byId.get().setActive(menuItemRes.isActive());
            byId.get().setPrice(menuItemRes.getPrice());
            byId.get().setCategory(byName.get());
            menuItemRepository.save(byId.get());
         return getMenuItem(byId.get().getId());
+    }
+
+    @Override
+    @Transactional
+    public void changeStatus(String itemName) {
+        Optional<MenuItem> byName = menuItemRepository.findByName(itemName);
+        byName.ifPresent(menuItem -> menuItem.setActive(false));
+        menuItemRepository.save(byName.get());
     }
 }

@@ -9,6 +9,5 @@ import java.util.Optional;
 @Repository
 public interface TableRepositories extends JpaRepository<TableEn, Long> {
 
-    void removeByTableName(String tableName);
     Optional<TableEn> findByTableName(String name);
 }

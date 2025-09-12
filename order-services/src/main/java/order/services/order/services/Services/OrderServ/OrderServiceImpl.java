@@ -1,6 +1,8 @@
 package order.services.order.services.Services.OrderServ;
 
-import order.services.order.services.Models.DTO.*;
+import order.services.order.services.Models.DTO.Order.AddProductToTableDTO;
+import order.services.order.services.Models.DTO.Order.CheckOrders;
+import order.services.order.services.Models.DTO.Order.OrderResp;
 import order.services.order.services.Models.Entitys.Order;
 import order.services.order.services.Models.Entitys.Personal;
 import order.services.order.services.Models.Entitys.Product;

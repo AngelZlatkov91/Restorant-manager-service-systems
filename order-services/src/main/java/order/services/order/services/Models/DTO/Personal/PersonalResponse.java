@@ -1,4 +1,4 @@
-package order.services.order.services.Models.DTO;
+package order.services.order.services.Models.DTO.Personal;
 
 
 import lombok.AllArgsConstructor;
@@ -8,7 +8,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class ResponseTable {
+public class PersonalResponse {
     private Long id;
-    private String tableName;
+    private String name;
+    private String password;
 }

@@ -18,5 +18,10 @@ public class CashReceiptEvent {
 
     public void printReceipt(CashReceiptDTO event) {
         kafkaTemplate.send("print-receipt", event);
+
+    }
+
+    public void printTable(CashReceiptDTO event) {
+        kafkaTemplate.send("print-table", event);
     }
 }

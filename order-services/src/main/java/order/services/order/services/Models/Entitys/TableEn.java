@@ -15,6 +15,7 @@ import lombok.NoArgsConstructor;
 public class TableEn extends BaseEntity{
    @Column(nullable = false, unique = true)
     private String tableName;
+   @Column
     private boolean isEmpty;
 
 

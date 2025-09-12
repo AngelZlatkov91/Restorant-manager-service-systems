@@ -6,12 +6,4 @@ import User.management.user.management.Models.DTO.UserRegisterDTO;
 public interface UserService {
 
     void registerUser(UserRegisterDTO userRegisterDTO);
-
-
-
-    void updateProfile(UserDetailsDTO userDetailsDTO);
-
-
-
-
 }

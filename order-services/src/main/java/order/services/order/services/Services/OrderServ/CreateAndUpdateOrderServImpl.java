@@ -4,9 +4,9 @@ import jakarta.transaction.Transactional;
 import order.services.order.services.Event.Display.OrderProductsDTO;
 import order.services.order.services.Event.Display.ProductEventSentDTO;
 import order.services.order.services.Event.Display.DisplayEvent;
-import order.services.order.services.Models.DTO.AddProductToTableDTO;
-import order.services.order.services.Models.DTO.OrderDTO;
-import order.services.order.services.Models.DTO.OrderResp;
+import order.services.order.services.Models.DTO.Order.AddProductToTableDTO;
+import order.services.order.services.Models.DTO.Order.OrderDTO;
+import order.services.order.services.Models.DTO.Order.OrderResp;
 import order.services.order.services.Models.Entitys.Order;
 import order.services.order.services.Models.Entitys.Personal;
 import order.services.order.services.Models.Entitys.Product;
@@ -67,7 +67,7 @@ public class CreateAndUpdateOrderServImpl implements CreateAndUpdateOrderServ {
 
         products.forEach(product -> {
             OrderProductsDTO orderProductsDTO = new OrderProductsDTO();
-            orderProductsDTO.setProductDescription("");
+            orderProductsDTO.setProductDescription(product.getDescription());
             orderProductsDTO.setProductName(product.getName());
             orderProductsDTO.setQuantity(product.getQuantity());
             if (!product.getDescription().isBlank()) {
@@ -90,7 +90,9 @@ public class CreateAndUpdateOrderServImpl implements CreateAndUpdateOrderServ {
             kitchen.setPersonal(personalName);
             kitchen.setTableName(tableName);
             displayEvent.kitchenSendEvent(kitchen);
+            bar.getProducts().addAll(kitchen.getProducts());
         }
+        displayEvent.checkDisplay(bar);
     }
 
 

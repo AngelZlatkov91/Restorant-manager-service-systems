@@ -1,12 +1,13 @@
 package order.services.order.services.Api;
 import jakarta.validation.Valid;
-import order.services.order.services.Models.DTO.CreatedPersonal;
-import order.services.order.services.Models.DTO.DeleteProduct;
-import order.services.order.services.Models.DTO.PersonalResponse;
+import order.services.order.services.Models.DTO.Personal.CreatedPersonal;
+import order.services.order.services.Models.DTO.Personal.PersonalResponse;
 import order.services.order.services.Services.PerssonalServ.PersonalServices;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/personal")
@@ -27,9 +28,9 @@ public class PersonalController {
         return ResponseEntity.ok("Personal created");
     }
 
-    @PutMapping("/update")
-    public ResponseEntity<String> update(@RequestBody CreatedPersonal personal) {
-        personalServices.updatePersonal(personal);
+    @PutMapping("/update/:id")
+    public ResponseEntity<String> update(@RequestParam Long id, @RequestBody PersonalResponse personal) {
+        personalServices.updatePersonal(id,personal);
         return ResponseEntity.ok("Personal updated");
     }
 
@@ -39,16 +40,8 @@ public class PersonalController {
         return ResponseEntity.ok("Personal deleted");
     }
 
-    @GetMapping("/:id")
-    public ResponseEntity<PersonalResponse> findById(@RequestParam Long id) {
-        return ResponseEntity.ok(personalServices.getPersonal(id));
+    @GetMapping()
+    public ResponseEntity<List<PersonalResponse>> findById() {
+        return ResponseEntity.ok(personalServices.getPersonal());
     }
-
-    @DeleteMapping
-    public ResponseEntity<String> deleteProduct(@RequestBody DeleteProduct deleteProduct) {
-        personalServices.deleteProduct(deleteProduct);
-        return ResponseEntity.ok("Product deleted");
-    }
-
-
 }

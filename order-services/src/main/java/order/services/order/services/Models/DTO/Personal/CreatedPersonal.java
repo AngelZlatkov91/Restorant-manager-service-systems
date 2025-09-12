@@ -1,10 +1,10 @@
-package order.services.order.services.Models.DTO;
+package order.services.order.services.Models.DTO.Personal;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import order.services.order.services.Validation.UniquePersonalName;
 import order.services.order.services.Validation.UniquePersonalPassword;
 
 @Data
@@ -12,10 +12,11 @@ import order.services.order.services.Validation.UniquePersonalPassword;
 @AllArgsConstructor
 public class CreatedPersonal {
     @NotBlank
-    @UniquePersonalName
+    @Size(min = 3)
     private String name;
 
     @NotBlank
+    @Size(min = 4, max = 6)
     @UniquePersonalPassword
     private String password;
 }

@@ -1,12 +1,11 @@
 package order.services.order.services.Services.TableServ;
 
 import jakarta.transaction.Transactional;
-import order.services.order.services.Models.DTO.CreateTable;
-import order.services.order.services.Models.DTO.ResponseTable;
+import order.services.order.services.Models.DTO.Table.CreateTable;
+import order.services.order.services.Models.DTO.Table.ResponseTable;
 import order.services.order.services.Models.Entitys.TableEn;
 import order.services.order.services.Repositories.TableRepositories;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -29,14 +28,14 @@ public class TableServiceImpl implements TableService {
 
     @Override
     @Transactional
-    public void dropTable(CreateTable tableName) {
-     tableRepositories.removeByTableName(tableName.getTableName());
+    public void dropTable(Long id) {
+    tableRepositories.deleteById(id);
     }
 
     @Override
     @Transactional
-    public void updateTable(ResponseTable responseTable) {
-        Optional<TableEn> byName = tableRepositories.findById(responseTable.getId());
+    public void updateTable(Long id,ResponseTable responseTable) {
+        Optional<TableEn> byName = tableRepositories.findById(id);
         if (byName.isPresent()) {
             byName.get().setTableName(responseTable.getTableName());
             tableRepositories.save(byName.get());

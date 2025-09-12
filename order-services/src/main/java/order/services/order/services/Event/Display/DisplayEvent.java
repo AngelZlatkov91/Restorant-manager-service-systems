@@ -22,4 +22,8 @@ public class DisplayEvent {
         kafkaTemplate.send("bar-display", event);
     }
 
+    public void checkDisplay(ProductEventSentDTO event) {
+         kafkaTemplate.send("check-display", event);
+    }
+
 }

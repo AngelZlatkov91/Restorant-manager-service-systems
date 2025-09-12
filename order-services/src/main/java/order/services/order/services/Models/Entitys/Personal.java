@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table
 public class Personal extends BaseEntity{
-    @Column(unique=true, nullable = false)
+    @Column( nullable = false)
     private String name;
     @Column(unique=true, nullable = false)
     private String password;

@@ -1,4 +1,5 @@
-package order.services.order.services.Models.DTO;
+package order.services.order.services.Models.DTO.Table;
+
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,8 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class PaymentMethodDTO {
+public class ResponseTable {
     private Long id;
-    private String paymentMethod;
-    private String personal;
+    private String tableName;
 }

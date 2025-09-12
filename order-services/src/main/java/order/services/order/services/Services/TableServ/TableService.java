@@ -1,6 +1,6 @@
 package order.services.order.services.Services.TableServ;
-import order.services.order.services.Models.DTO.CreateTable;
-import order.services.order.services.Models.DTO.ResponseTable;
+import order.services.order.services.Models.DTO.Table.CreateTable;
+import order.services.order.services.Models.DTO.Table.ResponseTable;
 
 import java.util.List;
 
@@ -8,9 +8,9 @@ import java.util.List;
 public interface TableService {
 
     void createTable(CreateTable tableName);
-    void dropTable(CreateTable tableName);
+    void dropTable(Long id);
 
-    void updateTable(ResponseTable tableName);
+    void updateTable(Long id,ResponseTable tableName);
 
     List<ResponseTable> getTables();
 

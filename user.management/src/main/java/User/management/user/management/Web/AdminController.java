@@ -3,8 +3,10 @@ package User.management.user.management.Web;
 import User.management.user.management.Models.DTO.UserChangeRoleDTO;
 import User.management.user.management.Models.DTO.UserDetailsDTO;
 import User.management.user.management.Service.Interfaces.AdminService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -26,7 +28,10 @@ public class AdminController {
     }
 
     @PostMapping
-    public ResponseEntity<String> changeProfile(@RequestBody UserChangeRoleDTO userChangeRoleDTO) {
+    public ResponseEntity<String> changeProfile(@RequestBody @Valid UserChangeRoleDTO userChangeRoleDTO , BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return ResponseEntity.badRequest().build();
+        }
         adminService.changeProfileRole(userChangeRoleDTO);
         return ResponseEntity.ok("Profile changed");
     }

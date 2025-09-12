@@ -1,8 +1,8 @@
 package order.services.order.services.Api;
 
 import jakarta.validation.Valid;
-import order.services.order.services.Models.DTO.CreateTable;
-import order.services.order.services.Models.DTO.ResponseTable;
+import order.services.order.services.Models.DTO.Table.CreateTable;
+import order.services.order.services.Models.DTO.Table.ResponseTable;
 import order.services.order.services.Services.TableServ.TableService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,23 +33,20 @@ public class TableController {
         return new ResponseEntity<>("Table created", HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/delete")
-    public ResponseEntity<String> deleteTable(@RequestBody CreateTable createTable) {
-        tableService.dropTable(createTable);
+    @DeleteMapping("/delete/:id")
+    public ResponseEntity<String> deleteTable(@RequestParam Long id) {
+        tableService.dropTable(id);
         return new ResponseEntity<>("Table dropped", HttpStatus.OK);
     }
 
 
-    @PutMapping("/update")
-    public ResponseEntity<String> updateTable(@RequestBody ResponseTable responseTable) {
-        tableService.updateTable(responseTable);
+    @PutMapping("/update/:id")
+    public ResponseEntity<String> updateTable(@RequestParam Long id ,@RequestBody ResponseTable responseTable) {
+        tableService.updateTable(id,responseTable);
         return new ResponseEntity<>("Table updated", HttpStatus.OK);
     }
 
-    @GetMapping
-    public ResponseEntity<List<ResponseTable>> getTables() {
-        return new ResponseEntity<>(tableService.getTables(), HttpStatus.OK);
-    }
+
 
 
 

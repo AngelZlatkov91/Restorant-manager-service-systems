@@ -1,4 +1,4 @@
-package order.services.order.services.Models.DTO;
+package order.services.order.services.Models.DTO.Table;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;

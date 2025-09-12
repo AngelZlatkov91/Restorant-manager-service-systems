@@ -1,4 +1,4 @@
-package order.services.order.services.Models.DTO;
+package order.services.order.services.Models.DTO.Order;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
