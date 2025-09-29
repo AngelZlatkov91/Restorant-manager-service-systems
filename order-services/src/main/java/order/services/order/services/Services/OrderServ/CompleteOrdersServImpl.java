@@ -111,7 +111,7 @@ public class CompleteOrdersServImpl implements CompleteOrdersServ {
         products.stream().filter(p-> p.getCategory().equals("BAR")).forEach(p->{
             OrderProductsDTO newProduct = new OrderProductsDTO();
             newProduct.setProductName(p.getName());
-            newProduct.setProductDescription("");
+            newProduct.setCategory(p.getCategory());
             newProduct.setQuantity(p.getQuantity());
             newProducts.add(newProduct);
         });

@@ -15,10 +15,10 @@ public class InventoryEvent {
     @Autowired
     public InventoryEvent(KafkaTemplate<String, InventoryDTO> kafkaTemplate) {
         this.kafkaTemplate = kafkaTemplate;
-
     }
 
     public void sendEvent(InventoryDTO event) {
         kafkaTemplate.send("inventory-create-service", event);
+        System.out.println();
     }
 }

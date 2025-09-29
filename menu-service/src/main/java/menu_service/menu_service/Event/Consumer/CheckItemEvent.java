@@ -9,4 +9,5 @@ import lombok.NoArgsConstructor;
 @Data
 public class CheckItemEvent {
     private String itemName;
+    private boolean status;
 }

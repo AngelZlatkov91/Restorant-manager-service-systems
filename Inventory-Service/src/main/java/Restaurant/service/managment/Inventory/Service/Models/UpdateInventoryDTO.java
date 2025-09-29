@@ -1,4 +1,4 @@
-package order.services.order.services.Event.Display;
+package Restaurant.service.managment.Inventory.Service.Models;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,9 +7,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class OrderProductsDTO {
-    private String productName;
-    private String category;
+public class UpdateInventoryDTO {
+    private Long id;
     private int quantity;
 
 }

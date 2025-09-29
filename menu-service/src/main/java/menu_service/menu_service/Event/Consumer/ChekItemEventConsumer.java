@@ -15,11 +15,10 @@ public class ChekItemEventConsumer {
         this.menuItemService = menuItemService;
     }
 
-    @KafkaListener(topics = "chek-item-quantity", groupId = "check")
+    @KafkaListener(topics = "chek-item-quantity", groupId = "item")
     public void consume(CheckItemEvent message){
         if (!message.getItemName().isEmpty()) {
-            menuItemService.changeStatus(message.getItemName());
+            menuItemService.changeStatus(message);
         }
-        log.info("Consumer received check-item-quantity event");
     }
 }

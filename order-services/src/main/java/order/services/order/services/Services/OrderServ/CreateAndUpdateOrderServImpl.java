@@ -67,11 +67,11 @@ public class CreateAndUpdateOrderServImpl implements CreateAndUpdateOrderServ {
 
         products.forEach(product -> {
             OrderProductsDTO orderProductsDTO = new OrderProductsDTO();
-            orderProductsDTO.setProductDescription(product.getDescription());
+            orderProductsDTO.setCategory(product.getDescription());
             orderProductsDTO.setProductName(product.getName());
             orderProductsDTO.setQuantity(product.getQuantity());
             if (!product.getDescription().isBlank()) {
-                orderProductsDTO.setProductDescription(product.getDescription());
+                orderProductsDTO.setCategory(product.getDescription());
             }
             if (product.getCategory().equals("BAR")) {
                 bar.getProducts().add(orderProductsDTO);

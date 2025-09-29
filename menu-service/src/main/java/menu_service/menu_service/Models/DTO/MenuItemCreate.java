@@ -19,7 +19,7 @@ public class MenuItemCreate {
     private Double price;
      @NotBlank
     private String category;
-     @NotBlank
+
     private TypeProduct typeProduct;
 
 }

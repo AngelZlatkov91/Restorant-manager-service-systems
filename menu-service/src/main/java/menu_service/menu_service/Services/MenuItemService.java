@@ -1,5 +1,6 @@
 package menu_service.menu_service.Services;
 
+import menu_service.menu_service.Event.Consumer.CheckItemEvent;
 import menu_service.menu_service.Models.DTO.MenuItemCreate;
 import menu_service.menu_service.Models.DTO.MenuItemRes;
 
@@ -21,5 +22,5 @@ public interface MenuItemService {
 
     MenuItemRes updateMenuItem( MenuItemRes menuItemRes);
 
-    void changeStatus(String itemName);
+    void changeStatus(CheckItemEvent checkItemEvent);
 }

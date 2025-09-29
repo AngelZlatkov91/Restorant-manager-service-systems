@@ -1,1 +1,40 @@
-
+server:
+  port: 8085
+spring:
+  datasource:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${MYSQL_HOST:localhost}:3306/inventory_restoration_management?allowPublicKeyRetrieval=true&useSSL=false&createDatabaseIfNotExist=true&serverTimezone=UTC
+    username: root
+    password: 123456789
+  jpa:
+    database-platform: org.hibernate.dialect.MySQLDialect
+    defer-datasource-initialization: true
+    properties:
+      hibernate:
+        format_sql: true
+    hibernate:
+      ddl-auto: update
+  sql:
+    init:
+      mode: never
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    consumer:
+      bootstrap-servers: localhost:9092
+      group-id: inventory-service
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+      properties:
+        spring:
+          deserializer:
+            value.delegate.class: org.springframework.kafka.support.serializer.JsonDeserializer
+          json:
+            value.default.type: Restaurant.service.managment.Inventory.Service.Event.InventoryDTO
+            trusted.packages: "*"
+logging:
+  level:
+    org.hibernate.SQL: DEBUG
+    org.hibernate.orm.jdbc.bind: TRACE
