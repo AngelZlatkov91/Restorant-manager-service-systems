@@ -31,7 +31,7 @@ public class KafkaConfig {
         return new DefaultKafkaConsumerFactory<>(
                 props,
                 new StringDeserializer(),
-                new JsonDeserializer<>(InventoryDTO.class, false) // ❌ без type headers
+                new JsonDeserializer<>(InventoryDTO.class, false)
         );
     }
 

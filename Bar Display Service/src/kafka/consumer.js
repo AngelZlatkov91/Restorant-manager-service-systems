@@ -17,7 +17,7 @@ const runConsumer = async (onMessage) => {
     eachMessage: async ({ topic, partition, message }) => {
       const data = JSON.parse(message.value.toString());
       console.log('📥 Получена поръчка:', data);
-      onMessage(data); // подай към callback за обработка
+      onMessage(data);
     },
   });
 };

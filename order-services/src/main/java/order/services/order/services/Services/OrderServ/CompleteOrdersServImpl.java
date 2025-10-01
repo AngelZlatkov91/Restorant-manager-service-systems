@@ -1,5 +1,4 @@
 package order.services.order.services.Services.OrderServ;
-
 import jakarta.transaction.Transactional;
 import order.services.order.services.Event.CashEvent.CashReceiptDTO;
 import order.services.order.services.Event.CashEvent.CashReceiptEvent;
@@ -7,7 +6,7 @@ import order.services.order.services.Event.CashEvent.ProductsToReceipt;
 import order.services.order.services.Event.Display.OrderProductsDTO;
 import order.services.order.services.Event.Reports.DailyReportsDTO;
 import order.services.order.services.Event.Reports.DailyReportsEvent;
-import order.services.order.services.Event.Inventory.InventoryDTO;
+import order.services.order.services.Event.Inventory.InventoryProductsDTO;
 import order.services.order.services.Event.Inventory.InventoryEvent;
 import order.services.order.services.Models.DTO.Order.AddProductToTableDTO;
 import order.services.order.services.Models.DTO.Order.CompleteOrderDTO;
@@ -104,14 +103,14 @@ public class CompleteOrdersServImpl implements CompleteOrdersServ {
         return dailyReportsDTO;
     }
 
-    private InventoryDTO sendInventory(List<AddProductToTableDTO> products) {
-        InventoryDTO inventoryDTO = new InventoryDTO();
+    private InventoryProductsDTO sendInventory(List<AddProductToTableDTO> products) {
+        InventoryProductsDTO inventoryDTO = new InventoryProductsDTO();
         List<OrderProductsDTO> newProducts = new ArrayList<>();
 
         products.stream().filter(p-> p.getCategory().equals("BAR")).forEach(p->{
             OrderProductsDTO newProduct = new OrderProductsDTO();
             newProduct.setProductName(p.getName());
-            newProduct.setCategory(p.getCategory());
+            newProduct.setDescription(p.getDescription());
             newProduct.setQuantity(p.getQuantity());
             newProducts.add(newProduct);
         });

@@ -11,13 +11,27 @@ import org.springframework.stereotype.Component;
 public class ConsumerEvent {
 
     private final InventoryService inventoryService;
+
     @Autowired
     public ConsumerEvent(InventoryService inventoryService) {
         this.inventoryService = inventoryService;
     }
 
-    @KafkaListener(topics = "inventory-create-service", groupId = "inventory-service")
-    public void listen(InventoryDTO event) {
+    @KafkaListener(topics = "inventory-create-item", groupId = "inventory-service")
+    public void itemCreateListener(InventoryDTO event) {
         inventoryService.addInventory(event);
     }
+
+    @KafkaListener(topics = "inventory-delete-item",groupId = "inventory-service")
+    public void itemDeleteListener(InventoryDTO inventoryDTO) {
+        inventoryService.deleteInventory(inventoryDTO.getNameItems());
+    }
+
+    @KafkaListener(topics = "inventory-products", groupId = "inventory-service")
+    public void ordersProducts(InventoryProductsDTO inventoryProductsDTO) {
+        inventoryService.updateQuantity(inventoryProductsDTO);
+    }
+
+
+
 }

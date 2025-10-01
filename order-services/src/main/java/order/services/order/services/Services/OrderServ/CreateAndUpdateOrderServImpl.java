@@ -1,5 +1,4 @@
 package order.services.order.services.Services.OrderServ;
-
 import jakarta.transaction.Transactional;
 import order.services.order.services.Event.Display.OrderProductsDTO;
 import order.services.order.services.Event.Display.ProductEventSentDTO;
@@ -16,12 +15,10 @@ import order.services.order.services.Repositories.PersonalRepositories;
 import order.services.order.services.Repositories.ProductRepositories;
 import order.services.order.services.Repositories.TableRepositories;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
 @Service
 public class CreateAndUpdateOrderServImpl implements CreateAndUpdateOrderServ {
 
@@ -67,11 +64,10 @@ public class CreateAndUpdateOrderServImpl implements CreateAndUpdateOrderServ {
 
         products.forEach(product -> {
             OrderProductsDTO orderProductsDTO = new OrderProductsDTO();
-            orderProductsDTO.setCategory(product.getDescription());
             orderProductsDTO.setProductName(product.getName());
             orderProductsDTO.setQuantity(product.getQuantity());
             if (!product.getDescription().isBlank()) {
-                orderProductsDTO.setCategory(product.getDescription());
+                orderProductsDTO.setDescription(product.getDescription());
             }
             if (product.getCategory().equals("BAR")) {
                 bar.getProducts().add(orderProductsDTO);

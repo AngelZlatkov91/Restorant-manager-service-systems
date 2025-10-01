@@ -17,8 +17,12 @@ public class InventoryEvent {
         this.kafkaTemplate = kafkaTemplate;
     }
 
-    public void sendEvent(InventoryDTO event) {
-        kafkaTemplate.send("inventory-create-service", event);
-        System.out.println();
+    public void sendItemCreateEvent(InventoryDTO event) {
+        kafkaTemplate.send("inventory-create-item", event);
+
+    }
+
+    public void sendItemDeleteEvent(InventoryDTO event){
+        kafkaTemplate.send("inventory-delete-item",event);
     }
 }

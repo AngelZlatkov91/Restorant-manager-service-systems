@@ -2,7 +2,7 @@ import runConsumer from './kafka/consumer.js'
 import printer from './printer/printer.js';
 
 async function start() {
-  const orders = null;
+  let orders = null;
 
 runConsumer((data) => {
   orders = data;

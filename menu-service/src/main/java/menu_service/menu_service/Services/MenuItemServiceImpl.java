@@ -35,11 +35,13 @@ public class MenuItemServiceImpl implements MenuItemService {
     @Override
     public String createMenuItem(MenuItemCreate menuItem) {
 
-        Optional<Category> category = categoryItemRepository.findByName(menuItem.getCategory());;
+        Optional<Category> category = categoryItemRepository.findByName(menuItem.getCategory());
         MenuItem newItem = mapData(menuItem);
         newItem.setCategory(category.get());
         menuItemRepository.save(newItem);
-        inventoryEvent.sendEvent(new InventoryDTO(newItem.getName(), newItem.getCategory().getName()));
+        if (menuItem.getTypeProduct().name().equals("BAR")) {
+            inventoryEvent.sendItemCreateEvent(new InventoryDTO(newItem.getName(), newItem.getCategory().getName()));
+        }
         return "Saved";
     }
 
@@ -99,7 +101,10 @@ public class MenuItemServiceImpl implements MenuItemService {
     @Override
     @Transactional
     public void deleteMenuItem(String menuItemId) {
-       menuItemRepository.deleteById(menuItemId);
+        Optional<MenuItem> byId = menuItemRepository.findById(menuItemId);
+        inventoryEvent.sendItemDeleteEvent(new InventoryDTO(byId.get().getName(),byId.get().getCategory().getName()));
+
+        menuItemRepository.deleteById(menuItemId);
     }
 
     @Override

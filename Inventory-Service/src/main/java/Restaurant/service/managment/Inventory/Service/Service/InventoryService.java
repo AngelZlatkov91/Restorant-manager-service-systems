@@ -1,6 +1,7 @@
 package Restaurant.service.managment.Inventory.Service.Service;
 
 import Restaurant.service.managment.Inventory.Service.Event.InventoryDTO;
+import Restaurant.service.managment.Inventory.Service.Event.InventoryProductsDTO;
 import Restaurant.service.managment.Inventory.Service.Models.InventorytODTO;
 import Restaurant.service.managment.Inventory.Service.Models.UpdateInventoryDTO;
 
@@ -13,8 +14,8 @@ public interface InventoryService {
 
     void updateInventory(UpdateInventoryDTO updateInventoryDTO);
 
-    void deleteInventory(Long id);
+    void deleteInventory(String itemNme);
 
-    void updateQuantity();
+    void updateQuantity(InventoryProductsDTO inventoryProductsDTO);
 
 }

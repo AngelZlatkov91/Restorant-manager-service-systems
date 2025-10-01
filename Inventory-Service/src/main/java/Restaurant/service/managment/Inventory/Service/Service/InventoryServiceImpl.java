@@ -1,6 +1,7 @@
 package Restaurant.service.managment.Inventory.Service.Service;
 
 import Restaurant.service.managment.Inventory.Service.Event.InventoryDTO;
+import Restaurant.service.managment.Inventory.Service.Event.InventoryProductsDTO;
 import Restaurant.service.managment.Inventory.Service.Models.Inventory;
 import Restaurant.service.managment.Inventory.Service.Models.InventorytODTO;
 import Restaurant.service.managment.Inventory.Service.Models.UpdateInventoryDTO;
@@ -10,6 +11,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+
+import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 
 @Service
 public class InventoryServiceImpl implements InventoryService {
@@ -52,8 +55,20 @@ public class InventoryServiceImpl implements InventoryService {
     }
 
     @Override
-    public void deleteInventory(Long id) {
-        inventoryRepositories.deleteById(id);
+    @Transactional
+    public void deleteInventory(String itemName) {
+        Optional<Inventory> byName = inventoryRepositories.findByName(itemName);
+        inventoryRepositories.deleteById(byName.get().getId());
+    }
+
+    @Override
+    public void updateQuantity(InventoryProductsDTO inventoryProductsDTO) {
+        inventoryProductsDTO.getProducts().forEach(p -> {
+            Optional<Inventory> byName = inventoryRepositories.findByName(p.getProductName());
+            int quantity = byName.get().getQuantity();
+            byName.get().setQuantity(quantity - p.getQuantity());
+            inventoryRepositories.save(byName.get());
+        });
     }
 
 

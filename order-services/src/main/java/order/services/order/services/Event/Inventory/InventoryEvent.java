@@ -9,16 +9,16 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class InventoryEvent {
 
-    private final KafkaTemplate<String, InventoryDTO> kafkaTemplate;
+    private final KafkaTemplate<String, InventoryProductsDTO> kafkaTemplate;
 
     @Autowired
-    public InventoryEvent(KafkaTemplate<String, InventoryDTO> kafkaTemplate) {
+    public InventoryEvent(KafkaTemplate<String, InventoryProductsDTO> kafkaTemplate) {
         this.kafkaTemplate = kafkaTemplate;
 
     }
 
-    public void sendEvent(InventoryDTO event) {
-        kafkaTemplate.send("inventory-service", event);
+    public void sendEvent(InventoryProductsDTO event) {
+        kafkaTemplate.send("inventory-products", event);
     }
 
 
