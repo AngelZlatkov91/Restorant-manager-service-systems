@@ -11,6 +11,8 @@ import java.util.List;
 public class CashReceiptDTO {
     private Long orderId;
     private String paymentMethod;
+    private String tableName;
+    private String personal;
     private Double amount;
     private List<ProductsToReceipt> products;
 

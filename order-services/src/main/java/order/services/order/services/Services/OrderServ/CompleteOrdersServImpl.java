@@ -68,12 +68,13 @@ public class CompleteOrdersServImpl implements CompleteOrdersServ {
         inventoryEvent.sendEvent(sendInventory(completeOrderDTO.getProducts()));
 
 
-        dailyReportsEvent.sendEvent(sendReports(byName.get().getName(),paymentMethodDTO.getPaymentMethod(),totalPrice));
+        dailyReportsEvent.sendEvent(sendReports(byId.get().getId(),byName.get().getName(),paymentMethodDTO.getPaymentMethod(),totalPrice));
 
 
 
         byId.get().setOrderStatus(OrderStatus.COMPLETED);
         byId.get().setTotalPrice(totalPrice);
+        byId.get().setActive(false);
         totalPrice = 0.0;
         orderRepositories.save(byId.get());
 
@@ -83,6 +84,8 @@ public class CompleteOrdersServImpl implements CompleteOrdersServ {
         CashReceiptDTO cashReceiptDTO = new CashReceiptDTO();
         cashReceiptDTO.setOrderId(id);
         cashReceiptDTO.setPaymentMethod("CASH");
+        cashReceiptDTO.setPersonal(completeOrderDTO.getPersonal());
+        cashReceiptDTO.setTableName(completeOrderDTO.getTableName());
         cashReceiptDTO.setAmount(completeOrderDTO.getTotalPrice());
 
         completeOrderDTO.getProducts().forEach(product -> {
@@ -94,8 +97,9 @@ public class CompleteOrdersServImpl implements CompleteOrdersServ {
     }
 
 
-    private DailyReportsDTO sendReports(String name, String paymentMethod, Double totalPrice) {
+    private DailyReportsDTO sendReports(Long id,String name, String paymentMethod, Double totalPrice) {
         DailyReportsDTO dailyReportsDTO = new DailyReportsDTO();
+        dailyReportsDTO.setOrderId(id);
         dailyReportsDTO.setCompletedIn(LocalDateTime.now());
         dailyReportsDTO.setPersonalName(name);
         dailyReportsDTO.setPaymentMethod(paymentMethod);

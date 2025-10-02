@@ -1,4 +1,4 @@
-package order.services.order.services.Event.Reports;
+package Report.service.Repost.Service.Event;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
