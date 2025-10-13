@@ -1,18 +1,23 @@
 package Report.service.Repost.Service.Services;
 
 import Report.service.Repost.Service.Event.DailyReportsDTO;
+import Report.service.Repost.Service.Models.PersonalCostSummary;
 import Report.service.Repost.Service.Models.Reports;
+import Report.service.Repost.Service.Repositories.OrderCustomRepository;
 import Report.service.Repost.Service.Repositories.ReportRepositories;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 public class ReportServiceImpl implements ReportService {
     private final ReportRepositories reportRepositories;
+    private final OrderCustomRepository orderCustomRepository;
 
-    public ReportServiceImpl(ReportRepositories reportRepositories) {
+    public ReportServiceImpl(ReportRepositories reportRepositories, OrderCustomRepository orderCustomRepository) {
         this.reportRepositories = reportRepositories;
+        this.orderCustomRepository = orderCustomRepository;
     }
 
     @Override
@@ -25,5 +30,11 @@ public class ReportServiceImpl implements ReportService {
         reports.setPersonalName(dailyReportsDTO.getPersonalName());
         reports.setTotalCost(dailyReportsDTO.getTotalCost());
         reportRepositories.save(reports);
+    }
+
+
+    public List<PersonalCostSummary> getPersonalReport(){
+//       return orderCustomRepository.getTotalCostByPersonalNameAndDate();
+       return null;
     }
 }
