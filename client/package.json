@@ -2,7 +2,6 @@
   "name": "electron-vite-react",
   "version": "1.0.0",
   "main": "main.js",
-  
   "scripts": {
     "dev": "concurrently \"npm run dev:vite\" \"npm run dev:electron\"",
     "dev:vite": "cd frontend && npm run dev",
@@ -13,5 +12,8 @@
   "devDependencies": {
     "concurrently": "^8.2.2",
     "electron": "^29.0.0"
+  },
+  "dependencies": {
+    "keytar": "^7.9.0"
   }
 }

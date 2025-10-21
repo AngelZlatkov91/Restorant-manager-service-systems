@@ -1,6 +1,9 @@
 const { app, BrowserWindow, ipcMain, dialog } = require('electron');
 const path = require('path');
 
+const { app, ipcMain } = require('electron');
+const keytar = require('keytar');
+
 function createWindow() {
   const win = new BrowserWindow({
     width: 1024,
@@ -31,6 +34,27 @@ ipcMain.on('toMain', (event, data) => {
         event.sender.send('fromMain', result.filePaths);
       });
   }
+});
+
+const SERVICE = 'restaurant-service-app';
+const ACCOUNT = 'auth-jwt-token';
+
+
+ipcMain.handle('save-token', async (event, token) => {
+  await keytar.setPassword(SERVICE, ACCOUNT, token);
+  return true;
+});
+
+
+ipcMain.handle('get-token', async () => {
+  const token = await keytar.getPassword(SERVICE, ACCOUNT);
+  return token || null;
+});
+
+
+ipcMain.handle('clear-token', async () => {
+  await keytar.deletePassword(SERVICE, ACCOUNT);
+  return true;
 });
 
 app.whenReady().then(createWindow);
