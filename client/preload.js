@@ -12,3 +12,6 @@ contextBridge.exposeInMainWorld("electronAPI", {
   saveToken: (token) => ipcRenderer.send("saveToken", token),
   getToken: () => ipcRenderer.invoke("getToken")
 });
+
+
+

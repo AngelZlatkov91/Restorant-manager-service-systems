@@ -3,6 +3,10 @@ const path = require('path');
 const isDev = process.env.NODE_ENV === 'development';
 
 let jwtToken = null; 
+const fs = require('fs');
+const preloadPath = path.join(process.cwd(), 'preload.js');
+console.log("Looking for preload at:", preloadPath);
+console.log("Exists?", fs.existsSync(preloadPath));
 
 function createWindow() {
   const win = new BrowserWindow({
@@ -10,8 +14,9 @@ function createWindow() {
     height: 768,
     webPreferences: {
       contextIsolation: true,
-      preload: path.join(__dirname, 'preload.js'),
+      sandbox: false, 
       nodeIntegration: false,
+      preload: path.resolve(__dirname, 'preload.js'),
     },
   });
 
@@ -23,6 +28,7 @@ function createWindow() {
   } else {
     win.loadFile(path.join(__dirname, 'frontend/dist/index.html')).catch(console.error);
   }
+  
 }
 
 
