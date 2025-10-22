@@ -1,30 +1,22 @@
-import { useEffect, useState } from "react";
+import { Route, Routes } from "react-router-dom";
+import Header from "./componnets/header/Header";
+import Login from "./componnets/login/Login";
+
 
 function App() {
-  const [messages, setMessages] = useState([]);
-
-  useEffect(() => {
-    if (window.electronAPI) {
-      window.electronAPI.onMessage("fromMain", (data) => {
-        setMessages((prev) => [...prev, data]);
-      });
-    }
-  }, []);
-
-  const sendMessage = () => {
-    window.electronAPI?.sendMessage("toMain", "Hello from React!");
-  };
+ 
 
   return (
-    <div style={{ padding: 20 }}>
-      <h1>Electron + React</h1>
-      <button onClick={sendMessage}>Send Message to Electron</button>
-      <ul>
-        {messages.map((msg, i) => (
-          <li key={i}>{msg}</li>
-        ))}
-      </ul>
-    </div>
+   <>
+
+       <Header />
+       <h1>is Work</h1>
+       <Routes>
+         <Route path="/login" element={<Login />} />
+
+       </Routes>
+      
+   </>
   );
 }
 

@@ -2,7 +2,7 @@ const { app, BrowserWindow, ipcMain, dialog } = require('electron');
 const path = require('path');
 const isDev = process.env.NODE_ENV === 'development';
 
-let jwtToken = null; // временно съхранение на JWT (може да се замени с keytar)
+let jwtToken = null; 
 
 function createWindow() {
   const win = new BrowserWindow({
@@ -25,7 +25,7 @@ function createWindow() {
   }
 }
 
-// IPC за съобщения
+
 ipcMain.on('toMain', (event, data) => {
   console.log('Received from React:', data);
   event.sender.send('fromMain', `Electron получи: ${data}`);
@@ -36,7 +36,7 @@ ipcMain.on('toMain', (event, data) => {
   }
 });
 
-// IPC за JWT token
+
 ipcMain.on('saveToken', (event, token) => {
   jwtToken = token;
 });
