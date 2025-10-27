@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
-import { useRegister } from "../../hooks/useAuth";
-import { useForm } from "../../hooks/useForm";
+import { useRegister } from "../../../hooks/useAuth";
+import { useForm } from "../../../hooks/useForm";
 import { useState } from "react";
 const initialValues = {
     username: '', 

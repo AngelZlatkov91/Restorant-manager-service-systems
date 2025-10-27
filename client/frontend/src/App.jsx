@@ -1,8 +1,10 @@
 import { Route, Routes } from "react-router-dom";
 import Header from "./componnets/header/Header";
-import Login from "./componnets/login/Login";
-import Register from "./componnets/register/Register";
+import Login from "./componnets/user/login/Login";
+import Register from "./componnets/user/register/Register";
 import Menu from "./componnets/menu/Menu";
+import CreateCategory from "./componnets/menu/category/CreateCategory";
+import Category from "./componnets/menu/category/Category";
 
 
 function App() {
@@ -12,11 +14,13 @@ function App() {
    <>
 
        <Header />
-       <h1>is Work</h1>
+       <h1>work</h1>
        <Routes>
          <Route path="/login" element={<Login />} />
          <Route path="/register" element={<Register />} />
          <Route path="/menu" element={<Menu />} />
+         <Route path="/crateCategory" element={<CreateCategory />} />
+         <Route path="/getAllCategory" element={<Category />} />
        </Routes>
       
    </>
