@@ -8,6 +8,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 public class ResCategory {
-
+    private String id;
     private String category;
 }

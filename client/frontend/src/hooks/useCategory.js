@@ -17,7 +17,7 @@ export function useGetAllCategory() {
                 
                 const result = await categoryApi.getAll();
                 setCategories(result)
-                console.log(result);
+                
             } catch (err) {
                console.log(err.message);
                

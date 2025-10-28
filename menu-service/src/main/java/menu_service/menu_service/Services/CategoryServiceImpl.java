@@ -35,6 +35,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     private ResCategory getCategoryByName(Category category) {
         ResCategory createCategory = new ResCategory();
+        createCategory.setId(category.getId());
         createCategory.setCategory(category.getName());
         return createCategory;
     }

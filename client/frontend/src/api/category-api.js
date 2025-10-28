@@ -17,9 +17,11 @@ export const  createCategory = (categoryName) => {
     request.post(`${BASE_URL}/create`, categoryName,true);
 };
 
-export const getAll = () => {
+export const getAll = async () => {
     
-    request.get(`${BASE_URL}/getAll`,true);
+   const result = await request.get(`${BASE_URL}/getAll`,true);
+   const categories = Object.values(result);
+   return categories;
 }
 
 const categoryApi = {
