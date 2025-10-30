@@ -5,7 +5,7 @@ const BASE_URL = 'http://localhost:8082/api/menu/category';
 /**
  * 
  * @param {string} categoryName 
- * 
+ * @param {string} id
  * 
  * 
  * 
@@ -23,10 +23,14 @@ export const getAll = async () => {
    const categories = Object.values(result);
    return categories;
 }
+export const deleteCategory = (id) => {
+ request.del(`${BASE_URL}/delete`,id,true);
+}
 
 const categoryApi = {
     createCategory,
     getAll,
+    deleteCategory,
 }
 
 export default categoryApi;

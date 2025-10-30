@@ -1,19 +1,22 @@
-import { useNavigate } from "react-router-dom";
+
 import { useCreateCategory } from "../../../hooks/useCategory";
 import { useForm } from "../../../hooks/useForm";
+import { useState } from "react";
 const initialValues = {
   categoryName: '',
 
 }
 export default function CreateCategory() {
-    const navigate = useNavigate();
+   
     const createCategory = useCreateCategory()
+    const [hasError, setHasError] = useState('');
 
     const createHandler = async (values) => {
         try {
-            await createCategory(values);
-            
+             await createCategory(values);
+             
         } catch (err) {
+            setHasError(err.message);
            console.log(err);
         }
     };
@@ -38,9 +41,12 @@ export default function CreateCategory() {
                     value={values.categoryName}
                     onChange={changeHandler}
                     placeholder="Enter categoryName..." />
-
-
                    <input className="btn submit" type="submit" value="Create Category" />
+                   {hasError && (
+                        <p>
+                           <span style={{fontSize: '20px', color: 'red'}}>{hasError.status}</span>
+                         </p>
+                    )}
                 </div>
             </form>
          </section>

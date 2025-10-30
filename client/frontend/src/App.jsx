@@ -5,6 +5,7 @@ import Register from "./componnets/user/register/Register";
 import Menu from "./componnets/menu/Menu";
 import CreateCategory from "./componnets/menu/category/CreateCategory";
 import Category from "./componnets/menu/category/Category";
+import CreateItem from "./componnets/menu/items/createItem/CreateItem";
 
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
          <Route path="/menu" element={<Menu />} />
          <Route path="/crateCategory" element={<CreateCategory />} />
          <Route path="/getAllCategory" element={<Category />} />
+         <Route path="/createItem" element={<CreateItem />} />
        </Routes>
       
    </>

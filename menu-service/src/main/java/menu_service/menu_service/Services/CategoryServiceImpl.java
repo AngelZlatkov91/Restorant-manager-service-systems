@@ -3,6 +3,7 @@ package menu_service.menu_service.Services;
 import menu_service.menu_service.Models.Category;
 import menu_service.menu_service.Models.DTO.CreateCategory;
 import menu_service.menu_service.Models.DTO.ResCategory;
+import menu_service.menu_service.Models.DTO.ResStatus;
 import menu_service.menu_service.Repositories.CategoryItemRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,10 +22,11 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public void addCategory(CreateCategory category) {
+    public ResStatus addCategory(CreateCategory category) {
         Category newCategory = new Category();
         newCategory.setName(category.getCategoryName());
         categoryItemRepository.save(newCategory);
+        return new ResStatus("Is Created");
     }
 
     @Override

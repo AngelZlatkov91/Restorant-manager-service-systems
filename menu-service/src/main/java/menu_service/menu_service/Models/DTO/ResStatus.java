@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class ItemId {
-    private String id;
-
+public class ResStatus {
+    private  String status;
 }

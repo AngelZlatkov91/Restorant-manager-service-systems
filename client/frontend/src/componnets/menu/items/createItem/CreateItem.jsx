@@ -1,3 +1,6 @@
+import { useGetAllCategory } from "../../../../hooks/useCategory";
+import { useCreateMenuItem } from "../../../../hooks/useItem";
+import { useForm } from "../../../../hooks/useForm";
 
 const initialValues = {
   name: '',
@@ -7,15 +10,32 @@ const initialValues = {
 }
 
 export default function CreateItem() {
+
+  const [categories, refreshCategories] = useGetAllCategory();
+   const createMenuItem = useCreateMenuItem();
+   const createHandler = async(values) => {
+    try {
+      const menuItemCreate = await createMenuItem(values);
+      console.log(menuItemCreate);
+
+    } catch (err) {
+
+    }
+   }
+
+   const {
+    values,
+    changeHandler,
+    submitHandler,
+   } = useForm(initialValues,createHandler);
       
    return (
-     
         <>
           <section id="create-page" className="auth">
             <form id="create" onSubmit={submitHandler}>
                 <div className="container">
 
-                    <h1>Create Game</h1>
+                    <h1>Create Item</h1>
                     <label htmlFor="leg-title">Item Name:</label>
                     <input 
                     type="text" 
@@ -34,7 +54,7 @@ export default function CreateItem() {
                     onChange={changeHandler}
                      placeholder="Enter item price" />
 
-                    <label htmlFor="levels">Category</label>
+                    <label htmlFor="category">Category</label>
                     <input 
                     type="text" 
                     id="category" 
@@ -46,18 +66,15 @@ export default function CreateItem() {
                     <label htmlFor="typeProduct">Type Product</label>
                     <input
                     type="text"
-                    name="typeCategory" 
-                    id="typeCategory"
-                    value={values.typeCategory}
+                    name="typeProduct" 
+                    id="typeProduct"
+                    value={values.typeProduct}
                     onChange={changeHandler}
                     />
                     <input className="btn submit" type="submit" value="Create Item" />
                 </div>
             </form>
          </section>
-       
        </>
-       
-    
   );
 }

@@ -10,21 +10,28 @@ export function useCreateCategory() {
 
 
 export function useGetAllCategory() {
- const [category, setCategories] = useState([]);
-    useEffect(() => {
-         (async () => {
-            try {
-                
-                const result = await categoryApi.getAll();
-                setCategories(result)
-                
-            } catch (err) {
-               console.log(err.message);
-               
-            }
-            
-         })();
-    },[])
+  const [categories, setCategories] = useState([]);
+  const fetchCategories = async () => {
+    try {
+      const result = await categoryApi.getAll();
+      setCategories(result);
+    } catch (err) {
+      console.log("Грешка при зареждане на категории:", err.message);
+    }
+  };
 
-    return [category, setCategories];
+ 
+  useEffect(() => {
+    fetchCategories();
+  }, []);
+
+  
+  return [categories, fetchCategories];
+}
+
+export function useDeleteCategory(id) {
+
+    const categoryId =  categoryApi.deleteCategory(id);
+    
+    return categoryId;
 }

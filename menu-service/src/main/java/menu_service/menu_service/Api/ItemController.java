@@ -30,12 +30,12 @@ public class ItemController {
 
     @GetMapping("/itemId")
     public ResponseEntity<MenuItemRes> getById(@RequestBody ItemId itemId) {
-        return ResponseEntity.ok(menuItemService.getMenuItem(itemId.getItemId()));
+        return ResponseEntity.ok(menuItemService.getMenuItem(itemId.getId()));
     }
 
     @DeleteMapping("/delete")
     public ResponseEntity<String> deleteItem(@RequestBody ItemId itemId) {
-        menuItemService.deleteMenuItem(itemId.getItemId());
+        menuItemService.deleteMenuItem(itemId.getId());
         return ResponseEntity.ok().build();
     }
 

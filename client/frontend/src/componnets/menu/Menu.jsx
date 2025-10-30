@@ -28,7 +28,7 @@ export default function Menu() {
               <Link to="/getAllCategory">Get all Category</Link>
            </div>
            <div className="menu-items">
-              <Link to="/crateItem">Create Item</Link>
+              <Link to="/createItem">Create Item</Link>
               <Link to="/getAll-items">Get all Items</Link>
            </div>
        
