@@ -10,8 +10,13 @@ const initialValues = {
 }
 
 export default function CreateItem() {
+  const optionTypeProduct = [
+    {value: "BAR", label: "BAR" },
+    {value: "KITCHEN", label: "KITCHEN"}
+  ]
 
   const [categories, refreshCategories] = useGetAllCategory();
+  
    const createMenuItem = useCreateMenuItem();
    const createHandler = async(values) => {
     try {
@@ -55,14 +60,14 @@ export default function CreateItem() {
                      placeholder="Enter item price" />
 
                     <label htmlFor="category">Category</label>
-                    <input 
-                    type="text" 
-                    id="category" 
-                    name="category"
-                    value={values.category}
-                    onChange={changeHandler} 
-                     />
-
+                    <select value={categories} onChange={changeHandler}>
+                    <option value="">Categories</option>
+                    {categories.map((cat) => (
+                      <option key={cat.id} value={cat.category}>
+                        {cat.category}
+                      </option>
+                    ))}
+                     </select>
                     <label htmlFor="typeProduct">Type Product</label>
                     <input
                     type="text"
