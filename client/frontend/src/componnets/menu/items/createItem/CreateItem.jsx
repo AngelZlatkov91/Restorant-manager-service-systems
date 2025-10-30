@@ -19,7 +19,7 @@ export default function CreateItem() {
       console.log(menuItemCreate);
 
     } catch (err) {
-
+      console.log(err.message);
     }
    }
 
