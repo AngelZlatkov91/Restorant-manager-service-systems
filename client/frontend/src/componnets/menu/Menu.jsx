@@ -1,37 +1,31 @@
-import { Link, useNavigate } from "react-router-dom";
-import { useEffect } from "react";
-import { getAccessToken, decodeJWT } from "../../utils/authUtils.js";
+import { NavLink } from "react-router-dom";
+
 
 export default function Menu() {
-  const navigate = useNavigate();
- 
-  
-  useEffect(() => {
-    async function fetchUser() {
-      const token = await getAccessToken();
-      if (!token) {
-        return; 
-      } 
-      const decoded = decodeJWT(token);
-      const isAdmin = decoded.scope;
-      if (isAdmin !== 'ROLE_ADMIN') {
-             navigate('/login');  
-      }
-    }
-    fetchUser();
-  }, []);
+  return (
+    <nav className="sidebar">
+      <h2>Categories</h2>
+      <div className="menu-section">
+        <NavLink to="/createCategory" className="menu-link">
+          Create Category
+        </NavLink>
+        <NavLink to="/getAllCategory" className="menu-link">
+          Get All Categories
+        </NavLink>
+      </div>
 
-   return (
-       <>
-           <div className="category-items">
-              <Link to="/crateCategory">Create Category</Link>
-              <Link to="/getAllCategory">Get all Category</Link>
-           </div>
-           <div className="menu-items">
-              <Link to="/createItem">Create Item</Link>
-              <Link to="/getAll-items">Get all Items</Link>
-           </div>
-       
-       </>
+      <h2>Menu Items</h2>
+      <div className="menu-section">
+        <NavLink to="/createItem" className="menu-link">
+          Create Item
+        </NavLink>
+        <NavLink to="/getAll-items" className="menu-link">
+          Get All Items
+        </NavLink>
+        <NavLink to="/editItem" className="menu-link">
+          Edit Item
+        </NavLink>
+      </div>
+    </nav>
   );
 }

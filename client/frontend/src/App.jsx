@@ -16,12 +16,11 @@ function App() {
    <>
 
        <Header />
-       <h1>work</h1>
        <Routes>
          <Route path="/login" element={<Login />} />
          <Route path="/register" element={<Register />} />
          <Route path="/menu" element={<Menu />} />
-         <Route path="/crateCategory" element={<CreateCategory />} />
+         <Route path="/createCategory" element={<CreateCategory />} />
          <Route path="/getAllCategory" element={<Category />} />
          <Route path="/createItem" element={<CreateItem />} />
          <Route path="/getAll-items" element={<Item />} />

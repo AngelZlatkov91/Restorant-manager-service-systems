@@ -1,20 +1,37 @@
 import { useState } from "react";
 import { useDeleteMenuItem, useGetAllMenuItems } from "../../../hooks/useItem";
-
+import ConfirmPopup from "../../confirmModal/ConfirmPop";
 
 export default function Item() {
   const [items, fetchItems] = useGetAllMenuItems(); 
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+  const [itemToDelete, setItemToDelete] = useState(null);
+  const [popupPos, setPopupPos] = useState({ top: 0, left: 0 });
 
-  const handleDelete = async (id) => {
-     const result = await useDeleteMenuItem(id);
-     console.log(result.status)
+  const handleDeleteClick = (e,item) => {
+    const rect = e.target.getBoundingClientRect(); // позиция на бутона
+     setPopupPos({ top: rect.top + window.scrollY + 30, left: rect.left + rect.width / 2 });
+  
+    setItemToDelete(item);
+    setIsConfirmOpen(true);
+  };
+
+  const handleConfirm = async () => {
+    if (!itemToDelete) return;
+    await useDeleteMenuItem(itemToDelete.id);
+    setIsConfirmOpen(false);
+    setItemToDelete(null);
+  };
+
+  const handleCancel = () => {
+    setIsConfirmOpen(false);
+    setItemToDelete(null);
   };
 
   fetchItems();
 
   const handleEdit = (id) => {
     console.log("Edit item id:", id);
-    // тук можеш да навигираш към форма за редакция
   };
 
   return (
@@ -59,7 +76,7 @@ export default function Item() {
                 </button>
 
                 <button
-                  onClick={() => handleDelete(item.id)}
+                  onClick={(e) => handleDeleteClick(e,item)}
                   style={{
                     padding: "6px 12px",
                     border: "none",
@@ -71,6 +88,7 @@ export default function Item() {
                 >
                   Delete
                 </button>
+
               </div>
             </li>
           ))}
@@ -78,6 +96,14 @@ export default function Item() {
       ) : (
         <p>Няма налични артикули.</p>
       )}
+
+      <ConfirmPopup
+          isOpen={isConfirmOpen}
+           message={`Сигурен ли си, че искаш да изтриеш "${itemToDelete?.name}"?`}
+          onConfirm={handleConfirm}
+          onCancel={handleCancel}
+         position={{ top: "50%", left: "50%" }}
+        />
     </section>
   );
 }
