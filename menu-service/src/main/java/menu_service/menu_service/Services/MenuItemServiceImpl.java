@@ -7,6 +7,7 @@ import menu_service.menu_service.Exception.MenuItemDontExistExp;
 import menu_service.menu_service.Models.Category;
 import menu_service.menu_service.Models.DTO.MenuItemCreate;
 import menu_service.menu_service.Models.DTO.MenuItemRes;
+import menu_service.menu_service.Models.DTO.ResStatus;
 import menu_service.menu_service.Models.MenuItem;
 import menu_service.menu_service.Repositories.CategoryItemRepository;
 import menu_service.menu_service.Repositories.MenuItemRepository;
@@ -33,7 +34,7 @@ public class MenuItemServiceImpl implements MenuItemService {
     }
 
     @Override
-    public String createMenuItem(MenuItemCreate menuItem) {
+    public ResStatus createMenuItem(MenuItemCreate menuItem) {
 
         Optional<Category> category = categoryItemRepository.findByName(menuItem.getCategory());
         MenuItem newItem = mapData(menuItem);
@@ -42,7 +43,7 @@ public class MenuItemServiceImpl implements MenuItemService {
         if (menuItem.getTypeProduct().name().equals("BAR")) {
             inventoryEvent.sendItemCreateEvent(new InventoryDTO(newItem.getName(), newItem.getCategory().getName()));
         }
-        return "Saved";
+        return new ResStatus("Item is Created");
     }
 
 
@@ -100,11 +101,12 @@ public class MenuItemServiceImpl implements MenuItemService {
 
     @Override
     @Transactional
-    public void deleteMenuItem(String menuItemId) {
+    public ResStatus deleteMenuItem(String menuItemId) {
         Optional<MenuItem> byId = menuItemRepository.findById(menuItemId);
         inventoryEvent.sendItemDeleteEvent(new InventoryDTO(byId.get().getName(),byId.get().getCategory().getName()));
 
         menuItemRepository.deleteById(menuItemId);
+        return new ResStatus("Item is Deleted");
     }
 
     @Override

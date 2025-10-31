@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import menu_service.menu_service.Models.DTO.ItemId;
 import menu_service.menu_service.Models.DTO.MenuItemCreate;
 import menu_service.menu_service.Models.DTO.MenuItemRes;
+import menu_service.menu_service.Models.DTO.ResStatus;
 import menu_service.menu_service.Services.MenuItemService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -21,9 +22,9 @@ public class ItemController {
 
 
     @PostMapping("/create")
-    public ResponseEntity<String> createItem(@RequestBody @Valid MenuItemCreate menuItemCreate, BindingResult bindingResult) {
+    public ResponseEntity<ResStatus> createItem(@RequestBody @Valid MenuItemCreate menuItemCreate, BindingResult bindingResult) {
         if(bindingResult.hasErrors()) {
-            return ResponseEntity.badRequest().body(bindingResult.getFieldError().getDefaultMessage());
+            return ResponseEntity.badRequest().body(new ResStatus(bindingResult.getFieldError().getDefaultMessage()));
         }
       return ResponseEntity.ok(  menuItemService.createMenuItem(menuItemCreate));
     }
@@ -34,9 +35,9 @@ public class ItemController {
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<String> deleteItem(@RequestBody ItemId itemId) {
-        menuItemService.deleteMenuItem(itemId.getId());
-        return ResponseEntity.ok().build();
+    public ResponseEntity<ResStatus> deleteItem(@RequestBody ItemId itemId) {
+
+        return ResponseEntity.ok(menuItemService.deleteMenuItem(itemId.getId()));
     }
 
     @PutMapping("/update")

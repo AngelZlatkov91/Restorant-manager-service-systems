@@ -3,83 +3,103 @@ import { useCreateMenuItem } from "../../../../hooks/useItem";
 import { useForm } from "../../../../hooks/useForm";
 
 const initialValues = {
-  name: '',
-  price: '',
-  category: '',
-  typeProduct: '',
-}
+  name: "",
+  price: "",
+  category: "",
+  typeProduct: "",
+};
 
 export default function CreateItem() {
   const optionTypeProduct = [
-    {value: "BAR", label: "BAR" },
-    {value: "KITCHEN", label: "KITCHEN"}
-  ]
+    { value: "BAR", label: "BAR" },
+    { value: "KITCHEN", label: "KITCHEN" },
+  ];
 
   const [categories, refreshCategories] = useGetAllCategory();
-  
-   const createMenuItem = useCreateMenuItem();
-   const createHandler = async(values) => {
+  const createMenuItem = useCreateMenuItem();
+
+  const createHandler = async (values) => {
     try {
-      const menuItemCreate = await createMenuItem(values);
-      console.log(menuItemCreate);
-
-    } catch (err) {
-      console.log(err.message);
-    }
-   }
-
-   const {
-    values,
-    changeHandler,
-    submitHandler,
-   } = useForm(initialValues,createHandler);
       
-   return (
-        <>
-          <section id="create-page" className="auth">
-            <form id="create" onSubmit={submitHandler}>
-                <div className="container">
+      const menuItemCreate = await createMenuItem(values);
+      
+      console.log("✅ Item created:", menuItemCreate);
 
-                    <h1>Create Item</h1>
-                    <label htmlFor="leg-title">Item Name:</label>
-                    <input 
-                    type="text" 
-                    id="name" 
-                    name="name" 
-                    value={values.name}
-                    onChange={changeHandler}
-                    placeholder="Enter item name..." />
+      refreshCategories();
+    } catch (err) {
+      console.log("❌ Error creating item:", err.message);
+    }
+  };
 
-                    <label htmlFor="price">Price:</label>
-                    <input 
-                    type="number" 
-                    id="price" 
-                    name="price"
-                    value={values.price}
-                    onChange={changeHandler}
-                     placeholder="Enter item price" />
+  const { values, changeHandler, submitHandler } = useForm(
+    initialValues,
+    createHandler
+  );
 
-                    <label htmlFor="category">Category</label>
-                    <select value={categories} onChange={changeHandler}>
-                    <option value="">Categories</option>
-                    {categories.map((cat) => (
-                      <option key={cat.id} value={cat.category}>
-                        {cat.category}
-                      </option>
-                    ))}
-                     </select>
-                    <label htmlFor="typeProduct">Type Product</label>
-                    <input
-                    type="text"
-                    name="typeProduct" 
-                    id="typeProduct"
-                    value={values.typeProduct}
-                    onChange={changeHandler}
-                    />
-                    <input className="btn submit" type="submit" value="Create Item" />
-                </div>
-            </form>
-         </section>
-       </>
+  return (
+    <section id="create-page" className="auth">
+      <form id="create" onSubmit={submitHandler}>
+        <div className="container">
+          <h1>Create Item</h1>
+
+          <label htmlFor="name">Item Name:</label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            value={values.name}
+            onChange={changeHandler}
+            placeholder="Enter item name..."
+          />
+
+          <label htmlFor="price">Price:</label>
+          <input
+            type="number"
+            id="price"
+            name="price"
+            value={values.price}
+            onChange={changeHandler}
+            placeholder="Enter item price..."
+          />
+
+          <label htmlFor="category">Category</label>
+          <select
+            id="category"
+            name="category"
+            value={values.category}
+            onChange={changeHandler}
+          >
+            <option value="">-- Избери категория --</option>
+            {categories.map((cat) => (
+              <option key={cat.id} value={cat.category}>
+                {cat.category}
+              </option>
+            ))}
+          </select>
+
+          <label htmlFor="typeProduct">Type Product</label>
+          <select
+            id="typeProduct"
+            name="typeProduct"
+            value={values.typeProduct}
+            onChange={changeHandler}
+          >
+            <option value="">-- Избери тип продукт --</option>
+            {optionTypeProduct.map((type) => (
+              <option key={type.value} value={type.value}>
+                {type.label}
+              </option>
+            ))}
+          </select>
+
+          <input
+            className="btn submit"
+            type="submit"
+            value="Create Item"
+            style={{ marginTop: "10px" }}
+          />
+        </div>
+      </form>
+    </section>
   );
 }

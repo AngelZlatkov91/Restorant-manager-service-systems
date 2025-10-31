@@ -6,6 +6,7 @@ import Menu from "./componnets/menu/Menu";
 import CreateCategory from "./componnets/menu/category/CreateCategory";
 import Category from "./componnets/menu/category/Category";
 import CreateItem from "./componnets/menu/items/createItem/CreateItem";
+import Item from "./componnets/menu/items/Item";
 
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
          <Route path="/crateCategory" element={<CreateCategory />} />
          <Route path="/getAllCategory" element={<Category />} />
          <Route path="/createItem" element={<CreateItem />} />
+         <Route path="/getAll-items" element={<Item />} />
        </Routes>
       
    </>

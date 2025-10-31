@@ -3,13 +3,14 @@ package menu_service.menu_service.Services;
 import menu_service.menu_service.Event.Consumer.CheckItemEvent;
 import menu_service.menu_service.Models.DTO.MenuItemCreate;
 import menu_service.menu_service.Models.DTO.MenuItemRes;
+import menu_service.menu_service.Models.DTO.ResStatus;
 
 import java.util.List;
 
 
 public interface MenuItemService {
 
-    String createMenuItem(MenuItemCreate menuItem);
+    ResStatus createMenuItem(MenuItemCreate menuItem);
 
     List<MenuItemRes> getAll();
 
@@ -18,7 +19,7 @@ public interface MenuItemService {
 
     MenuItemRes getMenuItem(String menuItemId);
 
-    void deleteMenuItem(String menuItemId);
+    ResStatus deleteMenuItem(String menuItemId);
 
     MenuItemRes updateMenuItem( MenuItemRes menuItemRes);
 
