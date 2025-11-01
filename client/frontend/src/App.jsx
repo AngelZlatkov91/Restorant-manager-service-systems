@@ -8,6 +8,7 @@ import Category from "./componnets/menu/category/Category";
 import CreateItem from "./componnets/menu/items/createItem/CreateItem";
 import Item from "./componnets/menu/items/Item";
 import EditItem from "./componnets/menu/items/editeItem/EditItem";
+import Inventory from "./componnets/inventory/Inventory";
 
 
 
@@ -27,6 +28,7 @@ function App() {
          <Route path="/createItem" element={<CreateItem />} />
          <Route path="/getAll-items" element={<Item />} />
          <Route path="/editItem/:id" element={<EditItem />} />
+         <Route path="/inventory" element={<Inventory />} />
        </Routes>
       
    </>
