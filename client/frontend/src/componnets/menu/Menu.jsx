@@ -22,9 +22,6 @@ export default function Menu() {
         <NavLink to="/getAll-items" className="menu-link">
           Get All Items
         </NavLink>
-        <NavLink to="/editItem" className="menu-link">
-          Edit Item
-        </NavLink>
       </div>
     </nav>
   );

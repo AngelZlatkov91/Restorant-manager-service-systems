@@ -31,3 +31,31 @@ export function useDeleteMenuItem(id) {
     return result; 
     
 }
+
+export function useGetItemById(id) {
+const [item, setItem] = useState({
+        id: '',
+        name: '',
+        price:'',
+        category: '',
+        typeProduct: '',
+        active: Boolean,
+    });
+
+    useEffect(() => {
+        (async () => {
+            try {
+                 const result =await menuApi.getMenuItemById(id);
+                 setItem(result);
+            } catch (err) {
+
+            }
+        })();
+    },[id])
+    return [item,setItem];
+}
+
+export function useUpdateItem(data) {
+    const result = menuApi.updateItem(data);
+    return result;
+}

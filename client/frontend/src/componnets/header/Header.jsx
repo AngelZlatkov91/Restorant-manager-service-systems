@@ -1,23 +1,7 @@
-import { useState,useEffect } from "react";
 import { Link } from "react-router-dom";
 
 
 export default function Header() {
-    const [isAdmin, setIsAdmin] = useState(false);
-     useEffect(() => {
-    async function fetchUser() {
-      const token = await getAccessToken();
-      if (!token) {
-        return; 
-      } 
-      const decoded = decodeJWT(token);
-      const isAdmin = decoded.scope;
-      if (isAdmin === 'ROLE_ADMIN') {
-             setIsAdmin(true);
-      }
-    }
-    fetchUser();
-  }, []);
 
   return (
     <header>
@@ -33,7 +17,6 @@ export default function Header() {
             <Link to="/getAllCategory">Get All Categories</Link>
             <Link to="/createItem">Create Item</Link>
             <Link to="/getAll-items">Get All Items</Link>
-            <Link to="/editItem">Edit Item</Link>
           </div>
         </div>
         <div id="user">

@@ -29,7 +29,7 @@ public class ItemController {
       return ResponseEntity.ok(  menuItemService.createMenuItem(menuItemCreate));
     }
 
-    @GetMapping("/itemId")
+    @PostMapping("/itemId")
     public ResponseEntity<MenuItemRes> getById(@RequestBody ItemId itemId) {
         return ResponseEntity.ok(menuItemService.getMenuItem(itemId.getId()));
     }

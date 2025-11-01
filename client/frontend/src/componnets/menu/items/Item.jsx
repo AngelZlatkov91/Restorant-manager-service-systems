@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { useDeleteMenuItem, useGetAllMenuItems } from "../../../hooks/useItem";
 import ConfirmPopup from "../../confirmModal/ConfirmPop";
+import { useNavigate } from "react-router-dom";
 
 export default function Item() {
+  const navigate = useNavigate();
   const [items, fetchItems] = useGetAllMenuItems(); 
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [itemToDelete, setItemToDelete] = useState(null);
@@ -30,9 +32,11 @@ export default function Item() {
 
   fetchItems();
 
-  const handleEdit = (id) => {
-    console.log("Edit item id:", id);
+const handleEdit = (id) => {
+    navigate(`/editItem/${id}`);
   };
+
+ 
 
   return (
     <section id="items" style={{ padding: "20px" }}>
