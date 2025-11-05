@@ -1,0 +1,16 @@
+{
+  "name": "my-electron-app",
+  "version": "1.0.0",
+  "main": "main.js",
+  "scripts": {
+    "dev": "concurrently \"npm run dev:vite\" \"npm run dev:electron\"",
+    "dev:vite": "cd frontend && npm run dev",
+    "dev:electron": "NODE_ENV=development electron . --no-sandbox --disable-gpu --disable-software-rasterizer",
+    "build": "cd frontend && npm run build",
+    "start": "NODE_ENV=production electron ."
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "electron": "^28.3.3"
+  }
+}
