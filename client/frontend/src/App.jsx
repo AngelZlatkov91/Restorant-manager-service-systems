@@ -10,7 +10,7 @@ import Item from "./componnets/menu/items/Item";
 import EditItem from "./componnets/menu/items/editeItem/EditItem";
 import Inventory from "./componnets/inventory/Inventory";
 import EditInventoryItem from "./componnets/inventory/EditInventoryItem";
-
+import { AuthProvider } from "./context/AuthContext";
 
 
 function App() {
@@ -18,7 +18,7 @@ function App() {
 
   return (
    <>
-
+    <AuthProvider>
        <Header />
        <Routes>
          <Route path="/login" element={<Login />} />
@@ -32,7 +32,7 @@ function App() {
          <Route path="/inventory" element={<Inventory />} />
          <Route path="/inventory/:id" element={<EditInventoryItem />} />
        </Routes>
-      
+    </AuthProvider>
    </>
   );
 }

@@ -1,7 +1,7 @@
 import {useNavigate } from "react-router-dom"
 import { useLogin } from "../../../hooks/useAuth";
 import { useForm } from "../../../hooks/useForm"
-
+import { useAuth } from "../../../context/AuthContext";
 
 const initialValues = {
   username: '', 
@@ -9,14 +9,12 @@ const initialValues = {
 };
 export default function Login() {
    const login = useLogin();
+   const {loginToken} = useAuth();
      const navigate = useNavigate()
    const loginHandler = async ({username, password}) => {
           try {
-              const res =   await login(username,password);
-            
-                window.electronAPI.saveToken(res.token);
-               
-
+                const res =   await login(username,password);
+                 await loginToken(res.token);
                 navigate('/');
             } catch (err) {
               console.log(err);
