@@ -7,7 +7,6 @@ export function useInventoryItems () {
         try {
             const result = await
             inventoryApi.getAllItems();
-            console.log(result);
             setItems(result);
         } catch (err) {
             console.log(err.message);
@@ -16,8 +15,37 @@ export function useInventoryItems () {
 
     useEffect(() => {
         fetchItems();
-    })
+    },[]);
 
     return [items, fetchItems]
 
+}
+
+export function useUpdateInventoryItem (data) {
+ const result = inventoryApi.updateItemQuantity(data);
+ return result;
+}
+
+export function useGetItemFromInventory (id) {
+    const [item, setItem] = useState({
+                id:'',
+                name: '',
+                category: '',
+                quantity: '',
+                active: Boolean,
+                check: Boolean,
+    });
+
+    useEffect(() => {
+        (async () => {
+            try {
+                 const result = await inventoryApi.getItemByIdFromInventory(id);
+                 setItem(result);
+            } catch(err) {
+                console.log(err.message);
+            }
+        })();
+    },[id])
+    
+    return [item, setItem];
 }

@@ -71,6 +71,23 @@ public class InventoryServiceImpl implements InventoryService {
         });
     }
 
+    @Override
+    public InventorytODTO getById(Long id) {
+        Optional<Inventory> byId = inventoryRepositories.findById(id);
+        if (byId.isEmpty()) {
+            throw new NullPointerException("This product not exist");
+        }
+
+        return new InventorytODTO(
+                byId.get().getId(),
+                byId.get().getName(),
+                byId.get().getCategory(),
+                byId.get().getQuantity(),
+                byId.get().isActive(),
+                byId.get().isCheck()
+        );
+    }
+
 
     private InventorytODTO mapInventoryDTO(Inventory inventory) {
         return new InventorytODTO(

@@ -18,4 +18,5 @@ public interface InventoryService {
 
     void updateQuantity(InventoryProductsDTO inventoryProductsDTO);
 
+    InventorytODTO getById(Long id);
 }

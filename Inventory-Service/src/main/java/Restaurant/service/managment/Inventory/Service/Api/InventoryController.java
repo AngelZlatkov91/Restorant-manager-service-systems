@@ -1,5 +1,6 @@
 package Restaurant.service.managment.Inventory.Service.Api;
 
+import Restaurant.service.managment.Inventory.Service.Event.InventoryDTO;
 import Restaurant.service.managment.Inventory.Service.Models.InventorytODTO;
 import Restaurant.service.managment.Inventory.Service.Models.UpdateInventoryDTO;
 import Restaurant.service.managment.Inventory.Service.Service.InventoryService;
@@ -16,6 +17,11 @@ public class InventoryController {
 
     public InventoryController(InventoryService inventoryService) {
         this.inventoryService = inventoryService;
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<InventorytODTO> getItemInventory(@PathVariable Long id) {
+        return ResponseEntity.ok(inventoryService.getById(id));
     }
 
     @GetMapping

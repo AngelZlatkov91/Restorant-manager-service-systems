@@ -1,9 +1,14 @@
+import { useNavigate } from "react-router-dom";
 import { useInventoryItems } from "../../hooks/useInventory";
 
 export default function Inventory() {
 const [items, fetchItems] = useInventoryItems();
-console.log(items);
-
+const navigate = useNavigate();
+fetchItems();
+const handleEdit = (id) => {
+    navigate(`/inventory/${id}`);
+  };
+  
 
    return (
         <section id="items" style={{ padding: "20px" }}>
@@ -33,7 +38,7 @@ console.log(items);
         
                       <div style={{ display: "flex", gap: "10px" }}>
                         <button
-                          
+                          onClick={() => handleEdit(item.id)}
                           style={{
                             padding: "6px 12px",
                             border: "none",
@@ -44,20 +49,6 @@ console.log(items);
                           }}
                         >
                           Edit
-                        </button>
-        
-                        <button
-                          
-                          style={{
-                            padding: "6px 12px",
-                            border: "none",
-                            borderRadius: "5px",
-                            background: "#f44336",
-                            color: "white",
-                            cursor: "pointer",
-                          }}
-                        >
-                          Delete
                         </button>
         
                       </div>
