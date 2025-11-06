@@ -1,6 +1,7 @@
 package order.services.order.services.Api;
 
 import jakarta.validation.Valid;
+import order.services.order.services.Models.DTO.Ecxeption.ResStatus;
 import order.services.order.services.Models.DTO.Table.CreateTable;
 import order.services.order.services.Models.DTO.Table.ResponseTable;
 import order.services.order.services.Services.TableServ.TableService;
@@ -23,14 +24,15 @@ public class TableController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<String> createTable(@RequestBody @Valid CreateTable createTable, BindingResult bindingResult) {
+    public ResponseEntity<ResStatus> createTable(@RequestBody @Valid CreateTable createTable, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             List<ObjectError> allErrors = bindingResult.getAllErrors();
             String defaultMessage = allErrors.get(0).getDefaultMessage();
-            return ResponseEntity.badRequest().body(defaultMessage);
+            ResponseEntity<ResStatus> body = ResponseEntity.badRequest().body(new ResStatus(defaultMessage));
+            return ResponseEntity.badRequest().body(new ResStatus(defaultMessage));
         }
         tableService.createTable(createTable);
-        return new ResponseEntity<>("Table created", HttpStatus.CREATED);
+        return new ResponseEntity<>(new ResStatus("Is Created"), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/delete/{id}")

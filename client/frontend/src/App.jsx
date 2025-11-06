@@ -12,7 +12,7 @@ import Inventory from "./componnets/inventory/Inventory";
 import EditInventoryItem from "./componnets/inventory/EditInventoryItem";
 import { AuthProvider } from "./context/AuthContext";
 import Table from "./componnets/table/Table";
-
+import CreateTable from "./componnets/table/CreateTable";
 
 function App() {
  
@@ -33,6 +33,7 @@ function App() {
          <Route path="/inventory" element={<Inventory />} />
          <Route path="/inventory/:id" element={<EditInventoryItem />} />
          <Route path="/table" element={<Table />} />
+         <Route path="/createTable" element={<CreateTable />} />
        </Routes>
     </AuthProvider>
    </>

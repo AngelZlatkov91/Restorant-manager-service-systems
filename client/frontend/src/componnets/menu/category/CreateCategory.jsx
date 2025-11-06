@@ -28,7 +28,7 @@ export default function CreateCategory() {
     } = useForm(initialValues,createHandler);
    return (
     <>
-<section id="create-page" className="auth">
+         <section id="create-page" className="auth">
             <form id="create" onSubmit={submitHandler}>
                 <div className="container">
 
