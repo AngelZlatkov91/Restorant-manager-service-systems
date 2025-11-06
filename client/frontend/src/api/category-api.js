@@ -24,7 +24,8 @@ export const getAll = async () => {
    return categories;
 }
 export const deleteCategory = (id) => {
- request.del(`${BASE_URL}/delete`,id,true);
+   
+ request.del(`${BASE_URL}/delete/${id}`,null,true);
 }
 
 const categoryApi = {

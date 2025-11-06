@@ -101,7 +101,7 @@ export default function Table() {
         message={`Сигурен ли си, че искаш да изтриеш "${tableToDelete?.tableName}"?`}
         onConfirm={handleConfirm}
         onCancel={handleCancel}
-        position={popupPos}
+        position={{ top: "50%", left: "50%" }}
       />
     </section>
   );

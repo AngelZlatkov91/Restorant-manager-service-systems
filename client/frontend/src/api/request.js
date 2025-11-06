@@ -22,7 +22,7 @@ async function request(method, url, data, useAuth = false) {
         };
       }
     }
-
+    
     const response = await api(config);
 
     

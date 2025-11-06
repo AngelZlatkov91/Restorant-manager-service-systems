@@ -28,7 +28,7 @@ export const getAllItem = async () => {
 }
 
 export const deleteMenuItem = (id) => {
-   const result = request.del(`${BASE_URL}/delete`, id, true);
+   const result = request.del(`${BASE_URL}/delete/${id}`, null, true);
    return result;
 }
 

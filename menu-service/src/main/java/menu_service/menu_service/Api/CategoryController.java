@@ -6,6 +6,7 @@ import menu_service.menu_service.Models.DTO.ItemId;
 import menu_service.menu_service.Models.DTO.ResCategory;
 import menu_service.menu_service.Models.DTO.ResStatus;
 import menu_service.menu_service.Services.CategoryService;
+import org.apache.kafka.common.protocol.types.Field;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -39,9 +40,9 @@ public class CategoryController {
         return ResponseEntity.ok(categoryService.getAllCategories());
     }
 
-    @DeleteMapping("/delete")
-    public ResponseEntity<String> deleteCategory(@RequestBody ItemId categoryId) {
-        categoryService.deleteCategory(categoryId.getId());
-        return ResponseEntity.ok("Successfully deleted category - " + categoryId);
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> deleteCategory(@PathVariable String id) {
+        categoryService.deleteCategory(id);
+        return ResponseEntity.ok("Successfully deleted category - " + id);
     }
 }

@@ -8,7 +8,7 @@ export default function Category() {
 
  
   const handleDelete = async (id) => { 
-    
+   
     useDeleteCategory(id); 
   };
     refreshCategories();

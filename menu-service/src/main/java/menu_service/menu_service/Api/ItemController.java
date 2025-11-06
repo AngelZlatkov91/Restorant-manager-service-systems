@@ -34,10 +34,10 @@ public class ItemController {
         return ResponseEntity.ok(menuItemService.getMenuItem(itemId.getId()));
     }
 
-    @DeleteMapping("/delete")
-    public ResponseEntity<ResStatus> deleteItem(@RequestBody ItemId itemId) {
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<ResStatus> deleteItem(@PathVariable String id) {
 
-        return ResponseEntity.ok(menuItemService.deleteMenuItem(itemId.getId()));
+        return ResponseEntity.ok(menuItemService.deleteMenuItem(id));
     }
 
     @PutMapping("/update")
