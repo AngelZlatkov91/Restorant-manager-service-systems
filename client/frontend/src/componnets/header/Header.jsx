@@ -5,12 +5,6 @@ import { useEffect, useState } from "react";
 export default function Header() {
   const {isAuth, logout} = useAuth();
 
-  const logoutHandler = async () => {
-    await window.electronAPI.saveToken(null); 
-    setIsAuth(false);
-    navigate("/login");
-  };
-
   return (
     <header>
       <h1>
@@ -36,7 +30,8 @@ export default function Header() {
               <Link to="/inventory">Inventory</Link>
               <Link to="/orders">Orders</Link>
               <Link to="/reports">Reports</Link>
-              <button onClick={logout} className="btn-link">
+              <button onClick={logout} className="btn-link"
+              style={{color: "blue"}}>
                 Logout
               </button>
             </div>

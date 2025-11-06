@@ -7,7 +7,6 @@ import { getAccessToken } from "../utils/authUtils";
     if (method !== 'GET') {
         options.method = method;
     }
-
     if (data) {
         options.headers = {
           ...options.headers,

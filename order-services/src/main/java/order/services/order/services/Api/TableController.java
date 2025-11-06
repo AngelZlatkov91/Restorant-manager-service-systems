@@ -33,8 +33,8 @@ public class TableController {
         return new ResponseEntity<>("Table created", HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/delete/:id")
-    public ResponseEntity<String> deleteTable(@RequestParam Long id) {
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> deleteTable(@PathVariable Long id) {
         tableService.dropTable(id);
         return new ResponseEntity<>("Table dropped", HttpStatus.OK);
     }
