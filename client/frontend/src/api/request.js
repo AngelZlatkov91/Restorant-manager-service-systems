@@ -1,6 +1,6 @@
 import axios from "axios";
 import { getAccessToken } from "../utils/authUtils";
-
+import { toast } from "react-toastify";
 const api = axios.create({
   baseURL: "", 
 });
@@ -31,10 +31,21 @@ async function request(method, url, data, useAuth = false) {
     return response.data;
 
   } catch (err) {
-    if (err.response && err.response.data) {
-      return err.response.data.message || err.response.data || err.message;
+    let message = "Unknown error";
+
+    if (err.response?.data?.message) {
+      message = err.response.data.resMassage;
+    } else if (err.response?.data) {
+      message = err.response.data;
+    } else if (err.message) {
+      message = err.message;
     }
-    return err.message;
+
+    
+    toast.error(message);
+
+    
+    return message;
   }
 }
 

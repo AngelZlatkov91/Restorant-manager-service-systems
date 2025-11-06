@@ -9,13 +9,12 @@ export default function CreateTable() {
    const [hasError, setHasError] = useState('');
 
    const createHandler = async (values) => {
-    try {
+   
       const result =  await createTable(values);
-      console.log(result);
-    }catch (err) {
-      console.log(`catch ${err}`)
-      setHasError(err.message);
-    }
+      
+     if (result.resMessage) {
+            setHasError(result.resMessage);
+     } 
    }
 
    const {
@@ -43,7 +42,7 @@ export default function CreateTable() {
                    <input className="btn submit" type="submit" value="Create table" />
                    {hasError && (
                         <p>
-                           <span style={{fontSize: '20px', color: 'red'}}>{hasError.status}</span>
+                           <span style={{fontSize: '20px', color: 'red'}}>{hasError}</span>
                          </p>
                     )}
                 </div>

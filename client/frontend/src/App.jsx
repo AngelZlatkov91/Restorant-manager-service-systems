@@ -1,3 +1,5 @@
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { Route, Routes } from "react-router-dom";
 import Header from "./componnets/header/Header";
 import Login from "./componnets/user/login/Login";
@@ -21,6 +23,7 @@ function App() {
    <>
     <AuthProvider>
        <Header />
+       <ToastContainer position="top-right" autoClose={3000} />
        <Routes>
          <Route path="/login" element={<Login />} />
          <Route path="/register" element={<Register />} />
