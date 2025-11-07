@@ -13,8 +13,8 @@ const BASE_URL = 'http://localhost:8082/api/menu/category';
  */
 
 export const  createCategory = (categoryName) => {
-  
-    request.post(`${BASE_URL}/create`, categoryName,true);
+   const result = request.post(`${BASE_URL}/create`, categoryName,true);
+   return result;
 };
 
 export const getAll = async () => {

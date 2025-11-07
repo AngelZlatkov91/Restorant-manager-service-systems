@@ -17,9 +17,7 @@ export default function Header() {
             <div className="dropdown">
               <button className="dropbtn">Menu</button>
               <div className="dropdown-content">
-                <Link to="/createCategory">Create Category</Link>
                 <Link to="/getAllCategory">Get All Categories</Link>
-                <Link to="/createItem">Create Item</Link>
                 <Link to="/getAll-items">Get All Items</Link>
               </div>
             </div>

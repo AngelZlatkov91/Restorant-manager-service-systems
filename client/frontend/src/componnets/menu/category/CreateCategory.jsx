@@ -1,4 +1,5 @@
 
+import { useNavigate, Link } from "react-router-dom";
 import { useCreateCategory } from "../../../hooks/useCategory";
 import { useForm } from "../../../hooks/useForm";
 import { useState } from "react";
@@ -7,18 +8,16 @@ const initialValues = {
 
 }
 export default function CreateCategory() {
-   
+   const navigate = useNavigate();
     const createCategory = useCreateCategory()
     const [hasError, setHasError] = useState('');
 
-    const createHandler = async (values) => {
-        try {
-             await createCategory(values);
-             
-        } catch (err) {
-            setHasError(err.message);
-           console.log(err);
-        }
+    const createHandler = async (values) => {    
+          const result = await createCategory(values);
+          console.log(result);  
+          if (result === "Created") {
+          navigate('/getAllCategory')
+       } 
     };
 
     const {
@@ -28,6 +27,7 @@ export default function CreateCategory() {
     } = useForm(initialValues,createHandler);
    return (
     <>
+         <Link to="/getAllCategory">Get All Categories</Link>
          <section id="create-page" className="auth">
             <form id="create" onSubmit={submitHandler}>
                 <div className="container">

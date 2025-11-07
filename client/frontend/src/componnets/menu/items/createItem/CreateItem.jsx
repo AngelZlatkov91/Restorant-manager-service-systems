@@ -1,7 +1,7 @@
 import { useGetAllCategory } from "../../../../hooks/useCategory";
 import { useCreateMenuItem } from "../../../../hooks/useItem";
 import { useForm } from "../../../../hooks/useForm";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const initialValues = {
   name: "",
@@ -33,7 +33,9 @@ export default function CreateItem() {
   );
 
   return (
-    <section id="create-page" className="auth">
+    <>
+        <Link to="/getAll-items">Get All Items</Link>
+        <section id="create-page" className="auth">
       <form id="create" onSubmit={submitHandler}>
         <div className="container">
           <h1>Create Item</h1>
@@ -96,6 +98,7 @@ export default function CreateItem() {
           />
         </div>
       </form>
-    </section>
+        </section>
+    </>    
   );
 }

@@ -31,7 +31,7 @@ public class CategoryController {
             return ResponseEntity.badRequest().body(bindingResult.getFieldError().getDefaultMessage());
         }
         categoryService.addCategory(createCategory);
-        return ResponseEntity.ok("Is Created");
+        return ResponseEntity.ok("Created");
     }
 
 

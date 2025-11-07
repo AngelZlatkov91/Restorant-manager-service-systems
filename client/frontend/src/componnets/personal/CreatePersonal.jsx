@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useCreatePersonal } from "../../hooks/usePersonal";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useForm } from "../../hooks/useForm";
 
 
@@ -27,6 +27,7 @@ const {
 
    return (
           <>
+          <Link to="/personal">Get to Personals</Link>
            <section id="register-page" className="content auth">
             <form id="register" onSubmit={submitHandler}>
                 <div className="container">

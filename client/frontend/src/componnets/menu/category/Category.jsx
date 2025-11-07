@@ -1,21 +1,36 @@
 import { useEffect } from "react";
 import { useDeleteCategory, useGetAllCategory } from "../../../hooks/useCategory";
+import { useNavigate } from "react-router-dom";
 
 
 export default function Category() {
+  const navigate = useNavigate();
  
    const [categories, refreshCategories] = useGetAllCategory();
 
- 
+ const createCategoryHandler = () => {
+  navigate('/createCategory');
+ }
   const handleDelete = async (id) => { 
    
     useDeleteCategory(id); 
   };
     refreshCategories();
 
+
    return (
     <section id="category" style={{ padding: "20px" }}>
       <h2>Категории</h2>
+      <div style={{ display: "flex", gap: "10px" }}>
+                <button onClick={createCategoryHandler} style={{
+                  padding: "6px 12px",
+                  border: "none",
+                  borderRadius: "5px",
+                  background: "#4caf50",
+                  color: "white",
+                  cursor: "pointer",
+                }}>Create Category</button>
+              </div>
       <ul style={{ listStyle: "none", padding: 0 }}>
         {categories && categories.length > 0 ? (
           categories.map((cat) => (

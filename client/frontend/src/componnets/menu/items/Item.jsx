@@ -35,12 +35,25 @@ export default function Item() {
 const handleEdit = (id) => {
     navigate(`/editItem/${id}`);
   };
+   const createItemHandler = () => {
+      navigate("/createItem");
+    }
 
  
 
   return (
     <section id="items" style={{ padding: "20px" }}>
       <h2>Меню артикули</h2>
+             <div style={{ display: "flex", gap: "10px" }}>
+                <button onClick={createItemHandler} style={{
+                  padding: "6px 12px",
+                  border: "none",
+                  borderRadius: "5px",
+                  background: "#4caf50",
+                  color: "white",
+                  cursor: "pointer",
+                }}>Create Item</button>
+              </div>
       {items && items.length > 0 ? (
         <ul style={{ listStyle: "none", padding: 0 }}>
           {items.map((item) => (
