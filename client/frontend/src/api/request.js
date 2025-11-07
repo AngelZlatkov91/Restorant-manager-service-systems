@@ -34,14 +34,14 @@ async function request(method, url, data, useAuth = false) {
     let message = "Unknown error";
 
     if (err.response?.data?.message) {
-      message = err.response.data.resMassage;
+      message = "You must field the fields!"
     } else if (err.response?.data) {
       message = err.response.data;
     } else if (err.message) {
       message = err.message;
     }
 
-    
+
     toast.error(message);
 
     

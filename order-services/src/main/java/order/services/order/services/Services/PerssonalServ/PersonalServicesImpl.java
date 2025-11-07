@@ -42,8 +42,16 @@ public class PersonalServicesImpl implements PersonalServices {
     }
 
     @Override
+    @Transactional
     public void deletePersonal(Long id) {
-       personalRepositories.deleteById(id);
+        try {
+            personalRepositories.deleteById(id);
+
+        } catch (Exception message) {
+            System.out.println();
+        }
+
+        System.out.println();
     }
 
     @Override

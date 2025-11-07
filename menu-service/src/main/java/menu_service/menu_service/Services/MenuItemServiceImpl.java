@@ -34,7 +34,7 @@ public class MenuItemServiceImpl implements MenuItemService {
     }
 
     @Override
-    public ResStatus createMenuItem(MenuItemCreate menuItem) {
+    public String createMenuItem(MenuItemCreate menuItem) {
 
         Optional<Category> category = categoryItemRepository.findByName(menuItem.getCategory());
         MenuItem newItem = mapData(menuItem);
@@ -43,7 +43,7 @@ public class MenuItemServiceImpl implements MenuItemService {
         if (menuItem.getTypeProduct().name().equals("BAR")) {
             inventoryEvent.sendItemCreateEvent(new InventoryDTO(newItem.getName(), newItem.getCategory().getName()));
         }
-        return new ResStatus("Item is Created");
+        return "Created";
     }
 
 

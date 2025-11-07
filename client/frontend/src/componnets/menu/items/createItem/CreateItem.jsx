@@ -1,6 +1,7 @@
 import { useGetAllCategory } from "../../../../hooks/useCategory";
 import { useCreateMenuItem } from "../../../../hooks/useItem";
 import { useForm } from "../../../../hooks/useForm";
+import { useNavigate } from "react-router-dom";
 
 const initialValues = {
   name: "",
@@ -10,6 +11,7 @@ const initialValues = {
 };
 
 export default function CreateItem() {
+  const navigate = useNavigate();
   const optionTypeProduct = [
     { value: "BAR", label: "BAR" },
     { value: "KITCHEN", label: "KITCHEN" },
@@ -19,16 +21,10 @@ export default function CreateItem() {
   const createMenuItem = useCreateMenuItem();
 
   const createHandler = async (values) => {
-    try {
-      
       const menuItemCreate = await createMenuItem(values);
-      
-      console.log("✅ Item created:", menuItemCreate);
-
-      refreshCategories();
-    } catch (err) {
-      console.log("❌ Error creating item:", err.message);
-    }
+       if (menuItemCreate === "Created") {
+          navigate("/getAll-items")
+       } 
   };
 
   const { values, changeHandler, submitHandler } = useForm(

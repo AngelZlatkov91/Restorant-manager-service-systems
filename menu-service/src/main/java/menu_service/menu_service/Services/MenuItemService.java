@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface MenuItemService {
 
-    ResStatus createMenuItem(MenuItemCreate menuItem);
+    String createMenuItem(MenuItemCreate menuItem);
 
     List<MenuItemRes> getAll();
 

@@ -15,6 +15,8 @@ import EditInventoryItem from "./componnets/inventory/EditInventoryItem";
 import { AuthProvider } from "./context/AuthContext";
 import Table from "./componnets/table/Table";
 import CreateTable from "./componnets/table/CreateTable";
+import Personal from "./componnets/personal/Personal";
+import CreatePersonal from "./componnets/personal/CreatePersonal";
 
 function App() {
  
@@ -23,7 +25,7 @@ function App() {
    <>
     <AuthProvider>
        <Header />
-       <ToastContainer position="top-right" autoClose={3000} />
+       <ToastContainer position="top-center" autoClose={3000} />
        <Routes>
          <Route path="/login" element={<Login />} />
          <Route path="/register" element={<Register />} />
@@ -37,6 +39,8 @@ function App() {
          <Route path="/inventory/:id" element={<EditInventoryItem />} />
          <Route path="/table" element={<Table />} />
          <Route path="/createTable" element={<CreateTable />} />
+         <Route path="/personal" element={<Personal />} />
+         <Route path="/createPersonal" element={<CreatePersonal />} />
        </Routes>
     </AuthProvider>
    </>

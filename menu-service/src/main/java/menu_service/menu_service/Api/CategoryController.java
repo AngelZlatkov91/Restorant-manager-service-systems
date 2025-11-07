@@ -26,12 +26,12 @@ public class CategoryController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<ResStatus> createCategory(@RequestBody @Valid  CreateCategory createCategory, BindingResult bindingResult) {
+    public ResponseEntity<String> createCategory(@RequestBody @Valid  CreateCategory createCategory, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return ResponseEntity.badRequest().body(new ResStatus(bindingResult.getFieldError().getDefaultMessage()));
+            return ResponseEntity.badRequest().body(bindingResult.getFieldError().getDefaultMessage());
         }
         categoryService.addCategory(createCategory);
-        return ResponseEntity.ok(new ResStatus("Is Created"));
+        return ResponseEntity.ok("Is Created");
     }
 
 

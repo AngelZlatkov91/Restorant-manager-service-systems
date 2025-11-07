@@ -33,7 +33,7 @@ export const deleteMenuItem = (id) => {
 }
 
 export const getMenuItemById = (id) => {    
-    const result = request.post(`${BASE_URL}/itemId`,id,true);
+    const result = request.get(`${BASE_URL}/${id}`,true);
     return result;
 }
 

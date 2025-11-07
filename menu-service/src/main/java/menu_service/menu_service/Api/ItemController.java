@@ -22,16 +22,16 @@ public class ItemController {
 
 
     @PostMapping("/create")
-    public ResponseEntity<ResStatus> createItem(@RequestBody @Valid MenuItemCreate menuItemCreate, BindingResult bindingResult) {
+    public ResponseEntity<String> createItem(@RequestBody @Valid MenuItemCreate menuItemCreate, BindingResult bindingResult) {
         if(bindingResult.hasErrors()) {
-            return ResponseEntity.badRequest().body(new ResStatus(bindingResult.getFieldError().getDefaultMessage()));
+            return ResponseEntity.badRequest().body(bindingResult.getFieldError().getDefaultMessage());
         }
-      return ResponseEntity.ok(  menuItemService.createMenuItem(menuItemCreate));
+      return ResponseEntity.ok(menuItemService.createMenuItem(menuItemCreate));
     }
 
-    @PostMapping("/itemId")
-    public ResponseEntity<MenuItemRes> getById(@RequestBody ItemId itemId) {
-        return ResponseEntity.ok(menuItemService.getMenuItem(itemId.getId()));
+    @GetMapping("/{id}")
+    public ResponseEntity<MenuItemRes> getById(@PathVariable String id) {
+        return ResponseEntity.ok(menuItemService.getMenuItem(id));
     }
 
     @DeleteMapping("/delete/{id}")

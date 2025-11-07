@@ -24,15 +24,14 @@ public class TableController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<ResStatus> createTable(@RequestBody @Valid CreateTable createTable, BindingResult bindingResult) {
+    public ResponseEntity<String> createTable(@RequestBody @Valid CreateTable createTable, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             List<ObjectError> allErrors = bindingResult.getAllErrors();
             String defaultMessage = allErrors.get(0).getDefaultMessage();
-            ResponseEntity<ResStatus> body = ResponseEntity.badRequest().body(new ResStatus(defaultMessage));
-            return ResponseEntity.badRequest().body(new ResStatus(defaultMessage));
+            return ResponseEntity.badRequest().body(defaultMessage);
         }
         tableService.createTable(createTable);
-        return new ResponseEntity<>(new ResStatus("Is Created"), HttpStatus.CREATED);
+        return new ResponseEntity<>("Is Created", HttpStatus.CREATED);
     }
 
     @DeleteMapping("/delete/{id}")
