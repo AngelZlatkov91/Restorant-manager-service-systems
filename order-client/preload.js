@@ -9,6 +9,7 @@ contextBridge.exposeInMainWorld("electronAPI", {
       ipcRenderer.on(channel, (event, data) => callback(data));
     }
   },
+  loginSuccess: (token) => ipcRenderer.send("loginSuccess", token),
   saveToken: (token) => ipcRenderer.send("saveToken", token),
   getToken: () => ipcRenderer.invoke("getToken")
 });

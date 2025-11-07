@@ -25,7 +25,7 @@ public class PersonalController {
             return ResponseEntity.badRequest().body(bindingResult.getFieldError().getDefaultMessage());
         }
         personalServices.createPersonal(personal);
-        return ResponseEntity.ok("Personal created");
+        return ResponseEntity.ok("Created");
     }
 
     @PutMapping("/update/:id")

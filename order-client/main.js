@@ -1,62 +1,54 @@
-const { app, BrowserWindow, ipcMain, dialog } = require('electron');
-const path = require('path');
-const isDev = process.env.NODE_ENV === 'development';
+const { app, BrowserWindow, ipcMain } = require("electron");
+const path = require("path");
 
-let jwtToken = null; 
-const fs = require('fs');
-const preloadPath = path.join(process.cwd(), 'preload.js');
-console.log("Looking for preload at:", preloadPath);
-console.log("Exists?", fs.existsSync(preloadPath));
+let loginWindow;
+let mainWindow;
+let jwtToken = null;
 
-function createWindow() {
-  const win = new BrowserWindow({
-    width: 1024,
-    height: 768,
+function createLoginWindow() {
+  loginWindow = new BrowserWindow({
+    width: 400,
+    height: 300,
+    resizable: false,
+    frame: false, // прави го като kiosk/popup
     webPreferences: {
       contextIsolation: true,
-      sandbox: false, 
-      nodeIntegration: false,
-      preload: path.resolve(__dirname, 'preload.js'),
+      preload: path.join(__dirname, "preload.js"),
     },
   });
 
-  if (isDev) {
-    const devServerURL = process.env.VITE_DEV_SERVER_URL || 'http://localhost:5174';
-    console.log("Loading dev server:", devServerURL);
-    win.loadURL(devServerURL).catch(console.error);
-    win.webContents.openDevTools();
-  } else {
-    win.loadFile(path.join(__dirname, 'frontend/dist/index.html')).catch(console.error);
-  }
-  
+  loginWindow.loadURL('http://localhost:5174/loginPage');
 }
 
+function createMainWindow() {
+  mainWindow = new BrowserWindow({
+    width: 1200,
+    height: 800,
+    webPreferences: {
+      contextIsolation: true,
+      preload: path.join(__dirname, "preload.js"),
+    },
+  });
 
-ipcMain.on('toMain', (event, data) => {
-  console.log('Received from React:', data);
-  event.sender.send('fromMain', `Electron получи: ${data}`);
+  mainWindow.loadURL("http://localhost:5174/");
+}
 
-  if (data === 'openFile') {
-    dialog.showOpenDialog({ properties: ['openFile'] })
-      .then(result => event.sender.send('fromMain', result.filePaths));
-  }
+app.whenReady().then(() => {
+  createLoginWindow();
 });
 
-
-ipcMain.on('saveToken', (event, token) => {
+// 🟢 При успешно Login от React
+ipcMain.on("loginSuccess", (event, token) => {
   jwtToken = token;
+
+  if (loginWindow) {
+    loginWindow.close();
+    loginWindow = null;
+  }
+
+  createMainWindow();
 });
 
-ipcMain.handle('getToken', async () => {
-  return jwtToken;
-});
+ipcMain.handle("getToken", async () => jwtToken);
 
-app.whenReady().then(createWindow);
-
-app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') app.quit();
-});
-
-app.on('activate', () => {
-  if (BrowserWindow.getAllWindows().length === 0) createWindow();
-});
+app.on("window-all-closed", () => app.quit());

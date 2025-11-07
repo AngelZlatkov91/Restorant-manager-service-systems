@@ -15,7 +15,9 @@ const navigate = useNavigate();
 
 const createHandler = async (values) => {
    const result = await addPersonal(values);
-   console.log(result);
+   if (result === 'Created') {
+    navigate('/personal');
+   }
 
 };
 
