@@ -11,4 +11,5 @@ import lombok.NoArgsConstructor;
 public class ResponseTable {
     private Long id;
     private String tableName;
+    private boolean isEmpty;
 }

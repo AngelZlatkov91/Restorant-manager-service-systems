@@ -1,7 +1,17 @@
 import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { getAccessToken } from "../../utils/authUtils";
 
 export default function TableSelection() {
   const navigate = useNavigate();
+  const [name, setName] = useState('');
+    
+      useEffect(() => {
+        (async () => {
+          const token = await getAccessToken();
+          setName(token);
+        })();
+      }, []);
 
   const tables = Array.from({ length: 16 }, (_, i) => ({
     id: i + 1,
@@ -14,7 +24,7 @@ export default function TableSelection() {
 
   return (
     <div className="min-h-screen bg-gray-100 p-10">
-      <h1 className="text-4xl font-bold text-center mb-8">Select a Table</h1>
+      <h1 className="text-4xl font-bold text-center mb-8">Select a Table: {name}</h1>
       <div className="grid grid-cols-4 gap-6 max-w-4xl mx-auto">
         {tables.map((table) => (
           <div

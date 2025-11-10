@@ -48,6 +48,6 @@ public class TableServiceImpl implements TableService {
     }
 
     private ResponseTable getCreateTable(TableEn tableEnName) {
-        return new ResponseTable(tableEnName.getId(), tableEnName.getTableName());
+        return new ResponseTable(tableEnName.getId(), tableEnName.getTableName(), tableEnName.isEmpty());
     }
 }

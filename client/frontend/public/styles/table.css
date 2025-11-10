@@ -1,0 +1,16 @@
+.table-status {
+  padding: 8px 14px;
+  border-radius: 6px;
+  font-weight: bold;
+  color: #fff;
+}
+
+.table-status.free {
+  background-color: #4caf50; /* зелено */
+  border: 2px solid #357a38;
+}
+
+.table-status.busy {
+  background-color: #f44336; /* червено */
+  border: 2px solid #b71c1c;
+}

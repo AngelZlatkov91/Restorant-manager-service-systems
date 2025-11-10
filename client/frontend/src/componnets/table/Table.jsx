@@ -6,7 +6,6 @@ import ConfirmPopup from "../confirmModal/ConfirmPop";
 export default function Table() {
   const navigate = useNavigate();
   const [tables, fetchTables] = useGetAllTable();
-  
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [tableToDelete, setItemToDelete] = useState(null);
   const [popupPos, setPopupPos] = useState({ top: 0, left: 0 });
@@ -41,19 +40,37 @@ export default function Table() {
   const createTableHandler = () => {
     navigate('/createTable');
   }
+  const buttonStyleGreen = {
+    padding: "6px 12px",
+    border: "none",
+    borderRadius: "5px",
+    background: "#4caf50",
+    color: "white",
+    cursor: "pointer",
+  };
+
+  const buttonStyleRed = {
+    padding: "6px 12px",
+    border: "none",
+    borderRadius: "5px",
+    background: "#f44336",
+    color: "white",
+    cursor: "pointer",
+  };
+
 
   return (
     <section id="tables" style={{ padding: "20px" }}>
       <h2>Tables</h2>
       <div style={{ display: "flex", gap: "10px" }}>
-                <button onClick={createTableHandler} style={{
-                  padding: "6px 12px",
-                  border: "none",
-                  borderRadius: "5px",
-                  background: "#4caf50",
-                  color: "white",
-                  cursor: "pointer",
-                }}>Create Table</button>
+        <button onClick={createTableHandler} style={{
+          padding: "6px 12px",
+          border: "none",
+          borderRadius: "5px",
+          background: "#4caf50",
+          color: "white",
+          cursor: "pointer",
+        }}>Create Table</button>
       </div>
       {tables && tables.length > 0 ? (
         <ul style={{ listStyle: "none", padding: 0 }}>
@@ -62,33 +79,25 @@ export default function Table() {
               display: "flex",
               justifyContent: "space-between",
               alignItems: "center",
-              background: "#f9f9f9",
+              background: "#ffffff",
               marginBottom: "10px",
-              padding: "10px 15px",
-              borderRadius: "8px",
-              boxShadow: "0 2px 5px rgba(0,0,0,0.1)",
+              padding: "14px 18px",
+              borderRadius: "10px",
+              boxShadow: "0 2px 6px rgba(0,0,0,0.15)",
             }}>
-              <strong>{table.tableName}</strong>
+
+              <strong
+                className={`table-status ${table.empty ? "free" : "busy"}`}
+                style={{ fontSize: "18px" }}
+              >
+                {table.tableName}
+              </strong>
 
               <div style={{ display: "flex", gap: "10px" }}>
-                <button onClick={() => handleEdit(table.id)} style={{
-                  padding: "6px 12px",
-                  border: "none",
-                  borderRadius: "5px",
-                  background: "#4caf50",
-                  color: "white",
-                  cursor: "pointer",
-                }}>Edit</button>
-
-                <button onClick={(e) => handleDeleteClick(e, table)} style={{
-                  padding: "6px 12px",
-                  border: "none",
-                  borderRadius: "5px",
-                  background: "#f44336",
-                  color: "white",
-                  cursor: "pointer",
-                }}>Delete</button>
+                <button onClick={() => handleEdit(table.id)} style={buttonStyleGreen}>Edit</button>
+                <button onClick={(e) => handleDeleteClick(e, table)} style={buttonStyleRed}>Delete</button>
               </div>
+
             </li>
           ))}
         </ul>
