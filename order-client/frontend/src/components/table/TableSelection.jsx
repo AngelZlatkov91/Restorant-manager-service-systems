@@ -20,14 +20,8 @@ export default function TableSelection() {
 
 
 
-  const tableEventHandler = (id, empty) => {
-    if (empty == true) {
-      navigate(`/createTable/${id}`);
-    } else {
-      navigate(`/getTable/${id}`);
-    }
-
-
+  const tableEventHandler = (id) => { 
+      navigate(`/orderClient/${id}`);
   };
 
 
@@ -52,7 +46,7 @@ export default function TableSelection() {
             }}>
 
               <button className={`table-status ${table.empty ? "free" : "busy"}`}
-                style={{ fontSize: "18px" }} onClick={() => tableEventHandler(table.id, table.empty)}> {table.tableName}
+                style={{ fontSize: "18px" }} onClick={() => tableEventHandler(table.id)}> {table.tableName}
               </button>
 
             </li>

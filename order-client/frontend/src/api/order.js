@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import request from "./request";
 import { getAccessToken } from "../utils/authUtils";
-const BASE_URL = 'http://localhost:8083/api/order/getAll';
+const BASE_URL = 'http://localhost:8083/api/order';
+
 
 /**
  * @param {number} id
@@ -11,17 +12,15 @@ const BASE_URL = 'http://localhost:8083/api/order/getAll';
  * 
  * 
  */
-export const getAllActiveOrder = async () => {
+export const getOrder = async (id) => {
     const name = await getAccessToken();
-    const result = await request.post(`${BASE_URL}`, {name});
-    const tables = Object.values(result);
-    console.log(tables);
-    return tables;
+    const result = await request.post(`${BASE_URL}/getOrder`, {name, id});
+    return result;
 }
 
 
 const orderApi = {
-    getAllActiveOrder,
+    getOrder,
 
 }
 

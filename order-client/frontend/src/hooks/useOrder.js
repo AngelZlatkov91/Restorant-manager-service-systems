@@ -4,10 +4,10 @@ import orderApi from "../api/order";
 
 
 
-export function useGetAllActiveOrder() {
+export function useGetAllActiveOrder(id) {
   const [activeOrder, setActiveOrder] = useState([]);
     const fetchActiveOrder = async () => {
-      const result = orderApi.getAllActiveOrder();
+      const result = orderApi.getOrder(id);
       setActiveOrder(result);
     };
     useEffect(() => {

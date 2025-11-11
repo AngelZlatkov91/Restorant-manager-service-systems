@@ -53,7 +53,7 @@ public class CompleteOrdersServImpl implements CompleteOrdersServ {
         if (byName.isEmpty() || byId.isEmpty() || byId.get().getOrderStatus() == OrderStatus.COMPLETED) {
             throw new NullPointerException("Order or Personal not found");
         }
-        TableEn tableName = byId.get().getTable_name();
+        TableEn tableName = byId.get().getTableEn();
         tableName.setEmpty(true);
         tableRepositories.save(tableName);
 
@@ -125,7 +125,7 @@ public class CompleteOrdersServImpl implements CompleteOrdersServ {
     private CompleteOrderDTO mapOrderToDTO(Order order) {
         CompleteOrderDTO completeOrderDTO = new CompleteOrderDTO();
         completeOrderDTO.setPersonal(order.getPersonal().getName());
-        completeOrderDTO.setTableName(order.getTable_name().getTableName());
+        completeOrderDTO.setTableName(order.getTableEn().getTableName());
         completeOrderDTO.setProducts(mapProductToDTO(order.getProducts()));
         completeOrderDTO.setTotalPrice(totalPrice);
 

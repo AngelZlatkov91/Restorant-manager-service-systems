@@ -36,11 +36,11 @@ public class OrderServiceImpl implements OrderService {
         Optional<TableEn> byId = tableRepositories.findById(reqOrder.getId());
         Optional<Personal> byName = personalRepositories.findByName(reqOrder.getName());
         if (byId.isEmpty() || byName.isEmpty()) {
-            throw new NullPointerException("Is empty");
+            throw  new NullPointerException("Table or Personal don't exist");
         }
-//        Order order = orderRepositories.getByPersonalAndOrderStatusAndTable_name(byName.get(),OrderStatus.PENDING,byId.get());
-//        return mapToResponse(order);
-        return  null;
+        Optional<Order> order = orderRepositories.getByPersonalAndOrderStatusAndTableEn(byName.get(),OrderStatus.PENDING,byId.get());
+        return order.map(this::mapToResponse).orElse(null);
+
     }
 
     @Override
@@ -59,7 +59,7 @@ public class OrderServiceImpl implements OrderService {
         CheckOrders checkOrders = new CheckOrders();
         checkOrders.setOrderId(order.getId());
         checkOrders.setName(order.getPersonal().getName());
-        checkOrders.setTableId(order.getTable_name().getId());
+        checkOrders.setTableId(order.getTableEn().getId());
         return checkOrders;
     }
 
@@ -67,7 +67,7 @@ public class OrderServiceImpl implements OrderService {
     private OrderResp mapToResponse(Order order) {
         OrderResp orderResp = new OrderResp();
         orderResp.setId(order.getId());
-        orderResp.setTable_name(order.getTable_name().getTableName());
+        orderResp.setTable_name(order.getTableEn().getTableName());
         orderResp.setStatus(order.getOrderStatus());
         orderResp.setPersonal_name(order.getPersonal().getName());
         orderResp.setProducts(mapToResponseProduct(order.getProducts()));

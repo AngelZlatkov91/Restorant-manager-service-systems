@@ -113,7 +113,7 @@ public class CreateAndUpdateOrderServImpl implements CreateAndUpdateOrderServ {
         orderEntity.setOrderStatus(order.getStatus());
         orderEntity.setCreated_at(LocalDateTime.now());
         orderEntity.setActive(true);
-        orderEntity.setTable_name(tableEn);
+        orderEntity.setTableEn(tableEn);
         orderEntity.setProducts(mapProducts(order.getProducts()));
         return orderEntity;
     }

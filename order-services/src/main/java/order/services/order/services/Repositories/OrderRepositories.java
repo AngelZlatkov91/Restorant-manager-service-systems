@@ -8,15 +8,16 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface OrderRepositories extends JpaRepository<Order, Long> {
 
-//    Order getByPersonalAndOrderStatusAndTable_name(
-//            Personal personal,
-//            OrderStatus orderStatus,
-//            TableEn table_name
-//    );
+    Optional<Order> getByPersonalAndOrderStatusAndTableEn(
+            Personal personal,
+            OrderStatus orderStatus,
+            TableEn tableEn
+    );
 
     List<Order> findAllByPersonalAndOrderStatus(Personal personal, OrderStatus orderStatus);
 

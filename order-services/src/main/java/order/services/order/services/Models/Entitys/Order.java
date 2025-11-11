@@ -25,7 +25,7 @@ public class Order  {
     @ManyToOne
     private Personal personal;
     @ManyToOne
-    private TableEn table_name;
+    private TableEn tableEn;
     @OneToMany(cascade = CascadeType.ALL)
     private List<Product> products;
     @Column(nullable = false)
