@@ -12,4 +12,4 @@ const BASE_URL = 'http://localhost:8083/api/check/personal';
  */
 
 
-export const  login = ( password) => request.post(`${BASE_URL}`, {password});
+export const  login = (password) => request.post(`${BASE_URL}`, {password});

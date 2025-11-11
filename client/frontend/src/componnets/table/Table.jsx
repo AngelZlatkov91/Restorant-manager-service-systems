@@ -35,7 +35,7 @@ export default function Table() {
   };
 
   const handleEdit = (id) => {
-    navigate(`/editTable/${id}`);
+   navigate(`/editTable/${id}`);
   };
   const createTableHandler = () => {
     navigate('/createTable');

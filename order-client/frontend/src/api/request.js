@@ -11,8 +11,7 @@ async function request(method, url, data) {
       url,
       data
     };
-
-    
+ 
     const response = await api(config);
 
     

@@ -31,9 +31,9 @@ public class OrderController {
         return new ResponseEntity<>("Order created", HttpStatus.CREATED);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<OrderResp> getOrder(@PathVariable Long id) {
-     return ResponseEntity.ok(orderService.getOrder(id));
+    @PostMapping("/getOrder")
+    public ResponseEntity<OrderResp> getOrder(@RequestBody ReqOrder reqOrder) {
+     return ResponseEntity.ok(orderService.getOrder(reqOrder));
     }
 
     @PutMapping("/update")

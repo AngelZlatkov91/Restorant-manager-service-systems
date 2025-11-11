@@ -37,7 +37,7 @@ app.whenReady().then(() => {
   createLoginWindow();
 });
 
-// 🟢 При успешно Login от React
+
 ipcMain.on("loginSuccess", (event, token) => {
   jwtToken = token;
 

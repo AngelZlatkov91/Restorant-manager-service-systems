@@ -7,10 +7,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class CheckOrders {
-    private Long orderId;
-    private Long tableId;
+public class ReqOrder {
     private String name;
-
-
+    private Long id;
 }

@@ -4,7 +4,6 @@ import { useInventoryItems } from "../../hooks/useInventory";
 export default function Inventory() {
 const [items, fetchItems] = useInventoryItems();
 const navigate = useNavigate();
-fetchItems();
 const handleEdit = (id) => {
     navigate(`/inventory/${id}`);
   };
