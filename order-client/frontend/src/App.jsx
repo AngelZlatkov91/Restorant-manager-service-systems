@@ -3,8 +3,6 @@ import LoginAuthWindow from "./components/LoginAuthWindow";
 import { useEffect, useState } from "react";
 import { getAccessToken } from "./utils/authUtils";
 import TableSelection from "./components/table/TableSelection";
-import EmptyTable from "./components/table/EmptyTable";
-import NotEmptyTable from "./components/table/NotEmptyTable"
 import OrderClient from "./components/order/OrderClient";
 
 function App() {

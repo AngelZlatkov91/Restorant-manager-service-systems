@@ -16,10 +16,6 @@ export default function TableSelection() {
     })();
   }, []);
 
-
-
-
-
   const tableEventHandler = (id) => { 
       navigate(`/orderClient/${id}`);
   };

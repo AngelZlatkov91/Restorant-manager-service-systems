@@ -5,15 +5,29 @@ import orderApi from "../api/order";
 
 
 export function useGetAllActiveOrder(id) {
-  const [activeOrder, setActiveOrder] = useState([]);
-    const fetchActiveOrder = async () => {
-      const result = orderApi.getOrder(id);
+  const [activeOrder, setActiveOrder] = useState(
+     {
+    id: '',
+    table_name: '',
+    personal_name: '',
+    status: '',
+    products: [{
+    name: '',
+    category: null,
+    price: '',
+    quantity: '',
+    description: '',
+    check: Boolean
+    }]
+}
+  );
+    useEffect(() =>  {
+      (async () => {
+        const result = await orderApi.getOrder(id);
       setActiveOrder(result);
-    };
-    useEffect(() => {
-      fetchActiveOrder();
+      })();
       
-    },[])
-         
-          return [activeOrder, fetchActiveOrder];
+    },[id])
+       
+          return [activeOrder, setActiveOrder];
 }
