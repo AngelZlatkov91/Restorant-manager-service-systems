@@ -4,7 +4,7 @@ import { useGetAllMenuItems } from "../../hooks/useItem";
 export default function MenuModal({ onClose, onAdd }) {
   const [filter, setFilter] = useState("");
   const [items, setItems] = useGetAllMenuItems();
-
+  
   useEffect(() => {
     setItems(items.filter(item => item.name.toLowerCase().includes(filter.toLowerCase())));
   }, [filter]);

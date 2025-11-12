@@ -17,7 +17,7 @@ function createLoginWindow() {
     },
   });
 
-  loginWindow.loadURL('http://localhost:5174/loginPage');
+  loginWindow.loadURL('http://localhost:5173/loginPage');
 }
 
 function createMainWindow() {
@@ -30,7 +30,7 @@ function createMainWindow() {
     },
   });
 
-  mainWindow.loadURL("http://localhost:5174/");
+  mainWindow.loadURL("http://localhost:5173/");
 }
 
 app.whenReady().then(() => {

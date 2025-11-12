@@ -7,13 +7,17 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useGetAllActiveOrder } from "../../hooks/useOrder";
 
 export default function OrderClient() {
+  const [newProduct, setNewProduct] = useState([]);
   const navigate = useNavigate();
   const { id } = useParams();
   const [activeOrder, setActiveOrder] = useGetAllActiveOrder(id);
+  let currentProducts = activeOrder.products;
+
   let hasProduct = true;
   if (!activeOrder.id) {
     hasProduct = false;
   };
+ 
   const [showMenu, setShowMenu] = useState(false);
   const [showPayment, setShowPayment] = useState(false);
   const [showSplit, setShowSplit] = useState(false);
@@ -22,21 +26,26 @@ export default function OrderClient() {
 
   // Добавяне продукт
   const addProduct = (product) => {
-    // Ако продуктът вече съществува, увеличи quantity
-    const exists = activeOrder.find(p => p.id === product.id);
+    const exists = newProduct.find(p => p.id === product.id);
     if (exists) {
-      setActiveOrder(activeOrder.map(p => 
+      setNewProduct(newProduct.map(p => 
         p.id === product.id ? {...p, quantity: p.quantity + 1} : p
       ));
     } else {
-      setActiveOrder([...activeOrder, product]);
+      setNewProduct([...newProduct, product]);
     }
+    console.log(newProduct);
   };
 
   // Изтриване продукт
   const removeProduct = (productId) => {
     setActiveOrder(activeOrder.filter(p => p.id !== productId));
   };
+
+  const removeNewProductNotCheck = (product) => {
+    console.log(product)
+    setNewProduct(newProduct.filter(p => p.id !== product.id));
+  }
 
   // Актуализира продукт (например при разделяне)
   const updateProduct = (updatedProduct) => {
@@ -57,12 +66,28 @@ export default function OrderClient() {
         {!hasProduct ? (
           <p>Няма избрани продукти.</p>
         ) : (
-          activeOrder.products.map(p => (
+          currentProducts.map(p => (
             <div key={p.name} style={{ display: "flex", justifyContent: "space-between", marginBottom: "8px", padding: "5px", borderRadius: "5px", background: "#f0f0f0" }}>
-              <span>{p.name} x {p.quantity}</span>
+              <span>{p.name} - <span style={{color: "red"}}>{p.quantity}</span></span>
               <div style={{ display: "flex", gap: "5px" }}>
                 <button 
                   onClick={() => { setProductToDelete(p); setShowConfirmDelete(true); }}
+                  style={{ background: "#f44336", color: "white", border: "none", borderRadius: "5px", padding: "4px 8px" }}
+                >Изтрий</button>
+              </div>
+            </div>
+          ))
+        )}
+
+        {!newProduct ? (
+          <p>Няма избрани продукти.</p>
+        ) : (
+          newProduct.map(p => (
+            <div key={p.name} style={{ display: "flex", justifyContent: "space-between", marginBottom: "8px", padding: "5px", borderRadius: "5px", background: "#f0f0f0" }}>
+              <span style={{color: "green"}}>{p.name} - <span style={{color: "red"}}>{p.quantity}</span></span>
+              <div style={{ display: "flex", gap: "5px" }}>
+                <button 
+                  onClick={() =>removeNewProductNotCheck(p)}
                   style={{ background: "#f44336", color: "white", border: "none", borderRadius: "5px", padding: "4px 8px" }}
                 >Изтрий</button>
               </div>
