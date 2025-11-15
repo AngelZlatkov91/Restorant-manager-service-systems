@@ -73,6 +73,7 @@ public class OrderServiceImpl implements OrderService {
         orderResp.setTableName(order.getTableEn().getTableName());
         orderResp.setStatus(order.getOrderStatus());
         orderResp.setPersonalName(order.getPersonal().getName());
+        orderResp.setCreatedAd(order.getCreated_at());
         orderResp.setProducts(mapToResponseProduct(order.getProducts()));
         return orderResp;
     }

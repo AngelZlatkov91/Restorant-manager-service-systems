@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import order.services.order.services.Models.OrderStatus;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @AllArgsConstructor
@@ -16,6 +17,7 @@ public class OrderResp {
     private String tableName;
     private String personalName;
     private OrderStatus status;
+    private LocalDateTime createdAd;
     private List<AddProductToTableDTO> products;
 
     public OrderResp(String tableName, String personalName) {

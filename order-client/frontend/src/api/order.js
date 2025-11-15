@@ -23,10 +23,16 @@ export const createOrder = async (data) => {
  return result;
 }
 
+export const updateOrder = async (data) => {
+    const result = await request.put(`${BASE_URL}/update`, data);
+    return result;
+}
+
 
 const orderApi = {
     getOrder,
     createOrder,
+    updateOrder
 
 }
 

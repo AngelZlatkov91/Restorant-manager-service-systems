@@ -36,3 +36,8 @@ export function useCreateOrder(data) {
   const orderCreate = orderApi.createOrder(data);
   return orderCreate;
 }
+
+export function useUpdateOrder(data) {
+  const orderUpdate = orderApi.updateOrder(data);
+  return orderUpdate;
+}

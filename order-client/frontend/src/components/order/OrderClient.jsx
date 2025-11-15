@@ -4,11 +4,15 @@ import PaymentModal from "./PaymentModal";
 import SplitOrderModal from "./SplitOrderModal";
 import ConfirmDeleteModal from "./ConfirmDeleteModal";
 import { useNavigate, useParams } from "react-router-dom";
-import { useCreateOrder, useGetActiveOrder } from "../../hooks/useOrder";
+import { useCreateOrder, useGetActiveOrder, useUpdateOrder } from "../../hooks/useOrder";
 import { getAccessToken } from "../../utils/authUtils";
 let initialValuesToCreate = {
   id: '',
   personalName: '',
+  products: [],
+}
+let initialValuesToUpdate = {
+  id: '',
   products: [],
 }
 export default function OrderClient() {
@@ -72,18 +76,21 @@ export default function OrderClient() {
     initialValuesToCreate.personalName = personal;
     initialValuesToCreate.id = id;
     initialValuesToCreate.products = newProduct;
-    
      const createNewOrder = useCreateOrder(initialValuesToCreate);
-     console.log(createNewOrder);
+    
     }
 
     if (newProduct.length > 0 && hasProduct) {
-        console.log("update");
+      initialValuesToUpdate.id = activeOrder.id;
+      initialValuesToUpdate.products = newProduct;
+      const updateOrder = useUpdateOrder(initialValuesToUpdate);
     }
     navigate('/tables');
   }
 
   return (
+    <>
+    <h1>{personal}</h1>
     <div style={{ display: "flex", gap: "20px", padding: "20px" }}>
       {/* Текуща поръчка */}
       <div style={{ flex: 1, border: "1px solid #ccc", padding: "10px", borderRadius: "10px" }}>
@@ -142,5 +149,7 @@ export default function OrderClient() {
         />
       }
     </div>
+    </>
+    
   );
 }
