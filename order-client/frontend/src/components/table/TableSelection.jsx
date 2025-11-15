@@ -2,7 +2,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getAccessToken } from "../../utils/authUtils";
 import { useGetAllTable } from "../../hooks/useTable";
-import { useGetAllActiveOrder } from "../../hooks/useOrder";
 
 export default function TableSelection() {
   const navigate = useNavigate();

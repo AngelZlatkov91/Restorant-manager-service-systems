@@ -1,10 +1,13 @@
 package order.services.order.services.Api;
+import jakarta.validation.Valid;
 import order.services.order.services.Models.DTO.Order.*;
 import order.services.order.services.Services.OrderServ.CompleteOrdersServ;
 import order.services.order.services.Services.OrderServ.CreateAndUpdateOrderServ;
 import order.services.order.services.Services.OrderServ.OrderService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,7 +29,12 @@ public class OrderController {
 
 
     @PostMapping("/create")
-    public ResponseEntity<String> createOrder(@RequestBody OrderDTO orderDto) {
+    public ResponseEntity<String> createOrder(@RequestBody @Valid OrderDTO orderDto, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            List<ObjectError> allErrors = bindingResult.getAllErrors();
+            String defaultMessage = allErrors.get(0).getDefaultMessage();
+            return ResponseEntity.badRequest().body(defaultMessage);
+        }
         createAndUpdateOrderServ.createOrder(orderDto);
         return new ResponseEntity<>("Order created", HttpStatus.CREATED);
     }

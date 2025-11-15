@@ -1,16 +1,23 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import MenuModal from "./MenuModal";
 import PaymentModal from "./PaymentModal";
 import SplitOrderModal from "./SplitOrderModal";
 import ConfirmDeleteModal from "./ConfirmDeleteModal";
 import { useNavigate, useParams } from "react-router-dom";
-import { useGetAllActiveOrder } from "../../hooks/useOrder";
-
+import { useCreateOrder, useGetActiveOrder } from "../../hooks/useOrder";
+import { getAccessToken } from "../../utils/authUtils";
+let initialValuesToCreate = {
+  id: '',
+  personalName: '',
+  products: [],
+}
 export default function OrderClient() {
   const [newProduct, setNewProduct] = useState([]);
+  const [personal, setPersonal] = useState('');
   const navigate = useNavigate();
   const { id } = useParams();
-  const [activeOrder, setActiveOrder] = useGetAllActiveOrder(id);
+  const [activeOrder, setActiveOrder] = useGetActiveOrder(id);
+  
   let currentProducts = activeOrder.products;
 
   let hasProduct = true;
@@ -24,6 +31,13 @@ export default function OrderClient() {
   const [showConfirmDelete, setShowConfirmDelete] = useState(false);
   const [productToDelete, setProductToDelete] = useState(null);
 
+  useEffect(() => {
+      (async () => {
+        const token = await getAccessToken();
+        setPersonal(token);
+      })();
+    }, []);
+
   // Добавяне продукт
   const addProduct = (product) => {
     const exists = newProduct.find(p => p.id === product.id);
@@ -34,7 +48,6 @@ export default function OrderClient() {
     } else {
       setNewProduct([...newProduct, product]);
     }
-    console.log(newProduct);
   };
 
   // Изтриване продукт
@@ -55,6 +68,18 @@ export default function OrderClient() {
   };
 
   const getToAllTables = () => {
+    if (newProduct.length > 0 && !hasProduct) {
+    initialValuesToCreate.personalName = personal;
+    initialValuesToCreate.id = id;
+    initialValuesToCreate.products = newProduct;
+    
+     const createNewOrder = useCreateOrder(initialValuesToCreate);
+     console.log(createNewOrder);
+    }
+
+    if (newProduct.length > 0 && hasProduct) {
+        console.log("update");
+    }
     navigate('/tables');
   }
 

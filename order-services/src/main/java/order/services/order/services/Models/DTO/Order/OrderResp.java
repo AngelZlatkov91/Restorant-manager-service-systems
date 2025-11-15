@@ -13,9 +13,13 @@ import java.util.List;
 
 public class OrderResp {
     private Long id;
-    private String table_name;
-    private String personal_name;
+    private String tableName;
+    private String personalName;
     private OrderStatus status;
     private List<AddProductToTableDTO> products;
 
+    public OrderResp(String tableName, String personalName) {
+        this.tableName = tableName;
+        this.personalName = personalName;
+    }
 }

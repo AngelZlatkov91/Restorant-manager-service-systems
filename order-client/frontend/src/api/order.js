@@ -18,9 +18,15 @@ export const getOrder = async (id) => {
     return result;
 }
 
+export const createOrder = async (data) => {
+ const result = await request.post(`${BASE_URL}/create`, data);
+ return result;
+}
+
 
 const orderApi = {
     getOrder,
+    createOrder,
 
 }
 

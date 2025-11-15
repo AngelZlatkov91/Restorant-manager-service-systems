@@ -4,7 +4,7 @@ import orderApi from "../api/order";
 
 
 
-export function useGetAllActiveOrder(id) {
+export function useGetActiveOrder(id) {
   const [activeOrder, setActiveOrder] = useState(
      {
     id: '',
@@ -30,4 +30,9 @@ export function useGetAllActiveOrder(id) {
     },[id])
        
           return [activeOrder, setActiveOrder];
+}
+
+export function useCreateOrder(data) {
+  const orderCreate = orderApi.createOrder(data);
+  return orderCreate;
 }

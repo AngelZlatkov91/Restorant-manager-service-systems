@@ -10,6 +10,7 @@ import order.services.order.services.Models.Entitys.Order;
 import order.services.order.services.Models.Entitys.Personal;
 import order.services.order.services.Models.Entitys.Product;
 import order.services.order.services.Models.Entitys.TableEn;
+import order.services.order.services.Models.OrderStatus;
 import order.services.order.services.Repositories.OrderRepositories;
 import order.services.order.services.Repositories.PersonalRepositories;
 import order.services.order.services.Repositories.ProductRepositories;
@@ -41,21 +42,18 @@ public class CreateAndUpdateOrderServImpl implements CreateAndUpdateOrderServ {
 
     @Override
     public void createOrder(OrderDTO order) {
-        Optional<Personal> personal = personalRepositories.findByName(order.getPersonal_name());
-        Optional<TableEn> byTableName = tableRepositories.findByTableName(order.getTable_name());
+        Optional<Personal> personal = personalRepositories.findByName(order.getPersonalName());
+        Optional<TableEn> byTableName = tableRepositories.findById(order.getId());
 
         if (personal.isEmpty() || byTableName.isEmpty()) {
             throw new NullPointerException("Personal or Table not found");
         }
 
+        Order orderEntity = mapToCreate(order, byTableName.get(), personal.get());
+        orderRepositories.save(orderEntity);
         byTableName.get().setEmpty(false);
         tableRepositories.save(byTableName.get());
-
-        Order orderEntity = mapToCreate(order, byTableName.get(), personal.get());
-
-        sendEvents(orderEntity.getProducts(),order.getPersonal_name(),order.getTable_name());
-
-        orderRepositories.save(orderEntity);
+        sendEvents(orderEntity.getProducts(),order.getPersonalName(),byTableName.get().getTableName());
     }
 
     private void sendEvents(List<Product> products, String personalName, String tableName) {
@@ -66,7 +64,7 @@ public class CreateAndUpdateOrderServImpl implements CreateAndUpdateOrderServ {
             OrderProductsDTO orderProductsDTO = new OrderProductsDTO();
             orderProductsDTO.setProductName(product.getName());
             orderProductsDTO.setQuantity(product.getQuantity());
-            if (!product.getDescription().isBlank()) {
+            if (product.getDescription() != null) {
                 orderProductsDTO.setDescription(product.getDescription());
             }
             if (product.getCategory().equals("BAR")) {
@@ -102,7 +100,7 @@ public class CreateAndUpdateOrderServImpl implements CreateAndUpdateOrderServ {
         List<Product> products = mapProducts(order.getProducts());
         byId.get().getProducts().addAll(products);
         
-        sendEvents(products,order.getPersonal_name(),order.getTable_name());
+        sendEvents(products,order.getPersonalName(),order.getTableName());
 
         orderRepositories.save(byId.get());
     }
@@ -110,7 +108,7 @@ public class CreateAndUpdateOrderServImpl implements CreateAndUpdateOrderServ {
     private Order mapToCreate(OrderDTO order, TableEn tableEn, Personal personal) {
         Order orderEntity = new Order();
         orderEntity.setPersonal(personal);
-        orderEntity.setOrderStatus(order.getStatus());
+        orderEntity.setOrderStatus(OrderStatus.PENDING);
         orderEntity.setCreated_at(LocalDateTime.now());
         orderEntity.setActive(true);
         orderEntity.setTableEn(tableEn);
@@ -128,8 +126,10 @@ public class CreateAndUpdateOrderServImpl implements CreateAndUpdateOrderServ {
                 productEntity.setQuantity(product.getQuantity());
                 productEntity.setName(product.getName());
                 productEntity.setCategory(product.getCategory());
-                if (!product.getDescription().isBlank()) {
+                if (product.getDescription() != null) {
                     productEntity.setDescription(product.getDescription());
+                } else {
+                    productEntity.setDescription("");
                 }
                 productRepositories.save(productEntity);
                 productEntities.add(productEntity);

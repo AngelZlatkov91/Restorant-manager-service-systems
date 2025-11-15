@@ -39,7 +39,10 @@ public class OrderServiceImpl implements OrderService {
             throw  new NullPointerException("Table or Personal don't exist");
         }
         Optional<Order> order = orderRepositories.getByPersonalAndOrderStatusAndTableEn(byName.get(),OrderStatus.PENDING,byId.get());
-        return order.map(this::mapToResponse).orElse(null);
+       if (order.isEmpty()) {
+           return new OrderResp(byId.get().getTableName(),byName.get().getName());
+       }
+        return mapToResponse(order.get());
 
     }
 
@@ -67,9 +70,9 @@ public class OrderServiceImpl implements OrderService {
     private OrderResp mapToResponse(Order order) {
         OrderResp orderResp = new OrderResp();
         orderResp.setId(order.getId());
-        orderResp.setTable_name(order.getTableEn().getTableName());
+        orderResp.setTableName(order.getTableEn().getTableName());
         orderResp.setStatus(order.getOrderStatus());
-        orderResp.setPersonal_name(order.getPersonal().getName());
+        orderResp.setPersonalName(order.getPersonal().getName());
         orderResp.setProducts(mapToResponseProduct(order.getProducts()));
         return orderResp;
     }
@@ -81,7 +84,7 @@ public class OrderServiceImpl implements OrderService {
             addProductToTableDTO.setName(product.getName());
             addProductToTableDTO.setPrice(product.getPrice());
             addProductToTableDTO.setQuantity(product.getQuantity());
-            if (!product.getDescription().isBlank()) {
+            if (product.getDescription() != null) {
                 addProductToTableDTO.setDescription(product.getDescription());
             }
             addProductToTableDTO.setCheck(product.isCheck());
