@@ -1,11 +1,12 @@
 import { useState } from "react";
 
-export default function ConfirmDeleteModal({ product, onClose, onConfirm }) {
+export default function ConfirmDeleteModal({product, onClose, onConfirm }) {
   const [password, setPassword] = useState("");
 
   const handleConfirm = () => {
-    if (password === "admin123") { // Примерна админ парола
-      onConfirm();
+    if (password.startsWith("0000")) { // Примерна админ парола
+
+      onConfirm(password,product);
     } else {
       alert("Невалидна парола!");
     }

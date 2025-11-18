@@ -9,5 +9,6 @@ import lombok.NoArgsConstructor;
 @Data
 public class DeleteProduct {
     private Long orderId;
+    private String password;
     private int indexProduct;
 }

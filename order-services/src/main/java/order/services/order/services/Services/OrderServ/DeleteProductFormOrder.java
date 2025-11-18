@@ -4,5 +4,5 @@ import order.services.order.services.Models.DTO.Order.DeleteProduct;
 
 public interface DeleteProductFormOrder {
 
-    void deleteProduct(DeleteProduct deleteProduct);
+    String deleteProduct(DeleteProduct deleteProduct);
 }

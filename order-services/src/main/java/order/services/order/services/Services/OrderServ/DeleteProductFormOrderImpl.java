@@ -1,22 +1,40 @@
 package order.services.order.services.Services.OrderServ;
 
+import jakarta.transaction.Transactional;
 import order.services.order.services.Models.DTO.Order.DeleteProduct;
+import order.services.order.services.Models.Entitys.Order;
+import order.services.order.services.Models.Entitys.Personal;
 import order.services.order.services.Repositories.OrderRepositories;
+import order.services.order.services.Repositories.PersonalRepositories;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class DeleteProductFormOrderImpl implements DeleteProductFormOrder {
 
     private final OrderRepositories orderRepositories;
+    private final PersonalRepositories personalRepositories;
 
-    public DeleteProductFormOrderImpl(OrderRepositories orderRepositories) {
+    public DeleteProductFormOrderImpl(OrderRepositories orderRepositories, PersonalRepositories personalRepositories) {
         this.orderRepositories = orderRepositories;
+        this.personalRepositories = personalRepositories;
     }
 
     @Override
-    public void deleteProduct(DeleteProduct deleteProduct) {
-        orderRepositories.findById(deleteProduct.getOrderId()).ifPresent(order -> {
-            order.getProducts().remove(deleteProduct.getIndexProduct());
-        });
+    @Transactional
+    public String deleteProduct(DeleteProduct deleteProduct) {
+        Optional<Personal> byPassword = personalRepositories.findByPassword(deleteProduct.getPassword());
+        if (byPassword.isEmpty()) {
+            return "Personal Don't exist";
+        }
+        if(!byPassword.get().getPassword().contains("0000")) {
+            return "Is not Admin";
+        }
+        Optional<Order> byId = orderRepositories.findById(deleteProduct.getOrderId());
+        byId.get().getProducts().remove(deleteProduct.getIndexProduct());
+        orderRepositories.save(byId.get());
+
+        return  "is Deleted";
     }
 }

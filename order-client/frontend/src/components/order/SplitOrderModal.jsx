@@ -1,7 +1,8 @@
 import { useState } from "react";
 
-export default function SplitOrderModal({ onClose, products, onUpdate }) {
-  const [splits, setSplits] = useState(products.map(p => ({ ...p })));
+export default function SplitOrderModal({ onClose, order, onUpdate }) {
+  console.log(order);
+  const [splits, setSplits] = useState(order.products.map(p => ({ ...p })));
 
   const changeQuantity = (id, qty) => {
     setSplits(splits.map(p => p.id === id ? { ...p, quantity: qty } : p));
