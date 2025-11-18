@@ -9,8 +9,9 @@ export function useGetActiveOrder(id) {
      {
     id: '',
     table_name: '',
-    personal_name: '',
+    personalName: '',
     status: '',
+    totalPrice: '',
     products: [{
     name: '',
     category: null,
@@ -40,4 +41,14 @@ export function useCreateOrder(data) {
 export function useUpdateOrder(data) {
   const orderUpdate = orderApi.updateOrder(data);
   return orderUpdate;
+}
+
+export function useCompleteOrder(data) {
+      const result = orderApi.completeOrder(data);
+  return result;
+}
+
+export function useDeleteProduct(data) {
+  const result = orderApi.deleteProduct(data);
+  return result;
 }

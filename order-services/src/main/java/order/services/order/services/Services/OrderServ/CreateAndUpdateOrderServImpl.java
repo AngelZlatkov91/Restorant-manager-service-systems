@@ -131,6 +131,7 @@ public class CreateAndUpdateOrderServImpl implements CreateAndUpdateOrderServ {
                 } else {
                     productEntity.setDescription("");
                 }
+                productEntity.setAddedAt(LocalDateTime.now());
                 productRepositories.save(productEntity);
                 productEntities.add(productEntity);
             }

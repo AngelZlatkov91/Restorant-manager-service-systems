@@ -46,12 +46,12 @@ public class CompleteOrdersServImpl implements CompleteOrdersServ {
 
     @Override
     @Transactional
-    public void completeOrder(PaymentMethodDTO paymentMethodDTO) {
+    public String completeOrder(PaymentMethodDTO paymentMethodDTO) {
         Optional<Order> byId = orderRepositories.findById(paymentMethodDTO.getId());
         Optional<Personal> byName = personalRepositories.findByName(paymentMethodDTO.getPersonal());
 
         if (byName.isEmpty() || byId.isEmpty() || byId.get().getOrderStatus() == OrderStatus.COMPLETED) {
-            throw new NullPointerException("Order or Personal not found");
+            throw new NullPointerException("The operation is not correct");
         }
         TableEn tableName = byId.get().getTableEn();
         tableName.setEmpty(true);
@@ -77,7 +77,7 @@ public class CompleteOrdersServImpl implements CompleteOrdersServ {
         byId.get().setActive(false);
         totalPrice = 0.0;
         orderRepositories.save(byId.get());
-
+        return "Is Completed";
     }
 
     private CashReceiptDTO printTheReceipt(Long id, CompleteOrderDTO completeOrderDTO) {

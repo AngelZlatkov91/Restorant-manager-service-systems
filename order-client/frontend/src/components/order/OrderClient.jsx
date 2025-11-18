@@ -4,7 +4,7 @@ import PaymentModal from "./PaymentModal";
 import SplitOrderModal from "./SplitOrderModal";
 import ConfirmDeleteModal from "./ConfirmDeleteModal";
 import { useNavigate, useParams } from "react-router-dom";
-import { useCreateOrder, useGetActiveOrder, useUpdateOrder } from "../../hooks/useOrder";
+import { useCreateOrder, useDeleteProduct, useGetActiveOrder, useUpdateOrder } from "../../hooks/useOrder";
 import { getAccessToken } from "../../utils/authUtils";
 let initialValuesToCreate = {
   id: '',
@@ -16,17 +16,19 @@ let initialValuesToUpdate = {
   products: [],
 }
 export default function OrderClient() {
+ 
   const [newProduct, setNewProduct] = useState([]);
   const [personal, setPersonal] = useState('');
   const navigate = useNavigate();
   const { id } = useParams();
   const [activeOrder, setActiveOrder] = useGetActiveOrder(id);
-  
   let currentProducts = activeOrder.products;
 
-  let hasProduct = true;
-  if (!activeOrder.id) {
-    hasProduct = false;
+  let hasProduct = false;
+  let price = 0.0;
+  if (activeOrder.id) {
+    hasProduct = true;
+    price = activeOrder.totalPrice;
   };
  
   const [showMenu, setShowMenu] = useState(false);
@@ -34,7 +36,7 @@ export default function OrderClient() {
   const [showSplit, setShowSplit] = useState(false);
   const [showConfirmDelete, setShowConfirmDelete] = useState(false);
   const [productToDelete, setProductToDelete] = useState(null);
-
+  const [dataToDelete, setDataToDelete] = useState();
   useEffect(() => {
       (async () => {
         const token = await getAccessToken();
@@ -54,13 +56,24 @@ export default function OrderClient() {
     }
   };
 
+
+
   // Изтриване продукт
-  const removeProduct = (productId) => {
-    setActiveOrder(activeOrder.filter(p => p.id !== productId));
+  const removeProduct = (password, product) => {
+    const findIndex = activeOrder.products.findIndex(p => p.id === product.id && p.addedAt === product.addedAt);
+    const data = {
+      orderId: activeOrder.id,
+      password: password,
+      indexProduct: findIndex
+    }
+    const result = useDeleteProduct(data);
+    console.log(result);
+
+   setShowConfirmDelete(false);
   };
 
   const removeNewProductNotCheck = (product) => {
-    console.log(product)
+    console.log(`order ${product}`)
     setNewProduct(newProduct.filter(p => p.id !== product.id));
   }
 
@@ -94,7 +107,7 @@ export default function OrderClient() {
     <div style={{ display: "flex", gap: "20px", padding: "20px" }}>
       {/* Текуща поръчка */}
       <div style={{ flex: 1, border: "1px solid #ccc", padding: "10px", borderRadius: "10px" }}>
-        <h2>Текуща поръчка</h2>
+        <h2>Текуща поръчка: <strong>{price} : EURO</strong></h2>
         {!hasProduct ? (
           <p>Няма избрани продукти.</p>
         ) : (
@@ -103,7 +116,9 @@ export default function OrderClient() {
               <span>{p.name} - <span style={{color: "red"}}>{p.quantity}</span></span>
               <div style={{ display: "flex", gap: "5px" }}>
                 <button 
-                  onClick={() => { setProductToDelete(p); setShowConfirmDelete(true); }}
+                  onClick={() => { setProductToDelete(p); setShowConfirmDelete(true);
+                    
+                   }}
                   style={{ background: "#f44336", color: "white", border: "none", borderRadius: "5px", padding: "4px 8px" }}
                 >Изтрий</button>
               </div>
@@ -140,12 +155,13 @@ export default function OrderClient() {
       {/* Модали */}
       {showMenu && <MenuModal onClose={() => setShowMenu(false)} onAdd={addProduct} />}
       {showPayment && <PaymentModal onClose={() => setShowPayment(false)} products={activeOrder} />}
-      {showSplit && <SplitOrderModal onClose={() => setShowSplit(false)} products={activeOrder} onUpdate={updateProduct} />}
+      {showSplit && <SplitOrderModal onClose={() => setShowSplit(false)} order={activeOrder} onUpdate={updateProduct} />}
       {showConfirmDelete && 
         <ConfirmDeleteModal 
           product={productToDelete} 
+          index={dataToDelete}
           onClose={() => setShowConfirmDelete(false)} 
-          onConfirm={() => { removeProduct(productToDelete.id); setShowConfirmDelete(false); }} 
+          onConfirm={removeProduct} 
         />
       }
     </div>

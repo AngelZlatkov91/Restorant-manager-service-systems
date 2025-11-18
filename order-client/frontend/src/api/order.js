@@ -28,11 +28,26 @@ export const updateOrder = async (data) => {
     return result;
 }
 
+export const deleteProduct = async (data) => {
+    const result = await request.del(`${BASE_URL}/remove/product`, data);
+    return result;
+}
+
+export const completeOrder = async (data) => {
+    console.log(data);
+    const result = await request.post(`${BASE_URL}/complete`, data);
+    return result;
+}
+
 
 const orderApi = {
     getOrder,
     createOrder,
-    updateOrder
+    updateOrder,
+    deleteProduct,
+    completeOrder,
+
+
 
 }
 

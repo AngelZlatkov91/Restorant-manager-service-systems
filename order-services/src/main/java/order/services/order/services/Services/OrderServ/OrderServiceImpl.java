@@ -23,11 +23,13 @@ public class OrderServiceImpl implements OrderService {
     private final OrderRepositories orderRepositories;
     private final PersonalRepositories personalRepositories;
     private final TableRepositories tableRepositories;
+    private Double totalAmount;
 
     public OrderServiceImpl(OrderRepositories orderRepositories, PersonalRepositories personalRepositories, TableRepositories tableRepositories) {
         this.orderRepositories = orderRepositories;
         this.personalRepositories = personalRepositories;
         this.tableRepositories = tableRepositories;
+        this.totalAmount = 0.0;
     }
 
 
@@ -75,6 +77,8 @@ public class OrderServiceImpl implements OrderService {
         orderResp.setPersonalName(order.getPersonal().getName());
         orderResp.setCreatedAd(order.getCreated_at());
         orderResp.setProducts(mapToResponseProduct(order.getProducts()));
+        orderResp.setTotalPrice(totalAmount);
+        totalAmount = 0.0;
         return orderResp;
     }
 
@@ -85,9 +89,11 @@ public class OrderServiceImpl implements OrderService {
             addProductToTableDTO.setName(product.getName());
             addProductToTableDTO.setPrice(product.getPrice());
             addProductToTableDTO.setQuantity(product.getQuantity());
+            addProductToTableDTO.setAddedAt(product.getAddedAt());
             if (product.getDescription() != null) {
                 addProductToTableDTO.setDescription(product.getDescription());
             }
+            totalAmount = totalAmount + (product.getQuantity() * product.getPrice());
             addProductToTableDTO.setCheck(product.isCheck());
             addProducts.add(addProductToTableDTO);
         }

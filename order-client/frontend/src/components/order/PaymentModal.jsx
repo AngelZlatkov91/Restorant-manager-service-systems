@@ -1,11 +1,22 @@
 import { useState } from "react";
+import { useCompleteOrder } from "../../hooks/useOrder";
+import { useNavigate } from "react-router-dom";
 
 export default function PaymentModal({ onClose, products }) {
-  const [method, setMethod] = useState("cash");
+  const navigate = useNavigate();
+  const [method, setMethod] = useState("CASH");
 
-  const total = products.reduce((sum, p) => sum + p.price * p.quantity, 0);
+  const total = products.totalPrice;
 
   const handlePayment = () => {
+    const data = {
+      id: products.id,
+      paymentMethod: method,
+      personal: products.personalName
+
+    }
+    const result = useCompleteOrder(data);
+    navigate("/tables");
     alert(`Платено ${total} лв. с ${method}`);
     onClose();
   };
@@ -16,11 +27,11 @@ export default function PaymentModal({ onClose, products }) {
       <p>Обща сума: {total} лв.</p>
       <div>
         <label>
-          <input type="radio" name="method" value="cash" checked={method === "cash"} onChange={() => setMethod("cash")} />
+          <input type="radio" name="method" value="CASH" checked={method === "CASH"} onChange={() => setMethod("CASH")} />
           В брой
         </label>
         <label style={{ marginLeft: "10px" }}>
-          <input type="radio" name="method" value="card" checked={method === "card"} onChange={() => setMethod("card")} />
+          <input type="radio" name="method" value="CARD" checked={method === "CARD"} onChange={() => setMethod("CARD")} />
           Карта
         </label>
       </div>

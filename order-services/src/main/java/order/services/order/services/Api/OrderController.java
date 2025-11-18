@@ -3,6 +3,7 @@ import jakarta.validation.Valid;
 import order.services.order.services.Models.DTO.Order.*;
 import order.services.order.services.Services.OrderServ.CompleteOrdersServ;
 import order.services.order.services.Services.OrderServ.CreateAndUpdateOrderServ;
+import order.services.order.services.Services.OrderServ.DeleteProductFormOrder;
 import order.services.order.services.Services.OrderServ.OrderService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,12 +20,14 @@ public class OrderController {
     private final CreateAndUpdateOrderServ createAndUpdateOrderServ;
     private final OrderService orderService;
     private final CompleteOrdersServ completeOrdersServ;
+    private final DeleteProductFormOrder deleteProductFormOrder;
 
 
-    public OrderController(CreateAndUpdateOrderServ orderService, OrderService orderService1, CompleteOrdersServ completeOrdersServ) {
+    public OrderController(CreateAndUpdateOrderServ orderService, OrderService orderService1, CompleteOrdersServ completeOrdersServ, DeleteProductFormOrder deleteProductFormOrder) {
         this.createAndUpdateOrderServ = orderService;
         this.orderService = orderService1;
         this.completeOrdersServ = completeOrdersServ;
+        this.deleteProductFormOrder = deleteProductFormOrder;
     }
 
 
@@ -57,8 +60,13 @@ public class OrderController {
 
     @PostMapping("/complete")
     public ResponseEntity<String> completeOrder(@RequestBody PaymentMethodDTO paymentMethodDTO) {
-        completeOrdersServ.completeOrder(paymentMethodDTO);
-       return ResponseEntity.ok("The order is pay!");
+       return ResponseEntity.ok(completeOrdersServ.completeOrder(paymentMethodDTO));
+    }
+
+    @DeleteMapping("/remove/product")
+    public ResponseEntity<String> removeProduct(@RequestBody DeleteProduct deleteProduct) {
+       String result =  deleteProductFormOrder.deleteProduct(deleteProduct);
+        return ResponseEntity.ok(result);
     }
 
 

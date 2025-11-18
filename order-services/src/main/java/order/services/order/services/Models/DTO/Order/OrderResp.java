@@ -18,6 +18,7 @@ public class OrderResp {
     private String personalName;
     private OrderStatus status;
     private LocalDateTime createdAd;
+    private Double totalPrice;
     private List<AddProductToTableDTO> products;
 
     public OrderResp(String tableName, String personalName) {

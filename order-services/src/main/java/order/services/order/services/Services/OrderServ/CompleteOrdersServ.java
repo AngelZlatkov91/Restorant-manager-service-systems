@@ -5,5 +5,5 @@ import order.services.order.services.Models.DTO.Order.PaymentMethodDTO;
 
 public interface CompleteOrdersServ {
 
-    void completeOrder(PaymentMethodDTO paymentMethodDTO);
+    String completeOrder(PaymentMethodDTO paymentMethodDTO);
 }

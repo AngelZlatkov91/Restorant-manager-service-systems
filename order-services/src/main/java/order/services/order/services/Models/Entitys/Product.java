@@ -8,6 +8,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
@@ -27,6 +28,8 @@ public class Product extends BaseEntity {
     private boolean isCheck;
     @Column(nullable = false)
     private int quantity;
+    @Column
+    private LocalDateTime addedAt;
     @Column
     private String description;
 
