@@ -17,13 +17,13 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private  final PasswordEncoder passwordEncoder;
-    private final ModelMapper modelMapper;
+
 
      @Autowired
-    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, ModelMapper modelMapper) {
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
          this.passwordEncoder = passwordEncoder;
-         this.modelMapper = modelMapper;
+
      }
 
     @Override
@@ -37,7 +37,7 @@ public class UserServiceImpl implements UserService {
         if (userRepository.findByUsername(userRegisterDTO.getUsername()).isPresent()) {
             throw new UserIsAlreadyExistExp("User already exist");
         }
-        modelMapper.map(userRegisterDTO, user);
+       user.setUsername(userRegisterDTO.getUsername());
         user.setPassword(passwordEncoder.encode(userRegisterDTO.getPassword()));
         if (userRepository.count() == 0) {
             user.setRole(Role.ADMIN);

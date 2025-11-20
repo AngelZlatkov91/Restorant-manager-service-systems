@@ -17,11 +17,11 @@ import java.util.Optional;
 public class ManagerServiceImpl implements ManagerService {
 
     private  final UserRepository userRepository;
-    private final ModelMapper modelMapper;
 
-    public ManagerServiceImpl(UserRepository userRepository, ModelMapper modelMapper) {
+
+    public ManagerServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.modelMapper = modelMapper;
+
     }
 
     @Override
@@ -47,6 +47,6 @@ public class ManagerServiceImpl implements ManagerService {
     }
 
     private UserDetailsDTO mapTo(User user) {
-        return modelMapper.map(user, UserDetailsDTO.class);
+        return new UserDetailsDTO(user.getId(),user.getUsername(),user.getRole().name());
     }
 }
