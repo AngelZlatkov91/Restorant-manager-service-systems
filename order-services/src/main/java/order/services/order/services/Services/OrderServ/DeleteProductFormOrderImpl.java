@@ -25,11 +25,8 @@ public class DeleteProductFormOrderImpl implements DeleteProductFormOrder {
     @Transactional
     public String deleteProduct(DeleteProduct deleteProduct) {
         Optional<Personal> byPassword = personalRepositories.findByPassword(deleteProduct.getPassword());
-        if (byPassword.isEmpty()) {
-            return "Personal Don't exist";
-        }
-        if(!byPassword.get().getPassword().contains("0000")) {
-            return "Is not Admin";
+        if (byPassword.isEmpty() || !deleteProduct.getPassword().contains("0000")) {
+            throw new NullPointerException("is not Admin");
         }
         Optional<Order> byId = orderRepositories.findById(deleteProduct.getOrderId());
         byId.get().getProducts().remove(deleteProduct.getIndexProduct());

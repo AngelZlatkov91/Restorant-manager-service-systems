@@ -1,9 +1,11 @@
 import { useState } from "react";
+import { useGetAllTable } from "../../hooks/useTable";
 
 export default function SplitOrderModal({ onClose, order, onUpdate }) {
-  console.log(order);
+ 
   const [splits, setSplits] = useState(order.products.map(p => ({ ...p })));
-
+  const [tables, fetchTables] = useGetAllTable();
+ 
   const changeQuantity = (id, qty) => {
     setSplits(splits.map(p => p.id === id ? { ...p, quantity: qty } : p));
   };

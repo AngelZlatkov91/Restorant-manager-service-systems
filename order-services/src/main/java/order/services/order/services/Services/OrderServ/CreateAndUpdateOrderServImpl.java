@@ -123,6 +123,7 @@ public class CreateAndUpdateOrderServImpl implements CreateAndUpdateOrderServ {
                 Product productEntity = new Product();
                 productEntity.setCheck(true);
                 productEntity.setPrice(product.getPrice());
+                productEntity.setIdItem(product.getId());
                 productEntity.setQuantity(product.getQuantity());
                 productEntity.setName(product.getName());
                 productEntity.setCategory(product.getCategory());

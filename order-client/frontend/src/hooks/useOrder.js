@@ -22,15 +22,15 @@ export function useGetActiveOrder(id) {
     }]
 }
   );
+  const fetchOrder = async () => {
+    const result = await orderApi.getOrder(id);
+    setActiveOrder(result);
+  }
     useEffect(() =>  {
-      (async () => {
-        const result = await orderApi.getOrder(id);
-      setActiveOrder(result);
-      })();
-      
-    },[id])
+      fetchOrder();
+    },[])
        
-          return [activeOrder, setActiveOrder];
+  return [activeOrder, fetchOrder];
 }
 
 export function useCreateOrder(data) {

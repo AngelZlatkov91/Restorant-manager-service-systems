@@ -86,6 +86,7 @@ public class OrderServiceImpl implements OrderService {
         List<AddProductToTableDTO> addProducts = new ArrayList<>();
         for (Product product : products) {
             AddProductToTableDTO addProductToTableDTO = new AddProductToTableDTO();
+            addProductToTableDTO.setId(product.getIdItem());
             addProductToTableDTO.setName(product.getName());
             addProductToTableDTO.setPrice(product.getPrice());
             addProductToTableDTO.setQuantity(product.getQuantity());

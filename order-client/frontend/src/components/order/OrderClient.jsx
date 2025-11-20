@@ -21,7 +21,7 @@ export default function OrderClient() {
   const [personal, setPersonal] = useState('');
   const navigate = useNavigate();
   const { id } = useParams();
-  const [activeOrder, setActiveOrder] = useGetActiveOrder(id);
+  const [activeOrder, fetchOrder] = useGetActiveOrder(id);
   let currentProducts = activeOrder.products;
 
   let hasProduct = false;
@@ -36,7 +36,7 @@ export default function OrderClient() {
   const [showSplit, setShowSplit] = useState(false);
   const [showConfirmDelete, setShowConfirmDelete] = useState(false);
   const [productToDelete, setProductToDelete] = useState(null);
-  const [dataToDelete, setDataToDelete] = useState();
+  
   useEffect(() => {
       (async () => {
         const token = await getAccessToken();
@@ -44,8 +44,8 @@ export default function OrderClient() {
       })();
     }, []);
 
-  // Добавяне продукт
-  const addProduct = (product) => {
+  
+  const addProductNewProduct = (product) => {
     const exists = newProduct.find(p => p.id === product.id);
     if (exists) {
       setNewProduct(newProduct.map(p => 
@@ -58,8 +58,8 @@ export default function OrderClient() {
 
 
 
-  // Изтриване продукт
-  const removeProduct = (password, product) => {
+  
+  const removeAddedProduct = (password, product) => {
     const findIndex = activeOrder.products.findIndex(p => p.id === product.id && p.addedAt === product.addedAt);
     const data = {
       orderId: activeOrder.id,
@@ -68,24 +68,25 @@ export default function OrderClient() {
     }
     const result = useDeleteProduct(data);
     console.log(result);
-
    setShowConfirmDelete(false);
+   fetchOrder();
   };
+  
 
   const removeNewProductNotCheck = (product) => {
-    console.log(`order ${product}`)
     setNewProduct(newProduct.filter(p => p.id !== product.id));
   }
 
   // Актуализира продукт (например при разделяне)
   const updateProduct = (updatedProduct) => {
     setActiveOrder(
-      activeOrder.map(p => p.id === updatedProduct.id ? updatedProduct : p)
+      activeOrder.products.map(p => p.id === updatedProduct.id ? updatedProduct : p)
     );
   };
 
-  const getToAllTables = () => {
+  const createOrUpdate = () => {
     if (newProduct.length > 0 && !hasProduct) {
+      
     initialValuesToCreate.personalName = personal;
     initialValuesToCreate.id = id;
     initialValuesToCreate.products = newProduct;
@@ -150,18 +151,17 @@ export default function OrderClient() {
         </div>
       </div>
 
-      <button onClick={getToAllTables} style={{ padding: "6px 12px" }}>Salon</button>
+      <button onClick={createOrUpdate} style={{ padding: "6px 12px" }}>Salon</button>
 
       {/* Модали */}
-      {showMenu && <MenuModal onClose={() => setShowMenu(false)} onAdd={addProduct} />}
+      {showMenu && <MenuModal onClose={() => setShowMenu(false)} onAdd={addProductNewProduct} />}
       {showPayment && <PaymentModal onClose={() => setShowPayment(false)} products={activeOrder} />}
       {showSplit && <SplitOrderModal onClose={() => setShowSplit(false)} order={activeOrder} onUpdate={updateProduct} />}
       {showConfirmDelete && 
         <ConfirmDeleteModal 
           product={productToDelete} 
-          index={dataToDelete}
           onClose={() => setShowConfirmDelete(false)} 
-          onConfirm={removeProduct} 
+          onConfirm={removeAddedProduct} 
         />
       }
     </div>

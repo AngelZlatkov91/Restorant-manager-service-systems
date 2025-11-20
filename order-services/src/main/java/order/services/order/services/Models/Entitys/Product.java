@@ -20,6 +20,8 @@ public class Product extends BaseEntity {
 
     @Column(nullable = false)
     private String name;
+    @Column
+    private String idItem;
     @Column(nullable = false)
     private Double price;
     @Column(nullable = false)

@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Data
 public class AddProductToTableDTO {
+    private String id;
     private String name;
     private String category;
     private Double price;
