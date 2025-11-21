@@ -1,5 +1,6 @@
 package User.management.user.management.Service.impl;
 
+import User.management.user.management.Exception.UserDontExistExp;
 import User.management.user.management.Models.DTO.UserChangeRoleDTO;
 import User.management.user.management.Models.DTO.UserDetailsDTO;
 import User.management.user.management.Models.Entitys.User;
@@ -34,10 +35,12 @@ public class ManagerServiceImpl implements ManagerService {
     public void changeProfileRole(UserChangeRoleDTO userChangeRoleDTO) {
         Optional<User> byEmail = userRepository.findByUsername(userChangeRoleDTO.getUsername());
 
-        if (byEmail.isPresent()) {
-            byEmail.get().setRole(userChangeRoleDTO.getRole());
-            userRepository.save(byEmail.get());
+        if (byEmail.isEmpty()) {
+            throw new UserDontExistExp("User don't exist!");
         }
+        byEmail.get().setRole(userChangeRoleDTO.getRole());
+        userRepository.save(byEmail.get());
+
     }
 
     @Override
