@@ -2,7 +2,6 @@ package User.management.user.management.Web;
 
 import User.management.user.management.Models.DTO.UserRegisterDTO;
 import User.management.user.management.Service.Interfaces.UserService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

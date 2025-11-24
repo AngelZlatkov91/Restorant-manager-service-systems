@@ -8,7 +8,6 @@ import User.management.user.management.Models.Enum.Role;
 import User.management.user.management.Repositories.UserRepository;
 import User.management.user.management.Service.Interfaces.ManagerService;
 import jakarta.transaction.Transactional;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

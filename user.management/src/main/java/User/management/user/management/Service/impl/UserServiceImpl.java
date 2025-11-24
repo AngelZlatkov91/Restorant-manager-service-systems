@@ -1,13 +1,11 @@
 package User.management.user.management.Service.impl;
 
 import User.management.user.management.Exception.UserIsAlreadyExistExp;
-import User.management.user.management.Models.DTO.UserDetailsDTO;
 import User.management.user.management.Models.DTO.UserRegisterDTO;
 import User.management.user.management.Models.Entitys.User;
 import User.management.user.management.Models.Enum.Role;
 import User.management.user.management.Repositories.UserRepository;
 import User.management.user.management.Service.Interfaces.UserService;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
