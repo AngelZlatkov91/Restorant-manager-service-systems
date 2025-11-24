@@ -18,7 +18,7 @@ public class MenuItemCreate {
     private String name;
      @Positive
      @NotNull(message = "The price must be positive!")
-    private Double price;
+     private Double price;
      @NotBlank
     private String category;
 
