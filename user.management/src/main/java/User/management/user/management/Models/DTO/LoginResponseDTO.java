@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 public class LoginResponseDTO {
-    private String email;
+    private String status;
     private String token;
 
 }
