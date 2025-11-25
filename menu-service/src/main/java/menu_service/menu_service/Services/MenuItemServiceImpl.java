@@ -128,9 +128,8 @@ public class MenuItemServiceImpl implements MenuItemService {
     public void changeStatus(CheckItemEvent checkItemEvent) {
         Optional<MenuItem> byName = menuItemRepository.findByName(checkItemEvent.getItemName());
         if (byName.isPresent()) {
-            MenuItem item = byName.get();
-            item.setActive(checkItemEvent.isStatus());
-            menuItemRepository.save(item);
+            byName.get().setActive(checkItemEvent.isStatus());
+            menuItemRepository.save(byName.get());
         }
     }
 }
