@@ -19,15 +19,15 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-
 public class MenuItemServiceImpl implements MenuItemService {
 
     private final MenuItemRepository menuItemRepository;
-
     private final CategoryItemRepository categoryItemRepository;
     private final InventoryEvent inventoryEvent;
 
-    public MenuItemServiceImpl(MenuItemRepository menuItemRepository, CategoryItemRepository categoryItemRepository, InventoryEvent inventoryEvent) {
+    public MenuItemServiceImpl(MenuItemRepository menuItemRepository,
+                               CategoryItemRepository categoryItemRepository,
+                               InventoryEvent inventoryEvent) {
         this.menuItemRepository = menuItemRepository;
         this.categoryItemRepository = categoryItemRepository;
         this.inventoryEvent = inventoryEvent;
@@ -35,17 +35,18 @@ public class MenuItemServiceImpl implements MenuItemService {
 
     @Override
     public String createMenuItem(MenuItemCreate menuItem) {
+        Category category = categoryItemRepository.findByName(menuItem.getCategory())
+                .orElseThrow(() -> new MenuItemDontExistExp("Category does not exist"));
 
-        Optional<Category> category = categoryItemRepository.findByName(menuItem.getCategory());
         MenuItem newItem = mapData(menuItem);
-        newItem.setCategory(category.get());
+        newItem.setCategory(category);
         menuItemRepository.save(newItem);
-        if (menuItem.getTypeProduct().name().equals("BAR")) {
+
+        if (menuItem.getTypeProduct() != null && menuItem.getTypeProduct().name().equals("BAR")) {
             inventoryEvent.sendItemCreateEvent(new InventoryDTO(newItem.getName(), newItem.getCategory().getName()));
         }
         return "Created";
     }
-
 
     private MenuItem mapData(MenuItemCreate menuItem) {
         MenuItem item = new MenuItem();
@@ -67,12 +68,10 @@ public class MenuItemServiceImpl implements MenuItemService {
 
     @Override
     public List<MenuItemRes> getAllByCategory(String category) {
-        Optional<Category> category1 = categoryItemRepository.findByName(category);
-        if (category1.isEmpty()) {
-            throw new MenuItemDontExistExp("This category does not exist");
-        }
+        Category cat = categoryItemRepository.findByName(category)
+                .orElseThrow(() -> new MenuItemDontExistExp("This category does not exist"));
         return this.menuItemRepository
-                .findByCategory(category1.get())
+                .findByCategory(cat)
                 .stream()
                 .map(this::mapToRes)
                 .collect(Collectors.toList());
@@ -85,45 +84,43 @@ public class MenuItemServiceImpl implements MenuItemService {
         item.setPrice(menuItem.getPrice());
         item.setTypeProduct(menuItem.getTypeProduct());
         item.setActive(menuItem.isActive());
-        item.setCategory(menuItem.getCategory().getName());
+        item.setCategory(menuItem.getCategory() != null ? menuItem.getCategory().getName() : null);
         return item;
     }
 
     @Override
     public MenuItemRes getMenuItem(String menuItemId) {
-        MenuItem menuItem = this.menuItemRepository.findById(menuItemId).orElse(null);
-        if (menuItem == null) {
-            throw  new MenuItemDontExistExp("Menu item not found");
-        }
-
+        MenuItem menuItem = this.menuItemRepository.findById(menuItemId)
+                .orElseThrow(() -> new MenuItemDontExistExp("Menu item not found"));
         return mapToRes(menuItem);
     }
 
     @Override
     @Transactional
     public ResStatus deleteMenuItem(String menuItemId) {
-        Optional<MenuItem> byId = menuItemRepository.findById(menuItemId);
-        inventoryEvent.sendItemDeleteEvent(new InventoryDTO(byId.get().getName(),byId.get().getCategory().getName()));
+        MenuItem item = menuItemRepository.findById(menuItemId)
+                .orElseThrow(() -> new MenuItemDontExistExp("Menu item not found"));
 
+        inventoryEvent.sendItemDeleteEvent(new InventoryDTO(item.getName(), item.getCategory().getName()));
         menuItemRepository.deleteById(menuItemId);
         return new ResStatus("Item is Deleted");
     }
 
     @Override
     @Transactional
-    public MenuItemRes updateMenuItem( MenuItemRes menuItemRes) {
-        Optional<MenuItem> byId =
-                menuItemRepository.findById(menuItemRes.getId());
-        Optional<Category> byName = categoryItemRepository.findByName(menuItemRes.getCategory());
-        if (byId.isEmpty() || byName.isEmpty()) {
-            throw new MenuItemDontExistExp("Menu item not found");
-        }
-           byId.get().setName(menuItemRes.getName());
-           byId.get().setActive(menuItemRes.isActive());
-           byId.get().setPrice(menuItemRes.getPrice());
-           byId.get().setCategory(byName.get());
-           menuItemRepository.save(byId.get());
-        return getMenuItem(byId.get().getId());
+    public MenuItemRes updateMenuItem(MenuItemRes menuItemRes) {
+        MenuItem existing = menuItemRepository.findById(menuItemRes.getId())
+                .orElseThrow(() -> new MenuItemDontExistExp("Menu item not found"));
+        Category category = categoryItemRepository.findByName(menuItemRes.getCategory())
+                .orElseThrow(() -> new MenuItemDontExistExp("Category not found"));
+
+        existing.setName(menuItemRes.getName());
+        existing.setActive(menuItemRes.isActive());
+        existing.setPrice(menuItemRes.getPrice());
+        existing.setCategory(category);
+        menuItemRepository.save(existing);
+
+        return getMenuItem(existing.getId());
     }
 
     @Override
@@ -131,8 +128,9 @@ public class MenuItemServiceImpl implements MenuItemService {
     public void changeStatus(CheckItemEvent checkItemEvent) {
         Optional<MenuItem> byName = menuItemRepository.findByName(checkItemEvent.getItemName());
         if (byName.isPresent()) {
-            byName.get().setActive(checkItemEvent.isStatus());
-            menuItemRepository.save(byName.get());
+            MenuItem item = byName.get();
+            item.setActive(checkItemEvent.isStatus());
+            menuItemRepository.save(item);
         }
     }
 }
