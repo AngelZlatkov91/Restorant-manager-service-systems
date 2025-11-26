@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -44,7 +45,12 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     @Transactional
-    public void deleteCategory(String id) {
-         categoryItemRepository.deleteById(id);
+    public String deleteCategory(String id) {
+        Optional<Category> byId = categoryItemRepository.findById(id);
+        if (byId.isEmpty()) {
+            throw new NullPointerException("Category not exist!");
+        }
+        categoryItemRepository.deleteById(id);
+         return "Category " + byId.get().getName() + " is Deleted!";
     }
 }

@@ -3,10 +3,7 @@ package menu_service.menu_service.Api;
 import menu_service.menu_service.Models.DTO.MenuItemRes;
 import menu_service.menu_service.Services.MenuItemService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -27,7 +24,7 @@ public class GetItemsController {
     }
 
     @GetMapping("/byCategory")
-    public ResponseEntity<List<MenuItemRes>> getAllByCategory(@RequestBody String category) {
+    public ResponseEntity<List<MenuItemRes>> getAllByCategory(@RequestParam String category) {
 
         return ResponseEntity.ok( menuItemService.getAllByCategory(category));
     }

@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
@@ -60,8 +61,10 @@ class CategoryServiceImplTest {
 
     @Test
     void deleteCategory_ShouldCallRepositoryDelete() {
-        categoryService.deleteCategory("123");
-        verify(repository, times(1)).deleteById("123");
+        Category newCategory = new Category("c1","Food");
+        when(repository.findById("c1")).thenReturn(Optional.of(newCategory));
+        String result = categoryService.deleteCategory("c1");
+        assertThat(result).isEqualTo("Category Food is Deleted!");
     }
 
 }

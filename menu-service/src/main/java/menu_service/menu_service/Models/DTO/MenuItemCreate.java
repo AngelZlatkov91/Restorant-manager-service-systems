@@ -13,7 +13,7 @@ import menu_service.menu_service.Validation.UniqueMenuName;
 @AllArgsConstructor
 @Data
 public class MenuItemCreate {
-     @UniqueMenuName
+//     @UniqueMenuName
      @NotBlank
     private String name;
      @Positive

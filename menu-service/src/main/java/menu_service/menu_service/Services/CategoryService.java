@@ -10,6 +10,6 @@ import java.util.List;
 public interface CategoryService {
     ResStatus addCategory(CreateCategory category);
     List<ResCategory> getAllCategories();
-    void deleteCategory(String id);
+    String deleteCategory(String id);
 
 }
