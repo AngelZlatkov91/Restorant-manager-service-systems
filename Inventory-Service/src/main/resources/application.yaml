@@ -1,5 +1,6 @@
 server:
   port: 8085
+
 spring:
   datasource:
     driverClassName: com.mysql.cj.jdbc.Driver
@@ -24,23 +25,20 @@ spring:
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
     consumer:
       bootstrap-servers: localhost:9092
-      group-id: inventory-service
+      group-id: inventory-group
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
       properties:
-        spring:
-          deserializer:
-            value.delegate.class: org.springframework.kafka.support.serializer.JsonDeserializer
-          json:
-            value.default.type: Restaurant.service.managment.Inventory.Service.Event.InventoryDTO
-            trusted.packages: "*"
+        spring.json.trusted.packages: "*"
+        spring.json.value.default.type: Restaurant.service.managment.Inventory.Service.Event.InventoryDTO
+
 logging:
   level:
     org.hibernate.SQL: DEBUG
     org.hibernate.orm.jdbc.bind: TRACE
 
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          jwk-set-uri: http://localhost:8080/.well-known/jwks.json
+security:
+  oauth2:
+    resourceserver:
+      jwt:
+        jwk-set-uri: http://localhost:8080/.well-known/jwks.json

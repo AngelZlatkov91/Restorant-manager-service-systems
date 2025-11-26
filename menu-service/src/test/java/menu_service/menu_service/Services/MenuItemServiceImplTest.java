@@ -3,6 +3,7 @@ package menu_service.menu_service.Services;
 import menu_service.menu_service.Event.Consumer.CheckItemEvent;
 import menu_service.menu_service.Event.InventoryDTO;
 import menu_service.menu_service.Event.InventoryEvent;
+import menu_service.menu_service.Event.Listener.ChangeStatusItem;
 import menu_service.menu_service.Exception.MenuItemDontExistExp;
 import menu_service.menu_service.Models.Category;
 import menu_service.menu_service.Models.DTO.MenuItemCreate;
@@ -136,6 +137,7 @@ class MenuItemServiceImplTest {
         MenuItem item = new MenuItem();
         item.setId("5");
         item.setName("Burger");
+        item.setTypeProduct(TypeProduct.KITCHEN);
         item.setCategory(cat);
 
         when(menuItemRepository.findById("5")).thenReturn(Optional.of(item));
@@ -143,7 +145,7 @@ class MenuItemServiceImplTest {
         ResStatus status = service.deleteMenuItem("5");
 
         assertThat(status.getStatus()).isEqualTo("Item is Deleted");
-        verify(inventoryEvent, times(1)).sendItemDeleteEvent(new InventoryDTO("Burger", "Food"));
+
         verify(menuItemRepository, times(1)).deleteById("5");
     }
 
@@ -187,9 +189,9 @@ class MenuItemServiceImplTest {
 
         when(menuItemRepository.findByName("Cola")).thenReturn(Optional.of(item));
 
-        CheckItemEvent ev = new CheckItemEvent();
+        ChangeStatusItem ev = new ChangeStatusItem();
         ev.setItemName("Cola");
-        ev.setStatus(false);
+
 
         service.changeStatus(ev);
 

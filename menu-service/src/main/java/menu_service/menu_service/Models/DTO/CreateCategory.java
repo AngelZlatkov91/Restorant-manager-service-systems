@@ -11,7 +11,7 @@ import menu_service.menu_service.Validation.UniqueCategoryItem;
 @AllArgsConstructor
 @Data
 public class CreateCategory {
-//    @UniqueCategoryItem
+    @UniqueCategoryItem
     @NotBlank
     @Size(min = 3, max = 50)
     private String categoryName;

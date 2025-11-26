@@ -3,12 +3,14 @@ package menu_service.menu_service.Services;
 import menu_service.menu_service.Event.Consumer.CheckItemEvent;
 import menu_service.menu_service.Event.InventoryDTO;
 import menu_service.menu_service.Event.InventoryEvent;
+import menu_service.menu_service.Event.Listener.ChangeStatusItem;
 import menu_service.menu_service.Exception.MenuItemDontExistExp;
 import menu_service.menu_service.Models.Category;
 import menu_service.menu_service.Models.DTO.MenuItemCreate;
 import menu_service.menu_service.Models.DTO.MenuItemRes;
 import menu_service.menu_service.Models.DTO.ResStatus;
 import menu_service.menu_service.Models.MenuItem;
+import menu_service.menu_service.Models.TypeProduct;
 import menu_service.menu_service.Repositories.CategoryItemRepository;
 import menu_service.menu_service.Repositories.MenuItemRepository;
 import org.springframework.stereotype.Service;
@@ -100,8 +102,10 @@ public class MenuItemServiceImpl implements MenuItemService {
     public ResStatus deleteMenuItem(String menuItemId) {
         MenuItem item = menuItemRepository.findById(menuItemId)
                 .orElseThrow(() -> new MenuItemDontExistExp("Menu item not found"));
+        if (item.getTypeProduct().name().contains("BAR")) {
+            inventoryEvent.sendItemDeleteEvent(new InventoryDTO(item.getName(), item.getCategory().getName()));
+        }
 
-        inventoryEvent.sendItemDeleteEvent(new InventoryDTO(item.getName(), item.getCategory().getName()));
         menuItemRepository.deleteById(menuItemId);
         return new ResStatus("Item is Deleted");
     }
@@ -125,10 +129,10 @@ public class MenuItemServiceImpl implements MenuItemService {
 
     @Override
     @Transactional
-    public void changeStatus(CheckItemEvent checkItemEvent) {
+    public void changeStatus(ChangeStatusItem checkItemEvent) {
         Optional<MenuItem> byName = menuItemRepository.findByName(checkItemEvent.getItemName());
         if (byName.isPresent()) {
-            byName.get().setActive(checkItemEvent.isStatus());
+            byName.get().setActive(false);
             menuItemRepository.save(byName.get());
         }
     }

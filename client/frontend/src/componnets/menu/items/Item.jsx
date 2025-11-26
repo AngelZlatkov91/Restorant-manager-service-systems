@@ -71,7 +71,9 @@ const handleEdit = (id) => {
               }}
             >
               <div>
-                <strong>{item.name}</strong>
+                <span style={{ color: item.active ? "black" : "red" }}>
+                   <strong>{item.name}</strong>
+                </span>
                 <p style={{ margin: "5px 0" }}>
                   💰 Цена: {item.price} лв. | 🏷️ Категория: {item.category || "Няма"} | 🍽️ Тип: {item.typeProduct}
                 </p>
