@@ -1,7 +1,5 @@
 package menu_service.menu_service.Services;
 
-import menu_service.menu_service.Event.Consumer.CheckItemEvent;
-import menu_service.menu_service.Event.InventoryDTO;
 import menu_service.menu_service.Event.InventoryEvent;
 import menu_service.menu_service.Event.Listener.ChangeStatusItem;
 import menu_service.menu_service.Exception.MenuItemDontExistExp;

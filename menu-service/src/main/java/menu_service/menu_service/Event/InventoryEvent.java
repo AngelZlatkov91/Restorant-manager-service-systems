@@ -4,16 +4,16 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
-
+import Inventory.menu.InventoryDTO;
 
 @Component
 @Slf4j
 public class InventoryEvent {
 
-    private final KafkaTemplate<String, InventoryDTO> kafkaTemplate;
+    private final KafkaTemplate<String, Object> kafkaTemplate;
 
     @Autowired
-    public InventoryEvent(KafkaTemplate<String, InventoryDTO> kafkaTemplate) {
+    public InventoryEvent(KafkaTemplate<String, Object> kafkaTemplate) {
         this.kafkaTemplate = kafkaTemplate;
     }
 

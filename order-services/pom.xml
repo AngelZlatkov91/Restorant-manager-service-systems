@@ -54,6 +54,11 @@
 			<groupId>org.springframework.kafka</groupId>
 			<artifactId>spring-kafka</artifactId>
 		</dependency>
+        <dependency>
+            <groupId>com.example</groupId>
+            <artifactId>common-dto</artifactId>
+            <version>1.0.0</version>
+        </dependency>
 
 
 		<dependency>

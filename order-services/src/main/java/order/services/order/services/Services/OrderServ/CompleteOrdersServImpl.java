@@ -1,12 +1,16 @@
 package order.services.order.services.Services.OrderServ;
 import jakarta.transaction.Transactional;
-import order.services.order.services.Event.CashEvent.CashReceiptDTO;
+
+import receipt.CashReceiptDTO;
+import receipt.ProductsToReceipt;
 import order.services.order.services.Event.CashEvent.CashReceiptEvent;
-import order.services.order.services.Event.CashEvent.ProductsToReceipt;
-import order.services.order.services.Event.Display.OrderProductsDTO;
-import order.services.order.services.Event.Reports.DailyReportsDTO;
+
+import order.inventory.InventoryProductsDTO;
+import order.inventory.ProductsUpdateQuantity;
+import order.repost.DailyReportsDTO;
+
 import order.services.order.services.Event.Reports.DailyReportsEvent;
-import order.services.order.services.Event.Inventory.InventoryProductsDTO;
+
 import order.services.order.services.Event.Inventory.InventoryEvent;
 import order.services.order.services.Models.DTO.Order.AddProductToTableDTO;
 import order.services.order.services.Models.DTO.Order.CompleteOrderDTO;
@@ -109,12 +113,11 @@ public class CompleteOrdersServImpl implements CompleteOrdersServ {
 
     private InventoryProductsDTO sendInventory(List<AddProductToTableDTO> products) {
         InventoryProductsDTO inventoryDTO = new InventoryProductsDTO();
-        List<OrderProductsDTO> newProducts = new ArrayList<>();
+        List<ProductsUpdateQuantity> newProducts = new ArrayList<>();
 
-        products.stream().filter(p-> p.getCategory().equals("BAR")).forEach(p->{
-            OrderProductsDTO newProduct = new OrderProductsDTO();
+        products.stream().filter(p-> p.getTypeProduct().equals("BAR")).forEach(p->{
+            ProductsUpdateQuantity newProduct = new ProductsUpdateQuantity();
             newProduct.setProductName(p.getName());
-            newProduct.setDescription(p.getDescription());
             newProduct.setQuantity(p.getQuantity());
             newProducts.add(newProduct);
         });
@@ -151,6 +154,7 @@ public class CompleteOrdersServImpl implements CompleteOrdersServ {
                 dto.setQuantity(quantity);
                 dto.setPrice(price);
                 dto.setCategory(product.getCategory());
+                dto.setTypeProduct(product.getTypeProduct());
                 dto.setCheck(true);
                 dtos.put(name, dto);
             }

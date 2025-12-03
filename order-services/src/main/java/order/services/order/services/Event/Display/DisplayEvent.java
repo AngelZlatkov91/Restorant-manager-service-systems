@@ -3,13 +3,16 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
+import printOrder.ProductEventSentDTO;
 
 @Component
 @Slf4j
 public class DisplayEvent {
-    private final KafkaTemplate<String, ProductEventSentDTO> kafkaTemplate;
+
+    private final KafkaTemplate<String, Object> kafkaTemplate;
+
      @Autowired
-    public DisplayEvent(KafkaTemplate<String, ProductEventSentDTO> kafkaTemplate) {
+    public DisplayEvent(KafkaTemplate<String, Object> kafkaTemplate) {
         this.kafkaTemplate = kafkaTemplate;
     }
 

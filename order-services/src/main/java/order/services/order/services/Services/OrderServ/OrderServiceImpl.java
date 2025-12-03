@@ -41,10 +41,7 @@ public class OrderServiceImpl implements OrderService {
             throw  new NullPointerException("Table or Personal don't exist");
         }
         Optional<Order> order = orderRepositories.getByPersonalAndOrderStatusAndTableEn(byName.get(),OrderStatus.PENDING,byId.get());
-       if (order.isEmpty()) {
-           return new OrderResp(byId.get().getTableName(),byName.get().getName());
-       }
-        return mapToResponse(order.get());
+        return order.map(this::mapToResponse).orElseGet(() -> new OrderResp(byId.get().getTableName(), byName.get().getName()));
 
     }
 
@@ -91,6 +88,7 @@ public class OrderServiceImpl implements OrderService {
             addProductToTableDTO.setPrice(product.getPrice());
             addProductToTableDTO.setQuantity(product.getQuantity());
             addProductToTableDTO.setAddedAt(product.getAddedAt());
+            addProductToTableDTO.setTypeProduct(product.getTypeProduct());
             if (product.getDescription() != null) {
                 addProductToTableDTO.setDescription(product.getDescription());
             }

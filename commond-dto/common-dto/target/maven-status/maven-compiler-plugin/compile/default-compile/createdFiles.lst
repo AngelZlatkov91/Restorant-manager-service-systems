@@ -1,0 +1,9 @@
+printOrder/OrderProductsDTO.class
+order/inventory/InventoryProductsDTO.class
+order/repost/DailyReportsDTO.class
+receipt/ProductsToReceipt.class
+Inventory/menu/InventoryDTO.class
+Inventory/menu/CheckItemEvent.class
+receipt/CashReceiptDTO.class
+printOrder/ProductEventSentDTO.class
+order/inventory/ProductsUpdateQuantity.class

@@ -1,7 +1,8 @@
 package menu_service.menu_service.Services;
 
-import menu_service.menu_service.Event.Consumer.CheckItemEvent;
-import menu_service.menu_service.Event.InventoryDTO;
+
+import Inventory.menu.InventoryDTO;
+
 import menu_service.menu_service.Event.InventoryEvent;
 import menu_service.menu_service.Event.Listener.ChangeStatusItem;
 import menu_service.menu_service.Exception.MenuItemDontExistExp;
@@ -10,7 +11,7 @@ import menu_service.menu_service.Models.DTO.MenuItemCreate;
 import menu_service.menu_service.Models.DTO.MenuItemRes;
 import menu_service.menu_service.Models.DTO.ResStatus;
 import menu_service.menu_service.Models.MenuItem;
-import menu_service.menu_service.Models.TypeProduct;
+
 import menu_service.menu_service.Repositories.CategoryItemRepository;
 import menu_service.menu_service.Repositories.MenuItemRepository;
 import org.springframework.stereotype.Service;

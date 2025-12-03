@@ -9,7 +9,7 @@ const kafka = new Kafka({
 
 const consumer = kafka.consumer({ groupId: 'print-check' });
 
-const checkDisplay = async (onMessage) => {
+const runConsumer = async (onMessage) => {
   await consumer.connect();
   await consumer.subscribe({ topic: 'check-display', fromBeginning: true });
 
@@ -34,7 +34,7 @@ const printTable = async (onMessage) => {
     },
   });
 };
-export default {
-checkDisplay,  
-printTable
-}
+
+export default runConsumer 
+
+

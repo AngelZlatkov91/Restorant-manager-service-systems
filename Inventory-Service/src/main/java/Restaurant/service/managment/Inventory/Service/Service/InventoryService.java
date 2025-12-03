@@ -1,7 +1,8 @@
 package Restaurant.service.managment.Inventory.Service.Service;
 
-import Restaurant.service.managment.Inventory.Service.Event.InventoryDTO;
-import Restaurant.service.managment.Inventory.Service.Event.InventoryProductsDTO;
+import Inventory.menu.InventoryDTO;
+import order.inventory.InventoryProductsDTO;
+
 import Restaurant.service.managment.Inventory.Service.Models.InventorytODTO;
 import Restaurant.service.managment.Inventory.Service.Models.UpdateInventoryDTO;
 
@@ -11,7 +12,7 @@ import java.util.zip.DataFormatException;
 public interface InventoryService {
 
     List<InventorytODTO> getAllInventory();
-    void addInventory(InventoryDTO inventory) throws DataFormatException;
+    void addInventory(InventoryDTO inventory) ;
 
     void updateInventory(UpdateInventoryDTO updateInventoryDTO);
 

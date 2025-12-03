@@ -2,8 +2,9 @@ package Restaurant.service.managment.Inventory.Service.Service;
 
 import Restaurant.service.managment.Inventory.Service.Event.ChangeStatusItem;
 import Restaurant.service.managment.Inventory.Service.Event.ConsumerEvent;
-import Restaurant.service.managment.Inventory.Service.Event.InventoryDTO;
-import Restaurant.service.managment.Inventory.Service.Event.InventoryProductsDTO;
+import Inventory.menu.InventoryDTO;
+import order.inventory.InventoryProductsDTO;
+
 import Restaurant.service.managment.Inventory.Service.Models.Inventory;
 import Restaurant.service.managment.Inventory.Service.Models.InventorytODTO;
 import Restaurant.service.managment.Inventory.Service.Models.UpdateInventoryDTO;
@@ -13,9 +14,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.zip.DataFormatException;
-
-import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 
 @Service
 public class InventoryServiceImpl implements InventoryService {
@@ -38,10 +36,10 @@ public class InventoryServiceImpl implements InventoryService {
     }
 
     @Override
-    public void addInventory(InventoryDTO inventory) throws DataFormatException {
+    public void addInventory(InventoryDTO inventory)  {
         Optional<Inventory> byName = inventoryRepositories.findByName(inventory.getNameItems());
         if (byName.isPresent()) {
-            throw new DataFormatException("This element exist!");
+            return;
         }
         Inventory inventory1 = new Inventory();
         inventory1.setName(inventory.getNameItems());
@@ -72,13 +70,14 @@ public class InventoryServiceImpl implements InventoryService {
 
     @Override
     public void updateQuantity(InventoryProductsDTO inventoryProductsDTO) {
-        inventoryProductsDTO.getProducts().forEach(p -> {
+        inventoryProductsDTO.getProducts().forEach(p
+            -> {
             Optional<Inventory> byName = inventoryRepositories.findByName(p.getProductName());
             int quantity = byName.get().getQuantity();
             byName.get().setQuantity(quantity - p.getQuantity());
             if (byName.get().getQuantity() <= 0) {
                 byName.get().setActive(false);
-               consumerEvent.sentItemStatus(new ChangeStatusItem(byName.get().getName()));
+               consumerEvent.sendItemStatus(new ChangeStatusItem(byName.get().getName()));
             }
             inventoryRepositories.save(byName.get());
         });

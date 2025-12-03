@@ -1,7 +1,7 @@
 package order.services.order.services.Services.OrderServ;
 import jakarta.transaction.Transactional;
-import order.services.order.services.Event.Display.OrderProductsDTO;
-import order.services.order.services.Event.Display.ProductEventSentDTO;
+
+
 import order.services.order.services.Event.Display.DisplayEvent;
 import order.services.order.services.Models.DTO.Order.AddProductToTableDTO;
 import order.services.order.services.Models.DTO.Order.OrderDTO;
@@ -15,6 +15,8 @@ import order.services.order.services.Repositories.OrderRepositories;
 import order.services.order.services.Repositories.PersonalRepositories;
 import order.services.order.services.Repositories.ProductRepositories;
 import order.services.order.services.Repositories.TableRepositories;
+import printOrder.ProductEventSentDTO;
+import printOrder.OrderProductsDTO;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -67,7 +69,7 @@ public class CreateAndUpdateOrderServImpl implements CreateAndUpdateOrderServ {
             if (product.getDescription() != null) {
                 orderProductsDTO.setDescription(product.getDescription());
             }
-            if (product.getCategory().equals("BAR")) {
+            if (product.getTypeProduct().equals("BAR")) {
                 bar.getProducts().add(orderProductsDTO);
             } else {
                 kitchen.getProducts().add(orderProductsDTO);
@@ -127,6 +129,7 @@ public class CreateAndUpdateOrderServImpl implements CreateAndUpdateOrderServ {
                 productEntity.setQuantity(product.getQuantity());
                 productEntity.setName(product.getName());
                 productEntity.setCategory(product.getCategory());
+                productEntity.setTypeProduct(product.getTypeProduct());
                 if (product.getDescription() != null) {
                     productEntity.setDescription(product.getDescription());
                 } else {

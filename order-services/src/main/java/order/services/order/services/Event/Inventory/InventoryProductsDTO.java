@@ -10,7 +10,7 @@ import java.util.List;
 @AllArgsConstructor
 @Data
 public class InventoryProductsDTO {
-   private List<OrderProductsDTO> products;
+   private List<ProductsUpdateQuantity> products;
 
    public InventoryProductsDTO() {
        this.products = new ArrayList<>();

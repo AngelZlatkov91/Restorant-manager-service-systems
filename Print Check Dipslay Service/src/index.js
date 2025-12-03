@@ -4,13 +4,13 @@ import printer from './printer/printer.js';
 async function start() {
   let orders = null;
 
-checkDisplay((data) => {
+runConsumer((data) => {
   orders = data;
 });
 
-printTable((data) => {
-  orders = data;
-});
+// printTable((data) => {
+//   orders = data;
+// });
 
 
   if (!orders) {

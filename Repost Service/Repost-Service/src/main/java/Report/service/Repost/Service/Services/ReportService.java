@@ -1,6 +1,6 @@
 package Report.service.Repost.Service.Services;
 
-import Report.service.Repost.Service.Event.DailyReportsDTO;
+import order.repost.DailyReportsDTO;
 
 public interface ReportService {
     void addReport(DailyReportsDTO dailyReportsDTO);

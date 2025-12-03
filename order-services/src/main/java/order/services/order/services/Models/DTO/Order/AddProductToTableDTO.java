@@ -18,5 +18,6 @@ public class AddProductToTableDTO {
     private LocalDateTime addedAt;
     private int quantity;
     private String description;
+    private String typeProduct;
 
 }

@@ -1,13 +1,10 @@
 package order.services.order.services.Models.Entitys;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @EqualsAndHashCode(callSuper = true)
@@ -30,6 +27,8 @@ public class Product extends BaseEntity {
     private boolean isCheck;
     @Column(nullable = false)
     private int quantity;
+    @Column(nullable = false)
+    private String typeProduct;
     @Column
     private LocalDateTime addedAt;
     @Column

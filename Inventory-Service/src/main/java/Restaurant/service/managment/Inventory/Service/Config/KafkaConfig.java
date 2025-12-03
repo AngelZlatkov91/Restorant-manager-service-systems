@@ -1,66 +1,71 @@
 package Restaurant.service.managment.Inventory.Service.Config;
 
-import Restaurant.service.managment.Inventory.Service.Event.ChangeStatusItem;
-import Restaurant.service.managment.Inventory.Service.Event.InventoryDTO;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
+import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
+import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.config.TopicBuilder;
-import org.springframework.kafka.core.ConsumerFactory;
-import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
-import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.kafka.core.ProducerFactory;
+import org.springframework.kafka.core.*;
 import org.springframework.kafka.support.converter.StringJsonMessageConverter;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
+import org.springframework.kafka.support.serializer.JsonSerializer;
 
 import java.util.HashMap;
 import java.util.Map;
 
-@Configuration
 @EnableKafka
+@Configuration
 public class KafkaConfig {
 
     @Bean
-    public ConsumerFactory<String, InventoryDTO> consumerFactory() {
-        Map<String, Object> props = new HashMap<>();
-        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
-        props.put(ConsumerConfig.GROUP_ID_CONFIG, "inventory-group");
-        props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-        props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
-
-        JsonDeserializer<InventoryDTO> deserializer = new JsonDeserializer<>(InventoryDTO.class);
-        deserializer.addTrustedPackages("*"); // доверява всички пакети
-        deserializer.setRemoveTypeHeaders(false);
-        deserializer.setUseTypeMapperForKey(true);
-        deserializer.setUseTypeHeaders(false);
-
-        return new DefaultKafkaConsumerFactory<>(props, new StringDeserializer(), deserializer);
+    public ProducerFactory<String, Object> producerFactory() {
+        Map<String, Object> configProps = new HashMap<>();
+        configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
+        configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+        configProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
+        configProps.put(JsonSerializer.ADD_TYPE_INFO_HEADERS, false);
+        return new DefaultKafkaProducerFactory<>(configProps);
     }
 
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, InventoryDTO> kafkaListenerContainerFactory() {
-        ConcurrentKafkaListenerContainerFactory<String, InventoryDTO> factory =
-                new ConcurrentKafkaListenerContainerFactory<>();
-        factory.setConsumerFactory(consumerFactory());
-        return factory;
-    }
-
-    @Bean
-    public KafkaTemplate<String, ChangeStatusItem> kafkaTemplate(ProducerFactory<String, ChangeStatusItem> producerFactory) {
-        KafkaTemplate<String, ChangeStatusItem> template = new KafkaTemplate<>(producerFactory);
+    public KafkaTemplate<String, Object> kafkaTemplate() {
+        KafkaTemplate<String, Object> template = new KafkaTemplate<>(producerFactory());
         template.setMessageConverter(new StringJsonMessageConverter());
         return template;
     }
 
     @Bean
     public NewTopic inventoryCreateTopic() {
-        return TopicBuilder.name("inventory-setActive-item")
-                .partitions(1)
-                .replicas(1)
-                .build();
+        return TopicBuilder.name("inventory-create-topic").build();
     }
+
+    @Bean
+    public ConsumerFactory<String, Object> consumerFactory() {
+        Map<String, Object> props = new HashMap<>();
+        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
+        props.put(ConsumerConfig.GROUP_ID_CONFIG, "inventory-group");
+
+        JsonDeserializer<Object> deserializer = new JsonDeserializer<>();
+        deserializer.addTrustedPackages("*");
+
+        return new DefaultKafkaConsumerFactory<>(
+                props,
+                new StringDeserializer(),
+                deserializer
+        );
+    }
+
+    @Bean
+    public ConcurrentKafkaListenerContainerFactory<String, Object> kafkaListenerContainerFactory() {
+        ConcurrentKafkaListenerContainerFactory<String, Object> factory =
+                new ConcurrentKafkaListenerContainerFactory<>();
+        factory.setConsumerFactory(consumerFactory());
+        return factory;
+    }
+
 }

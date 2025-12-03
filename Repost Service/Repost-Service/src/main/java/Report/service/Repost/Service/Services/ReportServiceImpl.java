@@ -1,6 +1,6 @@
 package Report.service.Repost.Service.Services;
 
-import Report.service.Repost.Service.Event.DailyReportsDTO;
+import order.repost.DailyReportsDTO;
 import Report.service.Repost.Service.Models.PersonalCostSummary;
 import Report.service.Repost.Service.Models.Reports;
 import Report.service.Repost.Service.Repositories.OrderCustomRepository;
