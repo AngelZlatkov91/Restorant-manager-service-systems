@@ -2,9 +2,9 @@ package menu_service.menu_service.Services;
 
 
 import Inventory.menu.InventoryDTO;
-
+import Inventory.menu.ChangeStatusItem;
 import menu_service.menu_service.Event.InventoryEvent;
-import menu_service.menu_service.Event.Listener.ChangeStatusItem;
+
 import menu_service.menu_service.Exception.MenuItemDontExistExp;
 import menu_service.menu_service.Models.Category;
 import menu_service.menu_service.Models.DTO.MenuItemCreate;
@@ -133,7 +133,7 @@ public class MenuItemServiceImpl implements MenuItemService {
     public void changeStatus(ChangeStatusItem checkItemEvent) {
         Optional<MenuItem> byName = menuItemRepository.findByName(checkItemEvent.getItemName());
         if (byName.isPresent()) {
-            byName.get().setActive(false);
+            byName.get().setActive(checkItemEvent.isActive());
             menuItemRepository.save(byName.get());
         }
     }

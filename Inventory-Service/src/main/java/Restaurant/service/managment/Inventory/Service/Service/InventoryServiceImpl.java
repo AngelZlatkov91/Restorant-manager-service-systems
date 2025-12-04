@@ -1,12 +1,11 @@
 package Restaurant.service.managment.Inventory.Service.Service;
 
-import Restaurant.service.managment.Inventory.Service.Event.ChangeStatusItem;
+import Inventory.menu.ChangeStatusItem;
 import Restaurant.service.managment.Inventory.Service.Event.ConsumerEvent;
-import Inventory.menu.InventoryDTO;
 import order.inventory.InventoryProductsDTO;
-
+import Inventory.menu.InventoryDTO;
 import Restaurant.service.managment.Inventory.Service.Models.Inventory;
-import Restaurant.service.managment.Inventory.Service.Models.InventorytODTO;
+import Restaurant.service.managment.Inventory.Service.Models.CheckInventoryDTO;
 import Restaurant.service.managment.Inventory.Service.Models.UpdateInventoryDTO;
 import Restaurant.service.managment.Inventory.Service.Repo.InventoryRepositories;
 import jakarta.transaction.Transactional;
@@ -27,7 +26,7 @@ public class InventoryServiceImpl implements InventoryService {
     }
 
     @Override
-    public List<InventorytODTO> getAllInventory() {
+    public List<CheckInventoryDTO> getAllInventory() {
      return inventoryRepositories
              .findAll()
              .stream()
@@ -54,6 +53,9 @@ public class InventoryServiceImpl implements InventoryService {
         Optional<Inventory> byId = inventoryRepositories.findById(updateInventoryDTO.getId());
         if (byId.isPresent()) {
             int quantity = byId.get().getQuantity();
+            if (quantity <= 0) {
+                consumerEvent.sendItemStatus(new ChangeStatusItem(byId.get().getName(),true));
+            }
             byId.get().setCheck(true);
             byId.get().setActive(true);
             byId.get().setQuantity(quantity + updateInventoryDTO.getQuantity());
@@ -65,7 +67,8 @@ public class InventoryServiceImpl implements InventoryService {
     @Transactional
     public void deleteInventory(String itemName) {
         Optional<Inventory> byName = inventoryRepositories.findByName(itemName);
-        inventoryRepositories.deleteById(byName.get().getId());
+        byName.ifPresent(inventory -> inventoryRepositories.deleteById(inventory.getId()));
+
     }
 
     @Override
@@ -77,20 +80,20 @@ public class InventoryServiceImpl implements InventoryService {
             byName.get().setQuantity(quantity - p.getQuantity());
             if (byName.get().getQuantity() <= 0) {
                 byName.get().setActive(false);
-               consumerEvent.sendItemStatus(new ChangeStatusItem(byName.get().getName()));
+               consumerEvent.sendItemStatus(new ChangeStatusItem(byName.get().getName(),false));
             }
             inventoryRepositories.save(byName.get());
         });
     }
 
     @Override
-    public InventorytODTO getById(Long id) {
+    public CheckInventoryDTO getById(Long id) {
         Optional<Inventory> byId = inventoryRepositories.findById(id);
         if (byId.isEmpty()) {
             throw new NullPointerException("This product not exist");
         }
 
-        return new InventorytODTO(
+        return new CheckInventoryDTO(
                 byId.get().getId(),
                 byId.get().getName(),
                 byId.get().getCategory(),
@@ -101,8 +104,8 @@ public class InventoryServiceImpl implements InventoryService {
     }
 
 
-    private InventorytODTO mapInventoryDTO(Inventory inventory) {
-        return new InventorytODTO(
+    private CheckInventoryDTO mapInventoryDTO(Inventory inventory) {
+        return new CheckInventoryDTO(
                 inventory.getId()
                 ,inventory.getName()
                 ,inventory.getCategory()

@@ -1,6 +1,7 @@
 printOrder/OrderProductsDTO.class
 order/inventory/InventoryProductsDTO.class
 order/repost/DailyReportsDTO.class
+Inventory/menu/ChangeStatusItem.class
 receipt/ProductsToReceipt.class
 Inventory/menu/InventoryDTO.class
 Inventory/menu/CheckItemEvent.class

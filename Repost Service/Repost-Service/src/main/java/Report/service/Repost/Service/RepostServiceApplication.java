@@ -9,5 +9,4 @@ public class RepostServiceApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(RepostServiceApplication.class, args);
 	}
-
 }

@@ -1,5 +1,5 @@
 package Restaurant.service.managment.Inventory.Service.Event;
-
+import Inventory.menu.ChangeStatusItem;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -17,7 +17,6 @@ public class ConsumerEvent {
     }
 
     public void sendItemStatus(ChangeStatusItem item) {
-        log.info("Sending ChangeStatusItem: {}", item);
         kafkaTemplate.send("inventory-change-status", item);
     }
 }

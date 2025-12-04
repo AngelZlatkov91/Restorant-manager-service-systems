@@ -1,7 +1,7 @@
 package menu_service.menu_service.Services;
 
 
-import menu_service.menu_service.Event.Listener.ChangeStatusItem;
+import Inventory.menu.ChangeStatusItem;
 import menu_service.menu_service.Models.DTO.MenuItemCreate;
 import menu_service.menu_service.Models.DTO.MenuItemRes;
 import menu_service.menu_service.Models.DTO.ResStatus;

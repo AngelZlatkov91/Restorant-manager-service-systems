@@ -66,10 +66,9 @@ export default function OrderClient() {
       password: password,
       indexProduct: findIndex
     }
-    const result = useDeleteProduct(data);
-    console.log(result);
+     useDeleteProduct(data);
+      fetchOrder();
    setShowConfirmDelete(false);
-   fetchOrder();
   };
   
 

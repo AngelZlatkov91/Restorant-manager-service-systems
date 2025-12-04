@@ -34,7 +34,8 @@ public class ReportServiceImpl implements ReportService {
 
 
     public List<PersonalCostSummary> getPersonalReport(){
-//       return orderCustomRepository.getTotalCostByPersonalNameAndDate();
-       return null;
+       return orderCustomRepository.getTotalCostByPersonalNameAndDate("CASH",LocalDate.now(),LocalDate.now());
+
+//       return null;
     }
 }

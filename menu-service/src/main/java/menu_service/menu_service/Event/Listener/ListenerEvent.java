@@ -1,5 +1,5 @@
 package menu_service.menu_service.Event.Listener;
-
+import Inventory.menu.ChangeStatusItem;
 import lombok.extern.slf4j.Slf4j;
 import menu_service.menu_service.Services.MenuItemService;
 import org.springframework.beans.factory.annotation.Autowired;

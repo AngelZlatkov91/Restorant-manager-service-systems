@@ -1,7 +1,5 @@
 package Restaurant.service.managment.Inventory.Service.Api;
-
-import Restaurant.service.managment.Inventory.Service.Event.InventoryDTO;
-import Restaurant.service.managment.Inventory.Service.Models.InventorytODTO;
+import Restaurant.service.managment.Inventory.Service.Models.CheckInventoryDTO;
 import Restaurant.service.managment.Inventory.Service.Models.UpdateInventoryDTO;
 import Restaurant.service.managment.Inventory.Service.Service.InventoryService;
 import org.springframework.http.ResponseEntity;
@@ -20,12 +18,12 @@ public class InventoryController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<InventorytODTO> getItemInventory(@PathVariable Long id) {
+    public ResponseEntity<CheckInventoryDTO> getItemInventory(@PathVariable Long id) {
         return ResponseEntity.ok(inventoryService.getById(id));
     }
 
     @GetMapping
-    public ResponseEntity<List<InventorytODTO>> getAll () {
+    public ResponseEntity<List<CheckInventoryDTO>> getAll () {
         return ResponseEntity.ok(inventoryService.getAllInventory());
     }
 

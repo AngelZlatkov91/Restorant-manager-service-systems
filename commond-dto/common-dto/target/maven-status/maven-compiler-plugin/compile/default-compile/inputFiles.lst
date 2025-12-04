@@ -4,6 +4,7 @@
 /home/user/project/RESTORANT MANAGER SERVICE SYSTEM/commond-dto/common-dto/src/main/java/com/example/dto/printOrder/OrderProductsDTO.java
 /home/user/project/RESTORANT MANAGER SERVICE SYSTEM/commond-dto/common-dto/src/main/java/com/example/dto/order/inventory/InventoryProductsDTO.java
 /home/user/project/RESTORANT MANAGER SERVICE SYSTEM/commond-dto/common-dto/src/main/java/com/example/dto/Inventory/menu/InventoryDTO.java
+/home/user/project/RESTORANT MANAGER SERVICE SYSTEM/commond-dto/common-dto/src/main/java/com/example/dto/Inventory/menu/ChangeStatusItem.java
 /home/user/project/RESTORANT MANAGER SERVICE SYSTEM/commond-dto/common-dto/src/main/java/com/example/dto/printOrder/ProductEventSentDTO.java
 /home/user/project/RESTORANT MANAGER SERVICE SYSTEM/commond-dto/common-dto/src/main/java/com/example/dto/order/repost/DailyReportsDTO.java
 /home/user/project/RESTORANT MANAGER SERVICE SYSTEM/commond-dto/common-dto/src/main/java/com/example/dto/order/inventory/ProductsUpdateQuantity.java

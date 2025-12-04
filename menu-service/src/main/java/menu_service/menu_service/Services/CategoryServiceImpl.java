@@ -32,7 +32,11 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public List<ResCategory> getAllCategories() {
-        return categoryItemRepository.findAll().stream().map(this::getCategoryByName).collect(Collectors.toList());
+        return categoryItemRepository
+                .findAll()
+                .stream()
+                .map(this::getCategoryByName)
+                .collect(Collectors.toList());
     }
 
 

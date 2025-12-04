@@ -50,11 +50,11 @@ public class CreateAndUpdateOrderServImpl implements CreateAndUpdateOrderServ {
         if (personal.isEmpty() || byTableName.isEmpty()) {
             throw new NullPointerException("Personal or Table not found");
         }
-
-        Order orderEntity = mapToCreate(order, byTableName.get(), personal.get());
-        orderRepositories.save(orderEntity);
         byTableName.get().setEmpty(false);
         tableRepositories.save(byTableName.get());
+        Order orderEntity = mapToCreate(order, byTableName.get(), personal.get());
+        orderRepositories.save(orderEntity);
+
         sendEvents(orderEntity.getProducts(),order.getPersonalName(),byTableName.get().getTableName());
     }
 

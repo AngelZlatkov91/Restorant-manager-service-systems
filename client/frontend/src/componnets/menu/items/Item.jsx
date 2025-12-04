@@ -9,7 +9,7 @@ export default function Item() {
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [itemToDelete, setItemToDelete] = useState(null);
   const [popupPos, setPopupPos] = useState({ top: 0, left: 0 });
-
+  console.log("Items:", items);
   const handleDeleteClick = (e,item) => {
     const rect = e.target.getBoundingClientRect(); // позиция на бутона
      setPopupPos({ top: rect.top + window.scrollY + 30, left: rect.left + rect.width / 2 });
@@ -30,7 +30,7 @@ export default function Item() {
     setItemToDelete(null);
   };
 
-  fetchItems();
+  // fetchItems();
 
 const handleEdit = (id) => {
     navigate(`/editItem/${id}`);

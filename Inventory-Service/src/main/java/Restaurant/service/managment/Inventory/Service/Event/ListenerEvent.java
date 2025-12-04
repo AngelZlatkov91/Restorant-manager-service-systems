@@ -24,7 +24,7 @@ public class ListenerEvent {
             groupId = "inventory-group"
     )
     public void itemCreateListener(InventoryDTO event)  {
-        log.info("Received InventoryDTO: {}", event);
+
         inventoryService.addInventory(event);
     }
 
@@ -33,7 +33,7 @@ public class ListenerEvent {
             groupId = "inventory-group"
     )
     public void itemDeleteListener(InventoryDTO inventoryDTO) {
-        log.info("Received delete InventoryDTO: {}", inventoryDTO);
+
         inventoryService.deleteInventory(inventoryDTO.getNameItems());
     }
 
@@ -42,7 +42,7 @@ public class ListenerEvent {
             groupId = "inventory-group"
     )
     public void ordersProducts(InventoryProductsDTO inventoryProductsDTO) {
-        log.info("Received InventoryProductsDTO: {}", inventoryProductsDTO);
+
         inventoryService.updateQuantity(inventoryProductsDTO);
     }
 }
