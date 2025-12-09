@@ -1,5 +1,6 @@
 package User.management.user.management.Web;
 
+import User.management.user.management.Models.DTO.RegisterResponseDTO;
 import User.management.user.management.Models.DTO.UserRegisterDTO;
 import User.management.user.management.Service.Interfaces.UserService;
 import jakarta.validation.Valid;
@@ -24,14 +25,14 @@ public class UserRegisterController {
 
 
     @PostMapping("/register")
-    public ResponseEntity<String> registerUser(@RequestBody @Valid UserRegisterDTO userRegistrationDTO ,
-                                               BindingResult bindingResult) {
+    public ResponseEntity<RegisterResponseDTO> registerUser(@RequestBody @Valid UserRegisterDTO userRegistrationDTO ,
+                                                            BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             List<ObjectError> allErrors = bindingResult.getAllErrors();
             String defaultMessage = allErrors.getFirst().getDefaultMessage();
-            return ResponseEntity.badRequest().body(defaultMessage);
+            return ResponseEntity.badRequest().body(new RegisterResponseDTO(defaultMessage));
         }
             userService.registerUser(userRegistrationDTO);
-            return ResponseEntity.ok().build();
+            return ResponseEntity.ok(new RegisterResponseDTO("Success!"));
     }
 }

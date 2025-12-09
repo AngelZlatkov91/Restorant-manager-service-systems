@@ -14,8 +14,8 @@ second = "confirmPassword")
 @Data
 public class UserRegisterDTO {
 
-    @NotBlank
     @UniqueUsername
+    @NotBlank
     private String username;
     @NotBlank
     private String password;

@@ -16,10 +16,8 @@ public class ChekItemEventConsumer {
         this.menuItemService = menuItemService;
     }
 
-    @KafkaListener(topics = "chek-item-quantity", groupId = "item")
-    public void consume(ChangeStatusItem message){
-
-            menuItemService.changeStatus(message);
-
+    @KafkaListener(topics = "chek-item-quantity", groupId = "menu-service")
+    public void consume(ChangeStatusItem item){
+            menuItemService.changeStatus(item);
     }
 }

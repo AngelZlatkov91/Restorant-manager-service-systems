@@ -31,13 +31,15 @@ async function request(method, url, data, useAuth = false) {
     return response.data;
 
   } catch (err) {
+    console.log(err);
     let message = "Unknown error";
 
     if (err.response?.data?.message) {
-      message = "You must field the fields!"
+      message = err.response.data.message;
     } else if (err.response?.data) {
       message = err.response.data;
     } else if (err.message) {
+      console.log(err.message);
       message = err.message;
     }
 

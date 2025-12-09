@@ -12,7 +12,7 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 @Constraint(validatedBy = UniqueUsernameValidator.class)
 public @interface UniqueUsername {
-    String message() default "The Hotel name should be unique";
+    String message() default "The User name should be unique";
     Class<?>[] groups()default {};
 
     Class<? extends Payload>[] payload() default {};

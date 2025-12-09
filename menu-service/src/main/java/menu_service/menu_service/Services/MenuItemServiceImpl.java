@@ -62,8 +62,9 @@ public class MenuItemServiceImpl implements MenuItemService {
 
     @Override
     public List<MenuItemRes> getAll() {
+
         return this.menuItemRepository
-                .findByActive(true)
+                .findAll()
                 .stream()
                 .map(this::mapToRes)
                 .collect(Collectors.toList());

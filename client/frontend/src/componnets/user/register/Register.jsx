@@ -15,16 +15,18 @@ export default function Register() {
     const registerHandler = async (values) => {
        if (values.password !== values['confirm-password']) {
        return setError('Password missmatch!');
-             
        }
 
-           try {
-            await register(values.username,values.password,values['confirm-password']);
-            navigate('/login');
-           } catch(err) {
-            setError(err.message)
-            
-           }
+          
+           const result =  await register(values.username,values.password,values['confirm-password']);
+           
+               if (result.message === 'Success!') {
+                navigate('/login');
+                setError(null)
+               }  else {
+                setError(result.message);
+               }        
+           
     }
 
     const {
@@ -76,10 +78,6 @@ export default function Register() {
                     
 
                     <input className="btn submit" type="submit" value="Register" />
-
-                    <p className="field">
-                        <span>If you already have profile click <a href="#">here</a></span>
-                    </p>
                 </div>
             </form>
           </section>

@@ -31,7 +31,7 @@ public class UserLoginController {
     @PostMapping("/login")
     public ResponseEntity<LoginResponseDTO> login(@RequestBody @Valid UserLoginDTO loginUserDTO, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return ResponseEntity.badRequest().body(null);
+            return ResponseEntity.badRequest().body(new LoginResponseDTO("Not Register", null));
         }
             Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginUserDTO.getUsername(), loginUserDTO.getPassword()));
             String token = tokenService.generateToken(authenticate);

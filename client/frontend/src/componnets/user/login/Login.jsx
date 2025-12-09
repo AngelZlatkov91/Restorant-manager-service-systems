@@ -2,24 +2,27 @@ import {useNavigate } from "react-router-dom"
 import { useLogin } from "../../../hooks/useAuth";
 import { useForm } from "../../../hooks/useForm"
 import { useAuth } from "../../../context/AuthContext";
+import { useState } from "react";
 
 const initialValues = {
   username: '', 
   password: '',
 };
 export default function Login() {
+  const [error, setError] = useState('');
    const login = useLogin();
    const {loginToken} = useAuth();
      const navigate = useNavigate()
    const loginHandler = async ({username, password}) => {
-          try {
-                const res =   await login(username,password);
-                 await loginToken(res.token);
-                navigate('/');
-            } catch (err) {
-              console.log(err);
-            }
-
+                const res =  await login(username,password);
+                if (res.token) {
+                  await loginToken(res.token);
+                  navigate('/');
+                } else {
+                  console.log(res);
+                  alert('Login failed');
+                  setError(res);
+                }
    }
     const {values, changeHandler, submitHandler } = useForm(
         initialValues,
@@ -55,11 +58,14 @@ export default function Login() {
                     value={values.password}
                     onChange={changeHandler}  
                     />
+                    {error && (
+                        <p>
+                           <span style={{fontSize: '20px', color: 'red'}}>{error}</span>
+                         </p>
+                    )}
                     
                     <input type="submit" className="btn submit" value="Login" />
-                    <p className="field">
-                        <span>If you don't have profile click <a href="#">here</a></span>
-                    </p>
+                   
                 </div>
             </form>
         </section>
