@@ -2,7 +2,6 @@ import { useGetReport } from "../../hooks/useReposrt";
 
 export default function Reports() {
   const [report, fetchReport] = useGetReport();
-    console.log(report);
    return (
        <>
           <h1>Reports</h1>
