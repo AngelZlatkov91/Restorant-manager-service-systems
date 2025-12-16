@@ -1,16 +1,87 @@
-.table-status {
-  padding: 8px 14px;
-  border-radius: 6px;
+.wrapper {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  min-height: 100vh;
+  background: #f0f2f5;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.welcome {
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.logout-btn {
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: none;
+  background: #dc3545;
+  color: #fff;
+  cursor: pointer;
   font-weight: bold;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.table-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  list-style: none;
+  padding: 0;
+}
+
+.table-btn {
+  min-width: 120px;
+  padding: 16px;
+  border-radius: 12px;
+  border: none;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.table-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 14px rgba(0,0,0,0.2);
+}
+
+.table-btn.free {
+  background: #4caf50;
   color: #fff;
 }
 
-.table-status.free {
-  background-color: #4caf50; /* зелено */
-  border: 2px solid #357a38;
+.table-btn.busy {
+  background: #f44336;
+  color: #fff;
 }
 
-.table-status.busy {
-  background-color: #f44336; /* червено */
-  border: 2px solid #b71c1c;
+.table-name {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.table-status {
+  font-size: 14px;
+  margin-top: 4px;
+}
+
+.no-tables {
+  font-size: 16px;
+  color: #555;
 }
