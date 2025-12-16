@@ -1,7 +1,7 @@
 package order.services.order.services.Api;
 
 import jakarta.validation.Valid;
-import order.services.order.services.Models.DTO.Ecxeption.ResStatus;
+
 import order.services.order.services.Models.DTO.Table.CreateTable;
 import order.services.order.services.Models.DTO.Table.ResponseTable;
 import order.services.order.services.Services.TableServ.TableService;
@@ -27,7 +27,7 @@ public class TableController {
     public ResponseEntity<String> createTable(@RequestBody @Valid CreateTable createTable, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             List<ObjectError> allErrors = bindingResult.getAllErrors();
-            String defaultMessage = allErrors.get(0).getDefaultMessage();
+            String defaultMessage = allErrors.getFirst().getDefaultMessage();
             return ResponseEntity.badRequest().body(defaultMessage);
         }
         tableService.createTable(createTable);

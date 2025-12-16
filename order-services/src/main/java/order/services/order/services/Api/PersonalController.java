@@ -22,7 +22,8 @@ public class PersonalController {
     @PostMapping("/create")
     public ResponseEntity<String> create(@RequestBody @Valid CreatedPersonal personal, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return ResponseEntity.badRequest().body(bindingResult.getFieldError().getDefaultMessage());
+            String message = bindingResult.getAllErrors().getFirst().getDefaultMessage();
+            return ResponseEntity.badRequest().body(message);
         }
         personalServices.createPersonal(personal);
         return ResponseEntity.ok("Created");

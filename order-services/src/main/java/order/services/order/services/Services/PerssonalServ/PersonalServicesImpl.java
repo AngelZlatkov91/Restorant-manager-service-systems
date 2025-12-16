@@ -4,6 +4,7 @@ import jakarta.transaction.Transactional;
 import order.services.order.services.Models.DTO.Personal.CheckPersonal;
 import order.services.order.services.Models.DTO.Personal.CreatedPersonal;
 import order.services.order.services.Models.DTO.Personal.PersonalResponse;
+import order.services.order.services.Models.DTO.Personal.ResPersonalName;
 import order.services.order.services.Models.Entitys.Personal;
 import order.services.order.services.Repositories.PersonalRepositories;
 import org.springframework.stereotype.Service;
@@ -73,11 +74,11 @@ public class PersonalServicesImpl implements PersonalServices {
 
 
     @Override
-    public String checkPersonal(CheckPersonal checkPersonal) {
+    public ResPersonalName checkPersonal(CheckPersonal checkPersonal) {
         Optional<Personal> byPassword = personalRepositories.findByPassword(checkPersonal.getPassword());
         if (byPassword.isEmpty()) {
             throw new EntityNotFoundException("Personal with password " + checkPersonal.getPassword() + " not found");
         }
-        return byPassword.get().getName();
+        return new ResPersonalName(byPassword.get().getName());
     }
 }

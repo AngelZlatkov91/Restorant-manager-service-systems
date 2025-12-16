@@ -23,7 +23,7 @@ async function request(method, url, data) {
     let message = "Unknown error";
 
     if (err.response?.data?.message) {
-      message = "You must field the fields!"
+      message = err.response?.data?.message;
     } else if (err.response?.data) {
       message = err.response.data;
     } else if (err.message) {

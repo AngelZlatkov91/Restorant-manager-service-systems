@@ -1,6 +1,7 @@
 package order.services.order.services.Api;
 
 import order.services.order.services.Models.DTO.Personal.CheckPersonal;
+import order.services.order.services.Models.DTO.Personal.ResPersonalName;
 import order.services.order.services.Models.DTO.Table.ResponseTable;
 import order.services.order.services.Services.PerssonalServ.PersonalServices;
 import order.services.order.services.Services.TableServ.TableService;
@@ -23,7 +24,7 @@ public class ChekController {
     }
 
     @PostMapping("/personal")
-    public ResponseEntity<String> getPersonalChek(@RequestBody CheckPersonal checkPersonal) {
+    public ResponseEntity<ResPersonalName> getPersonalChek(@RequestBody CheckPersonal checkPersonal) {
         return ResponseEntity.ok(personalServices.checkPersonal(checkPersonal));
     }
 

@@ -3,6 +3,7 @@ package order.services.order.services.Services.PerssonalServ;
 import order.services.order.services.Models.DTO.Personal.CheckPersonal;
 import order.services.order.services.Models.DTO.Personal.CreatedPersonal;
 import order.services.order.services.Models.DTO.Personal.PersonalResponse;
+import order.services.order.services.Models.DTO.Personal.ResPersonalName;
 
 import java.util.List;
 
@@ -17,6 +18,6 @@ public interface PersonalServices {
     List<PersonalResponse> getPersonal();
 
 
-    String checkPersonal(CheckPersonal checkPersonal);
+    ResPersonalName checkPersonal(CheckPersonal checkPersonal);
 
 }

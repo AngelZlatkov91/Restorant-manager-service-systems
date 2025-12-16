@@ -24,7 +24,6 @@ export default function OrderClient() {
   const navigate = useNavigate();
   const { id } = useParams();
   const [activeOrder, fetchOrder] = useGetActiveOrder(id);
-   console.log(activeOrder);
   let currentProducts = activeOrder.products || [];
   let hasProduct = activeOrder.id ? true : false;
   let price = activeOrder.totalPrice || 0;

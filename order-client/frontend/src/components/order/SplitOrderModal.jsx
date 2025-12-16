@@ -8,7 +8,7 @@ export default function SplitOrderModal({ onClose, order, onRefresh }) {
   );
   const [tables, fetchTables] = useGetAllTable(); 
   const [selectedTable, setSelectedTable] = useState("");
-
+  console.log(tables);
 
   useEffect(() => {
     fetchTables(); 
@@ -50,7 +50,7 @@ export default function SplitOrderModal({ onClose, order, onRefresh }) {
 
     // Създаваме нова поръчка за избраната маса
     const newOrder = {
-      id: selectedTable,
+      id: selectedTable.id,
       personalName: order.personalName,
       products: productsToTransfer,
     };

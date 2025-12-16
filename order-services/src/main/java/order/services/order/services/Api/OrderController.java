@@ -35,7 +35,7 @@ public class OrderController {
     public ResponseEntity<String> createOrder(@RequestBody @Valid OrderDTO orderDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             List<ObjectError> allErrors = bindingResult.getAllErrors();
-            String defaultMessage = allErrors.get(0).getDefaultMessage();
+            String defaultMessage = allErrors.getFirst().getDefaultMessage();
             return ResponseEntity.badRequest().body(defaultMessage);
         }
         createAndUpdateOrderServ.createOrder(orderDto);
