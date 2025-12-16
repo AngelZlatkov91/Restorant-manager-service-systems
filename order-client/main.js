@@ -6,18 +6,35 @@ let mainWindow;
 let jwtToken = null;
 
 function createLoginWindow() {
+  console.log("Creating Login Window...");
+
   loginWindow = new BrowserWindow({
-    width: 400,
-    height: 300,
+    width: 600,
+    height: 500,
     resizable: false,
-    frame: false, // прави го като kiosk/popup
+    frame: false, 
+    show: false, 
     webPreferences: {
       contextIsolation: true,
       preload: path.join(__dirname, "preload.js"),
     },
   });
 
-  loginWindow.loadURL('http://localhost:5174/loginPage');
+  
+  loginWindow.once("ready-to-show", () => {
+    loginWindow.show();
+    console.log("Login Window shown");
+  });
+
+ 
+  loginWindow.loadURL("http://localhost:5174/loginPage")
+    .catch(err => console.error("Failed to load login URL:", err));
+
+  
+  loginWindow.on("closed", () => {
+    loginWindow = null;
+    console.log("Login Window closed");
+  });
 }
 
 function createMainWindow() {
@@ -34,11 +51,12 @@ function createMainWindow() {
 }
 
 app.whenReady().then(() => {
+ 
   createLoginWindow();
 });
 
-
 ipcMain.on("loginSuccess", (event, token) => {
+  
   jwtToken = token;
 
   if (loginWindow) {
@@ -49,6 +67,8 @@ ipcMain.on("loginSuccess", (event, token) => {
   createMainWindow();
 });
 
+
 ipcMain.handle("getToken", async () => jwtToken);
 
 app.on("window-all-closed", () => app.quit());
+

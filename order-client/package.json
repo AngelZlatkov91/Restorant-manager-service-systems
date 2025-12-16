@@ -3,9 +3,12 @@
   "version": "1.0.0",
   "main": "main.js",
   "scripts": {
-    "dev": "concurrently \"npm run dev:vite\" \"npm run dev:electron\"",
+    "dev": "concurrently \"npm run dev:vite\" \"npm run dev:electron:debug\"",
     "dev:vite": "cd frontend && npm run dev",
     "dev:electron": "NODE_ENV=development electron . --no-sandbox --disable-gpu --disable-software-rasterizer",
+    "dev:electron:debug": "NODE_ENV=development electron --inspect-brk=5858 . --no-sandbox",
+    "dev:no-debug": "concurrently \"npm run dev:vite\" \"npm run dev:electron\"",
+    "debug": "electron --inspect-brk=5858 .",
     "build": "cd frontend && npm run build",
     "start": "NODE_ENV=production electron ."
   },
