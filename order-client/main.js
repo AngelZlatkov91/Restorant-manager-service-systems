@@ -67,6 +67,20 @@ ipcMain.on("loginSuccess", (event, token) => {
   createMainWindow();
 });
 
+ipcMain.on("logout", () => {
+  console.log("User logout");
+
+  jwtToken = null;
+
+  if (mainWindow) {
+    mainWindow.close();
+    mainWindow = null;
+  }
+
+  createLoginWindow();
+});
+
+
 
 ipcMain.handle("getToken", async () => jwtToken);
 

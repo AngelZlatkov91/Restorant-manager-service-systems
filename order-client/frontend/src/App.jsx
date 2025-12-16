@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { getAccessToken } from "./utils/authUtils";
 import TableSelection from "./components/table/TableSelection";
 import OrderClient from "./components/order/OrderClient";
-import Header from "./components/header/Header";
 import Reports from "./components/reports/Reports";
 
 function App() {
@@ -23,7 +22,7 @@ function App() {
 
   return (
     <>
-    <Header />
+    
     <Routes>
 
       <Route path="/loginPage" element={isAuth ? <Navigate to="/tables" /> : <LoginAuthWindow />} />

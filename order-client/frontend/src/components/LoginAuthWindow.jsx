@@ -1,86 +1,201 @@
-import { useState } from "react";
+const CLICK_SOUND_BASE64 =
+  "data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAA=";
+
+import { useState, useEffect } from "react";
 import { useLogin } from "../hooks/useAuth";
 
+const PIN_LENGTH = 4;
+
 export default function LoginAuthWindow() {
-  const [hasError, setHasError] = useState('');
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [shake, setShake] = useState(false);
+  const [darkMode, setDarkMode] = useState(true);
+
   const login = useLogin();
-  
-  
-const handleLogin = async (e) => {
-  e.preventDefault();
-  const result = await login(password); 
-  if (result.name) {
-    window.electronAPI.loginSuccess(result.name);
-  } else {
-    setHasError("Грешна парола");
-  }
+
+  // ======================
+  // Sound
+  // ======================
+  const playClick = () => {
+  const audio = new Audio(CLICK_SOUND_BASE64);
+  audio.volume = 0.4;
+  audio.play().catch(() => {});
 };
 
+  // ======================
+  // Auto submit
+  // ======================
+  useEffect(() => {
+    if (password.length === PIN_LENGTH) {
+      submit();
+    }
+  }, [password]);
+
+  const submit = async () => {
+    const result = await login(password);
+
+    if (result?.name) {
+      window.electronAPI.loginSuccess(result.name);
+    } else {
+      setError("Грешна парола");
+      setPassword("");
+      setShake(true);
+      setTimeout(() => setShake(false), 400);
+    }
+  };
+
+  // ======================
+  // Keypad logic
+  // ======================
+  const addDigit = (d) => {
+    if (password.length < PIN_LENGTH) {
+      playClick();
+      setPassword((p) => p + d);
+    }
+  };
+
+  const backspace = () => {
+    playClick();
+    setPassword((p) => p.slice(0, -1));
+  };
+
+  const clear = () => {
+    playClick();
+    setPassword("");
+  };
+
   return (
-    <div
-  style={{
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-    padding: 40,
-    minHeight: "100vh",
-    backgroundColor: "#f5f5f5",
-    fontFamily: "Arial, sans-serif",
-  }}
->
-  <h2 style={{ marginBottom: 20, color: "#333" }}>Вход</h2>
+    <div style={styles.wrapper(darkMode)}>
+      <div style={styles.card}>
+        {/* HEADER */}
+        <div style={styles.header}>
+          <h2>Вход</h2>
+          <button onClick={() => setDarkMode(!darkMode)} style={styles.modeBtn}>
+            {darkMode ? "🌙" : "☀️"}
+          </button>
+        </div>
 
-  <form
-    onSubmit={handleLogin}
-    style={{
-      display: "flex",
-      flexDirection: "column",
-      width: 300,
-      gap: 15,
-      backgroundColor: "#fff",
-      padding: 30,
-      borderRadius: 10,
-      boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
-    }}
-  >
-    <input
-      type="password"
-      placeholder="Въведи парола"
-      value={password}
-      onChange={(e) => setPassword(e.target.value)}
-      style={{
-        padding: "10px",
-        borderRadius: 5,
-        border: "1px solid #ccc",
-        fontSize: 16,
-      }}
-    />
+        {/* PIN DOTS */}
+        <div
+          style={{
+            ...styles.pinBox,
+            ...(shake ? styles.shake : {}),
+          }}
+        >
+          {[...Array(PIN_LENGTH)].map((_, i) => (
+            <span key={i} style={styles.dot}>
+              {password[i] ? "●" : "○"}
+            </span>
+          ))}
+        </div>
 
-    {hasError && (
-      <p style={{ color: "red", fontSize: 14, margin: 0 }}>{hasError}</p>
-    )}
+        {error && <p style={styles.error}>{error}</p>}
 
-    <button
-      type="submit"
-      style={{
-        padding: "10px",
-        borderRadius: 5,
-        border: "none",
-        backgroundColor: "#007bff",
-        color: "#fff",
-        fontWeight: "bold",
-        fontSize: 16,
-        cursor: "pointer",
-        transition: "background-color 0.2s",
-      }}
-      onMouseEnter={(e) => (e.target.style.backgroundColor = "#0056b3")}
-      onMouseLeave={(e) => (e.target.style.backgroundColor = "#007bff")}
-    >
-      Вход
-    </button>
-  </form>
-</div>
+        {/* KEYPAD */}
+        <div style={styles.keypad}>
+          {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((n) => (
+            <Key key={n} onClick={() => addDigit(n)}>
+              {n}
+            </Key>
+          ))}
+
+          <Key onClick={clear}>C</Key>
+          <Key onClick={() => addDigit(0)}>0</Key>
+          <Key onClick={backspace}>⌫</Key>
+        </div>
+      </div>
+    </div>
   );
 }
+
+// ======================
+// Key component
+// ======================
+function Key({ children, onClick }) {
+  return (
+    <button onClick={onClick} style={styles.key}>
+      {children}
+    </button>
+  );
+}
+
+// ======================
+// Styles
+// ======================
+const styles = {
+  wrapper: (dark) => ({
+    minHeight: "100vh",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    background: dark ? "#121212" : "#f5f5f5",
+    fontFamily: "Arial, sans-serif",
+  }),
+
+  card: {
+    background: "#1e1e1e",
+    padding: 40,
+    borderRadius: 16,
+    boxShadow: "0 10px 30px rgba(0,0,0,0.4)",
+    color: "#fff",
+    width: 380,
+  },
+
+  header: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 20,
+  },
+
+  modeBtn: {
+    background: "transparent",
+    border: "none",
+    fontSize: 20,
+    cursor: "pointer",
+    color: "#fff",
+  },
+
+  pinBox: {
+    display: "flex",
+    justifyContent: "center",
+    gap: 12,
+    fontSize: 28,
+    marginBottom: 15,
+  },
+
+  dot: {
+    width: 20,
+    textAlign: "center",
+  },
+
+  keypad: {
+    display: "grid",
+    gridTemplateColumns: "repeat(3, 1fr)",
+    gap: 14,
+    marginTop: 20,
+  },
+
+  key: {
+    height: 70,
+    fontSize: 24,
+    borderRadius: 14,
+    border: "none",
+    background: "#2f2f2f",
+    color: "#fff",
+    cursor: "pointer",
+    userSelect: "none",
+    touchAction: "manipulation",
+  },
+
+  error: {
+    textAlign: "center",
+    color: "#ff5c5c",
+    margin: 0,
+  },
+
+  shake: {
+    animation: "shake 0.4s",
+  },
+};
