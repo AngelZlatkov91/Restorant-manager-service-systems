@@ -5,7 +5,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-@Document(collection = "mune_items")
+
+import java.time.LocalDateTime;
+
+@Document(collection = "menu_items")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -14,7 +17,11 @@ public class MenuItem {
     private String id;
     private String name;
     private Double price;
+    private Double costPrice;
+    private Double markupPercentage;
     private Category category;
     private TypeProduct typeProduct;
     private boolean active;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 }

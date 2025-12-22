@@ -7,6 +7,7 @@ import { useState, useEffect } from "react";
 const initialValues = {
   name: "",
   price: "",
+  costPrice: "",
   category: "",
   typeProduct: "",
 };
@@ -15,6 +16,7 @@ export default function CreateItem() {
   const navigate = useNavigate();
   const [successMsg, setSuccessMsg] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
+  const [markup, setMarkup] = useState(0);
 
   const optionTypeProduct = [
     { value: "BAR", label: "BAR" },
@@ -25,7 +27,7 @@ export default function CreateItem() {
   const createMenuItem = useCreateMenuItem();
 
   const createHandler = async (values) => {
-    if (!values.name || !values.price || !values.category || !values.typeProduct) {
+    if (!values.name || !values.price || !values.costPrice || !values.category || !values.typeProduct) {
       setErrorMsg("Моля попълнете всички полета!");
       return;
     }
@@ -35,7 +37,7 @@ export default function CreateItem() {
       if (res === "Created") {
         setSuccessMsg("Артикулът е създаден успешно!");
         setErrorMsg("");
-        refreshCategories(); // 🔄 обновяване на категориите
+        refreshCategories(); // обновяване на категориите
         setTimeout(() => navigate("/getAll-items"), 1200);
       } else {
         setErrorMsg("Грешка при създаване на артикул!");
@@ -49,6 +51,17 @@ export default function CreateItem() {
     initialValues,
     createHandler
   );
+
+  // Изчисляване на надценката при промяна на цена или costPrice
+  useEffect(() => {
+    const price = parseFloat(values.price);
+    const cost = parseFloat(values.costPrice);
+    if (!isNaN(price) && !isNaN(cost) && cost > 0) {
+      setMarkup(Math.round(((price - cost) / cost) * 100 * 100) / 100);
+    } else {
+      setMarkup(0);
+    }
+  }, [values.price, values.costPrice]);
 
   return (
     <section className="create-page">
@@ -69,15 +82,26 @@ export default function CreateItem() {
           placeholder="Въведи име..."
         />
 
-        <label htmlFor="price">Цена</label>
+        <label htmlFor="costPrice">Покупна цена</label>
+        <input
+          type="number"
+          id="costPrice"
+          name="costPrice"
+          value={values.costPrice}
+          onChange={changeHandler}
+          placeholder="Въведи покупна цена..."
+        />
+
+        <label htmlFor="price">Продажна цена</label>
         <input
           type="number"
           id="price"
           name="price"
           value={values.price}
           onChange={changeHandler}
-          placeholder="Въведи цена..."
+          placeholder="Въведи продажна цена..."
         />
+        {markup > 0 && <small>Надценка: {markup}%</small>}
 
         <label htmlFor="category">Категория</label>
         <select

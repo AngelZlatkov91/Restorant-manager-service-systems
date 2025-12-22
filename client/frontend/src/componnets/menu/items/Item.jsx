@@ -22,7 +22,7 @@ export default function Item() {
     if (!itemToDelete) return;
 
     await useDeleteMenuItem(itemToDelete.id);
-    await fetchItems(); // 🔥 ВАЖНО
+    await fetchItems();
     setIsConfirmOpen(false);
     setItemToDelete(null);
   };
@@ -30,6 +30,20 @@ export default function Item() {
   const handleCancel = () => {
     setIsConfirmOpen(false);
     setItemToDelete(null);
+  };
+
+  const stockColor = (status) => {
+    switch(status) {
+      case 'AVAILABLE': return 'green';
+      case 'LOW': return 'orange';
+      case 'OUT_OF_STOCK': return 'red';
+      default: return 'black';
+    }
+  };
+
+  const calculateMarkup = (price, costPrice) => {
+    if (!costPrice || costPrice === 0) return 0;
+    return (((price - costPrice) / costPrice) * 100).toFixed(2);
   };
 
   return (
@@ -51,9 +65,15 @@ export default function Item() {
                 </strong>
 
                 <div className="item-meta">
-                  <span>💰 {item.price} лв.</span>
+                  <span title={`Cost: ${item.costPrice} | Markup: ${item.markupPercentage || calculateMarkup(item.price, item.costPrice)}%`}>
+                    💰 {item.price} лв.
+                  </span>
                   <span>🏷️ {item.category || "Няма"}</span>
                   <span>🍽️ {item.typeProduct}</span>
+                  <span>📅 Създадено: {new Date(item.createdAt).toLocaleString()}</span>
+                  <span>✏️ Последна промяна: {new Date(item.updatedAt).toLocaleString()}</span>
+                  {item.costPrice && <span>💲 Покупна цена: {item.costPrice} лв.</span>}
+                  {item.markupPercentage && <span>⬆ Надценка: {item.markupPercentage}%</span>}
                 </div>
               </div>
 
@@ -61,6 +81,7 @@ export default function Item() {
                 <button
                   className="btn btn-success"
                   onClick={() => navigate(`/editItem/${item.id}`)}
+                  title="Редактирай"
                 >
                   ✏️
                 </button>
@@ -68,6 +89,7 @@ export default function Item() {
                 <button
                   className="btn btn-danger"
                   onClick={() => handleDeleteClick(item)}
+                  title="Изтрий"
                 >
                   🗑
                 </button>
