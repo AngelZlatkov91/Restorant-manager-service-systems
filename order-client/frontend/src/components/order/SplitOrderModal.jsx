@@ -8,7 +8,7 @@ export default function SplitOrderModal({ onClose, order, onRefresh }) {
   );
   const [tables, fetchTables] = useGetAllTable(); 
   const [selectedTable, setSelectedTable] = useState("");
-  console.log(tables);
+  
 
   useEffect(() => {
     fetchTables(); 

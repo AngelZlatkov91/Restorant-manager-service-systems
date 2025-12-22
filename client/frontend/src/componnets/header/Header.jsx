@@ -1,43 +1,38 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
-import { useEffect, useState } from "react";
 
 export default function Header() {
-  const {isAuth, logout} = useAuth();
+  const { isAuth, logout } = useAuth();
 
   return (
-    <header>
-      <h1>
-        <Link className="home" to="/">Restaurant Manager</Link>
-      </h1>
+    <header className="app-header">
+      <div className="header-left">
+        <h1 className="logo">🍽 Restaurant Manager</h1>
+      </div>
 
-      <nav className="nav">
+      <nav className="header-nav">
         {isAuth ? (
           <>
-            <div className="dropdown">
-              <button className="dropbtn">Menu</button>
-              <div className="dropdown-content">
-                <Link to="/getAllCategory">Get All Categories</Link>
-                <Link to="/getAll-items">Get All Items</Link>
-              </div>
+            <div className="menu-group">
+              <Link to="/table">Маси</Link>
+              <Link to="/orders">Поръчки</Link>
+              <Link to="/inventory">Инвентар</Link>
+              <Link to="/reports">Отчети</Link>
             </div>
 
-            <div>
-              <Link to="/table">Table</Link>
-              <Link to="/personal">Personal</Link>
-              <Link to="/inventory">Inventory</Link>
-              <Link to="/orders">Orders</Link>
-              <Link to="/reports">Reports</Link>
-              <button onClick={logout} className="btn-link"
-              style={{color: "blue"}}>
-                Logout
-              </button>
+            <div className="menu-group">
+              <Link to="/getAllCategory">Категории</Link>
+              <Link to="/getAll-items">Артикули</Link>
             </div>
+
+            <button className="logout-btn" onClick={logout}>
+              ⏻ Изход
+            </button>
           </>
         ) : (
-          <div id="guest">
-            <Link to="/login">Login</Link>
-            <Link to="/register">Register</Link>
+          <div className="menu-group">
+            <Link to="/login">Вход</Link>
+            <Link to="/register">Регистрация</Link>
           </div>
         )}
       </nav>

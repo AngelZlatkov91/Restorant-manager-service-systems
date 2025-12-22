@@ -7,102 +7,68 @@ export default function Table() {
   const navigate = useNavigate();
   const [tables, fetchTables] = useGetAllTable();
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
-  const [tableToDelete, setItemToDelete] = useState(null);
-  const [popupPos, setPopupPos] = useState({ top: 0, left: 0 });
+  const [tableToDelete, setTableToDelete] = useState(null);
 
   useEffect(() => {
     fetchTables();
   }, []);
 
-  const handleDeleteClick = (e, item) => {
-    const rect = e.target.getBoundingClientRect();
-    setPopupPos({ top: rect.top + window.scrollY + 30, left: rect.left + rect.width / 2 });
-    setItemToDelete(item);
+  const handleDeleteClick = (table) => {
+    setTableToDelete(table);
     setIsConfirmOpen(true);
   };
 
   const handleConfirm = async () => {
     if (!tableToDelete) return;
     await useDeleteTable(tableToDelete.id);
-    fetchTables();
+    await fetchTables();
     setIsConfirmOpen(false);
-    setItemToDelete(null);
+    setTableToDelete(null);
   };
 
   const handleCancel = () => {
     setIsConfirmOpen(false);
-    setItemToDelete(null);
+    setTableToDelete(null);
   };
-
-  const handleEdit = (id) => {
-   navigate(`/editTable/${id}`);
-  };
-  const createTableHandler = () => {
-    navigate('/createTable');
-  }
-  const buttonStyleGreen = {
-    padding: "6px 12px",
-    border: "none",
-    borderRadius: "5px",
-    background: "#4caf50",
-    color: "white",
-    cursor: "pointer",
-  };
-
-  const buttonStyleRed = {
-    padding: "6px 12px",
-    border: "none",
-    borderRadius: "5px",
-    background: "#f44336",
-    color: "white",
-    cursor: "pointer",
-  };
-
 
   return (
-    <section id="tables" style={{ padding: "20px" }}>
-      <h2>Tables</h2>
-      <div style={{ display: "flex", gap: "10px" }}>
-        <button onClick={createTableHandler} style={{
-          padding: "6px 12px",
-          border: "none",
-          borderRadius: "5px",
-          background: "#4caf50",
-          color: "white",
-          cursor: "pointer",
-        }}>Create Table</button>
-      </div>
+    <section className="tables-page">
+      <header className="tables-header">
+        <h2>Маси</h2>
+        <button className="btn btn-primary" onClick={() => navigate("/createTable")}>
+          ➕ Създай маса
+        </button>
+      </header>
+
       {tables && tables.length > 0 ? (
-        <ul style={{ listStyle: "none", padding: 0 }}>
+        <ul className="tables-list">
           {tables.map((table) => (
-            <li key={table.id} style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              background: "#ffffff",
-              marginBottom: "10px",
-              padding: "14px 18px",
-              borderRadius: "10px",
-              boxShadow: "0 2px 6px rgba(0,0,0,0.15)",
-            }}>
-
-              <strong
-                className={`table-status ${table.empty ? "free" : "busy"}`}
-                style={{ fontSize: "18px" }}
-              >
-                {table.tableName}
-              </strong>
-
-              <div style={{ display: "flex", gap: "10px" }}>
-                <button onClick={() => handleEdit(table.id)} style={buttonStyleGreen}>Edit</button>
-                <button onClick={(e) => handleDeleteClick(e, table)} style={buttonStyleRed}>Delete</button>
+            <li key={table.id} className="table-card">
+              <div className="table-info">
+                <span className={`table-dot ${table.empty ? "free" : "busy"}`} />
+                <strong>{table.tableName}</strong>
               </div>
 
+              <div className="table-actions">
+                <button
+                  className="btn btn-success"
+                  onClick={() => navigate(`/editTable/${table.id}`)}
+                >
+                  ✏️ Редакция
+                </button>
+
+                <button
+                  className="btn btn-danger"
+                  onClick={() => handleDeleteClick(table)}
+                >
+                  🗑 Изтрий
+                </button>
+              </div>
             </li>
           ))}
         </ul>
       ) : (
-        <p>Няма налични артикули.</p>
+        <p className="empty-state">Няма налични маси.</p>
       )}
 
       <ConfirmPopup
@@ -110,7 +76,6 @@ export default function Table() {
         message={`Сигурен ли си, че искаш да изтриеш "${tableToDelete?.tableName}"?`}
         onConfirm={handleConfirm}
         onCancel={handleCancel}
-        position={{ top: "50%", left: "50%" }}
       />
     </section>
   );

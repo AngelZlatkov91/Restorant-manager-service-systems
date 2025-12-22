@@ -1,84 +1,52 @@
-header {
+/* HEADER */
+
+.app-header {
+  height: 64px;
+  background: #1e1e2f;
+  color: white;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  background: #222;
-  color: #fff;
-  padding: 10px 20px;
+  padding: 0 24px;
+  justify-content: space-between;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.25);
 }
 
-header h1 .home {
-  color: #fff;
-  text-decoration: none;
+.logo {
+  font-size: 20px;
+  font-weight: 700;
 }
 
-.nav {
+.header-nav {
   display: flex;
   align-items: center;
   gap: 20px;
 }
 
-/* Dropdown */
-.dropdown {
-  position: relative;
-  display: inline-block;
+.menu-group {
+  display: flex;
+  gap: 14px;
 }
 
-.dropbtn {
-  background: #222;
-  color: #fff;
-  border: none;
-  cursor: pointer;
-  padding: 8px 12px;
+.menu-group a {
+  color: white;
+  text-decoration: none;
   font-size: 16px;
+  font-weight: 600;
+  padding: 8px 12px;
+  border-radius: 10px;
 }
 
-.dropdown-content {
-  display: none;
-  position: absolute;
-  background-color: #fff;
-  min-width: 180px;
-  box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
-  z-index: 1;
-  flex-direction: column;
+.menu-group a:hover {
+  background: rgba(255,255,255,0.15);
 }
 
-.dropdown-content a {
-  color: #222;
+.logout-btn {
   padding: 10px 16px;
-  text-decoration: none;
-  display: block;
+  border-radius: 12px;
+  border: none;
+  background: #f44336;
+  color: white;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
 }
-
-.dropdown-content a:hover {
-  background-color: #f1f1f1;
-}
-
-.dropdown:hover .dropdown-content {
-  display: flex;
-}
-
-/* User / Guest links */
-#user, #guest {
-  display: flex;
-  gap: 15px;
-}
-
-#user a, #guest a {
-  color: #fff;
-  text-decoration: none;
-}
-
-#user a:hover, #guest a:hover {
-  text-decoration: underline;
-}
-
-
-footer {
-    padding: 0.5em;
-    width: 100%;
-    position: absolute;
-    left: 0;
-    bottom: 0;
-}
-

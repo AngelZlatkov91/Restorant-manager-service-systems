@@ -86,7 +86,7 @@ export default function OrderClient() {
         </div>
         <div className="order-header-right">
           <span>{personal}</span>
-          <button className="logout-btn" onClick={handleLogout}>Изход</button>
+          {!hasProduct && (<button className="logout-btn" onClick={handleLogout}>Изход</button>)}
         </div>
       </header>
 
@@ -122,7 +122,7 @@ export default function OrderClient() {
         <div className="order-actions">
           <button onClick={() => setShowMenu(true)}>Добави продукт</button>
           <button onClick={() => setShowSplit(true)}>Раздели поръчка</button>
-          <button onClick={() => setShowPayment(true)}>Плащане</button>
+         {hasProduct && (<button onClick={() => setShowPayment(true)}>Плащане</button>)} 
           <button className="save-btn" onClick={createOrUpdate}>Запази / Актуализирай</button>
         </div>
       </div>

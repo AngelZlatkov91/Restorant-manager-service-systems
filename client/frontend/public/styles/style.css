@@ -1,7 +1,5 @@
 @import "typography.css";
 
-@import "login-register.css";
-
 @import "welcome.css";
 
 @import "navigation.css";
@@ -9,3 +7,11 @@
 @import "create-edit.css";
 
 @import "table.css";
+
+@import "login.css";
+
+@import "item.css";
+
+@import "category.css";
+
+@import "inventories.css";

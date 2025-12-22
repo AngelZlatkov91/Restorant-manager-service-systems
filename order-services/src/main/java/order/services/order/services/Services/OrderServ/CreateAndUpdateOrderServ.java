@@ -8,4 +8,5 @@ public interface CreateAndUpdateOrderServ {
 
     void createOrder(OrderDTO order) ;
     void updateOrder(OrderResp order);
+    void splitOrder(OrderResp order);
 }

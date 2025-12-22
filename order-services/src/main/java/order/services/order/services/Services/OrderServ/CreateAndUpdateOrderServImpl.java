@@ -107,6 +107,11 @@ public class CreateAndUpdateOrderServImpl implements CreateAndUpdateOrderServ {
         orderRepositories.save(byId.get());
     }
 
+    @Override
+    public void splitOrder(OrderResp order) {
+
+    }
+
     private Order mapToCreate(OrderDTO order, TableEn tableEn, Personal personal) {
         Order orderEntity = new Order();
         orderEntity.setPersonal(personal);

@@ -1,74 +1,73 @@
-import {useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom";
 import { useLogin } from "../../../hooks/useAuth";
-import { useForm } from "../../../hooks/useForm"
+import { useForm } from "../../../hooks/useForm";
 import { useAuth } from "../../../context/AuthContext";
 import { useState } from "react";
 
 const initialValues = {
-  username: '', 
-  password: '',
+  username: "",
+  password: "",
 };
+
 export default function Login() {
-  const [error, setError] = useState('');
-   const login = useLogin();
-   const {loginToken} = useAuth();
-     const navigate = useNavigate()
-   const loginHandler = async ({username, password}) => {
-                const res =  await login(username,password);
-                if (res.token) {
-                  await loginToken(res.token);
-                  navigate('/');
-                } else {
-                  console.log(res);
-                  alert('Login failed');
-                  setError(res);
-                }
-   }
-    const {values, changeHandler, submitHandler } = useForm(
-        initialValues,
-        loginHandler
-    );
-    
-    
+  const [error, setError] = useState("");
+  const login = useLogin();
+  const { loginToken } = useAuth();
+  const navigate = useNavigate();
 
-   return (
-       <>
-          <section id="login-page" className="auth">
-            <form id="login" onSubmit={submitHandler}>
+  const loginHandler = async ({ username, password }) => {
+    const res = await login(username, password);
 
-                <div className="container">
-                    <div className="brand-logo"></div>
-                    <h1>Login</h1>
-                    
-                    <label htmlFor="username">Username:</label>
-                    <input 
-                    type="text" 
-                    id="username" 
-                    name="username"
-                    value={values.username}
-                    onChange={changeHandler} 
-                    
-                    />
+    if (res?.token) {
+      await loginToken(res.token);
+      navigate("/");
+    } else {
+      setError(res?.message || "Грешно потребителско име или парола");
+    }
+  };
 
-                    <label htmlFor="login-pass">Password:</label>
-                    <input 
-                    type="password" 
-                    id="login-password" 
-                    name="password"
-                    value={values.password}
-                    onChange={changeHandler}  
-                    />
-                    {error && (
-                        <p>
-                           <span style={{fontSize: '20px', color: 'red'}}>{error}</span>
-                         </p>
-                    )}
-                    
-                    <input type="submit" className="btn submit" value="Login" />
-                   
-                </div>
-            </form>
-        </section>
-       </>
-  )
+  const { values, changeHandler, submitHandler } = useForm(
+    initialValues,
+    loginHandler
+  );
+
+  return (
+    <section className="login-page">
+      <form className="login-card" onSubmit={submitHandler}>
+        <div className="login-logo">🍽️</div>
+
+        <h1 className="login-title">Restaurant POS</h1>
+        <p className="login-subtitle">Вход за персонал</p>
+
+        <div className="form-group">
+          <label>Потребител</label>
+          <input
+            type="text"
+            name="username"
+            value={values.username}
+            onChange={changeHandler}
+            placeholder="Въведи потребител"
+            autoFocus
+          />
+        </div>
+
+        <div className="form-group">
+          <label>Парола</label>
+          <input
+            type="password"
+            name="password"
+            value={values.password}
+            onChange={changeHandler}
+            placeholder="Въведи парола"
+          />
+        </div>
+
+        {error && <div className="login-error">{error}</div>}
+
+        <button className="login-btn" type="submit">
+          Вход
+        </button>
+      </form>
+    </section>
+  );
 }

@@ -1,88 +1,79 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDeleteCategory, useGetAllCategory } from "../../../hooks/useCategory";
 import { useNavigate } from "react-router-dom";
-
+import ConfirmPopup from "../../confirmModal/ConfirmPop";
 
 export default function Category() {
   const navigate = useNavigate();
- 
-   const [categories, refreshCategories] = useGetAllCategory();
+  const [categories, refreshCategories] = useGetAllCategory();
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+  const [categoryToDelete, setCategoryToDelete] = useState(null);
 
- const createCategoryHandler = () => {
-  navigate('/createCategory');
- }
-  const handleDelete = async (id) => { 
-   
-    useDeleteCategory(id); 
+  useEffect(() => {
+    refreshCategories(); 
+  }, []);
+
+  const createCategoryHandler = () => {
+    navigate("/createCategory");
   };
-    refreshCategories();
 
+  const handleDeleteClick = (category) => {
+    setCategoryToDelete(category);
+    setIsConfirmOpen(true);
+  };
 
-   return (
-    <section id="category" style={{ padding: "20px" }}>
-      <h2>Категории</h2>
-      <div style={{ display: "flex", gap: "10px" }}>
-                <button onClick={createCategoryHandler} style={{
-                  padding: "6px 12px",
-                  border: "none",
-                  borderRadius: "5px",
-                  background: "#4caf50",
-                  color: "white",
-                  cursor: "pointer",
-                }}>Create Category</button>
-              </div>
-      <ul style={{ listStyle: "none", padding: 0 }}>
-        {categories && categories.length > 0 ? (
-          categories.map((cat) => (
-            <li
-              key={cat.id}
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                background: "#f9f9f9",
-                marginBottom: "10px",
-                padding: "10px 15px",
-                borderRadius: "8px",
-                boxShadow: "0 2px 5px rgba(0,0,0,0.1)",
-              }}
-            >
-              <p style={{ margin: 0, fontWeight: "500" }}>{cat.category}</p>
+  const handleConfirm = async () => {
+    if (!categoryToDelete) return;
+    await useDeleteCategory(categoryToDelete.id);
+    await refreshCategories(); 
+    setIsConfirmOpen(false);
+    setCategoryToDelete(null);
+  };
 
-              <div style={{ display: "flex", gap: "10px" }}>
-                <button
-                  onClick={() => handleEdit(cat.id)}
-                  style={{
-                    padding: "6px 12px",
-                    border: "none",
-                    borderRadius: "5px",
-                    background: "#4caf50",
-                    color: "white",
-                    cursor: "pointer",
-                  }}
-                >
-                  Edit
+  const handleCancel = () => {
+    setIsConfirmOpen(false);
+    setCategoryToDelete(null);
+  };
+
+  const handleEdit = (id) => {
+    navigate(`/editCategory/${id}`);
+  };
+
+  return (
+    <section className="category-page">
+      <header className="category-header">
+        <h2>Категории</h2>
+        <button className="btn btn-primary" onClick={createCategoryHandler}>
+          ➕ Създай категория
+        </button>
+      </header>
+
+      {categories && categories.length > 0 ? (
+        <ul className="category-list">
+          {categories.map((cat) => (
+            <li key={cat.id} className="category-card">
+              <span>{cat.category}</span>
+              <div className="category-actions">
+                <button className="btn btn-success" onClick={() => handleEdit(cat.id)}>
+                  ✏️
                 </button>
-                <button
-                  onClick={() => handleDelete(cat.id)}
-                  style={{
-                    padding: "6px 12px",
-                    border: "none",
-                    borderRadius: "5px",
-                    background: "#f44336",
-                    color: "white",
-                    cursor: "pointer",
-                  }}
-                >
-                  Delete
+                <button className="btn btn-danger" onClick={() => handleDeleteClick(cat)}>
+                  🗑
                 </button>
               </div>
             </li>
-          ))
-        ) : (
-          <p>Няма налични категории.</p>
-        )}
-      </ul>
+          ))}
+        </ul>
+      ) : (
+        <p className="empty-state">Няма налични категории.</p>
+      )}
+
+      <ConfirmPopup
+        isOpen={isConfirmOpen}
+        message={`Сигурен ли си, че искаш да изтриеш "${categoryToDelete?.category}"?`}
+        onConfirm={handleConfirm}
+        onCancel={handleCancel}
+      />
     </section>
-  )
+  );
 }

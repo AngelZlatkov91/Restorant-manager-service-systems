@@ -29,6 +29,7 @@ public class ReportServiceImpl implements ReportService {
         reports.setPaymentMethod(dailyReportsDTO.getPaymentMethod());
         reports.setPersonalName(dailyReportsDTO.getPersonalName());
         reports.setTotalCost(dailyReportsDTO.getTotalCost());
+        reports.setCheck(false);
         reportRepositories.save(reports);
     }
 

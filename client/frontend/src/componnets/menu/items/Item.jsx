@@ -1,26 +1,28 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useDeleteMenuItem, useGetAllMenuItems } from "../../../hooks/useItem";
 import ConfirmPopup from "../../confirmModal/ConfirmPop";
 import { useNavigate } from "react-router-dom";
 
 export default function Item() {
   const navigate = useNavigate();
-  const [items, fetchItems] = useGetAllMenuItems(); 
+  const [items, fetchItems] = useGetAllMenuItems();
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [itemToDelete, setItemToDelete] = useState(null);
-  const [popupPos, setPopupPos] = useState({ top: 0, left: 0 });
-  console.log("Items:", items);
-  const handleDeleteClick = (e,item) => {
-    const rect = e.target.getBoundingClientRect(); // позиция на бутона
-     setPopupPos({ top: rect.top + window.scrollY + 30, left: rect.left + rect.width / 2 });
-  
+
+  useEffect(() => {
+    fetchItems();
+  }, []);
+
+  const handleDeleteClick = (item) => {
     setItemToDelete(item);
     setIsConfirmOpen(true);
   };
 
   const handleConfirm = async () => {
     if (!itemToDelete) return;
+
     await useDeleteMenuItem(itemToDelete.id);
+    await fetchItems(); // 🔥 ВАЖНО
     setIsConfirmOpen(false);
     setItemToDelete(null);
   };
@@ -30,99 +32,59 @@ export default function Item() {
     setItemToDelete(null);
   };
 
-  // fetchItems();
-
-const handleEdit = (id) => {
-    navigate(`/editItem/${id}`);
-  };
-   const createItemHandler = () => {
-      navigate("/createItem");
-    }
-
- 
-
   return (
-    <section id="items" style={{ padding: "20px" }}>
-      <h2>Меню артикули</h2>
-             <div style={{ display: "flex", gap: "10px" }}>
-                <button onClick={createItemHandler} style={{
-                  padding: "6px 12px",
-                  border: "none",
-                  borderRadius: "5px",
-                  background: "#4caf50",
-                  color: "white",
-                  cursor: "pointer",
-                }}>Create Item</button>
-              </div>
+    <section className="items-page">
+      <header className="items-header">
+        <h2>Меню артикули</h2>
+        <button className="btn btn-primary" onClick={() => navigate("/createItem")}>
+          ➕ Създай артикул
+        </button>
+      </header>
+
       {items && items.length > 0 ? (
-        <ul style={{ listStyle: "none", padding: 0 }}>
+        <ul className="items-list">
           {items.map((item) => (
-            <li
-              key={item.id} // ✅ уникален key
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                background: "#f9f9f9",
-                marginBottom: "10px",
-                padding: "10px 15px",
-                borderRadius: "8px",
-                boxShadow: "0 2px 5px rgba(0,0,0,0.1)",
-              }}
-            >
-              <div>
-                <span style={{ color: item.active ? "black" : "red" }}>
-                   <strong>{item.name}</strong>
-                </span>
-                <p style={{ margin: "5px 0" }}>
-                  💰 Цена: {item.price} лв. | 🏷️ Категория: {item.category || "Няма"} | 🍽️ Тип: {item.typeProduct}
-                </p>
+            <li key={item.id} className="item-card">
+              <div className="item-info">
+                <strong className={item.active ? "" : "inactive"}>
+                  {item.name}
+                </strong>
+
+                <div className="item-meta">
+                  <span>💰 {item.price} лв.</span>
+                  <span>🏷️ {item.category || "Няма"}</span>
+                  <span>🍽️ {item.typeProduct}</span>
+                </div>
               </div>
 
-              <div style={{ display: "flex", gap: "10px" }}>
+              <div className="item-actions">
                 <button
-                  onClick={() => handleEdit(item.id)}
-                  style={{
-                    padding: "6px 12px",
-                    border: "none",
-                    borderRadius: "5px",
-                    background: "#4caf50",
-                    color: "white",
-                    cursor: "pointer",
-                  }}
+                  className="btn btn-success"
+                  onClick={() => navigate(`/editItem/${item.id}`)}
                 >
-                  Edit
+                  ✏️
                 </button>
 
                 <button
-                  onClick={(e) => handleDeleteClick(e,item)}
-                  style={{
-                    padding: "6px 12px",
-                    border: "none",
-                    borderRadius: "5px",
-                    background: "#f44336",
-                    color: "white",
-                    cursor: "pointer",
-                  }}
+                  className="btn btn-danger"
+                  onClick={() => handleDeleteClick(item)}
                 >
-                  Delete
+                  🗑
                 </button>
-
               </div>
             </li>
           ))}
         </ul>
       ) : (
-        <p>Няма налични артикули.</p>
+        <p className="empty-state">Няма налични артикули.</p>
       )}
 
       <ConfirmPopup
-          isOpen={isConfirmOpen}
-           message={`Сигурен ли си, че искаш да изтриеш "${itemToDelete?.name}"?`}
-          onConfirm={handleConfirm}
-          onCancel={handleCancel}
-         position={{ top: "50%", left: "50%" }}
-        />
+        isOpen={isConfirmOpen}
+        message={`Сигурен ли си, че искаш да изтриеш "${itemToDelete?.name}"?`}
+        onConfirm={handleConfirm}
+        onCancel={handleCancel}
+      />
     </section>
   );
 }

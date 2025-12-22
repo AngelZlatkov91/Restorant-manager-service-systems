@@ -22,4 +22,5 @@ public class Reports {
     private Double totalCost;
     private String paymentMethod;
     private LocalDate created;
+    private boolean isCheck;
 }

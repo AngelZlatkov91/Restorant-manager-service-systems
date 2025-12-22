@@ -26,32 +26,41 @@ export default function CreateCategory() {
         submitHandler,
     } = useForm(initialValues,createHandler);
    return (
-    <>
-         <Link to="/getAllCategory">Get All Categories</Link>
-         <section id="create-page" className="auth">
-            <form id="create" onSubmit={submitHandler}>
-                <div className="container">
+    <section className="create-wrapper">
+  <div className="top-nav">
+    <Link to="/getAllCategory" className="secondary-link">
+      ← Всички категории
+    </Link>
+  </div>
 
-                    <h1>Create Category</h1>
-                    <label htmlFor="categoryName">Category Name:</label>
-                    <input 
-                    type="text" 
-                    id="categoryName" 
-                    name="categoryName" 
-                    value={values.categoryName}
-                    onChange={changeHandler}
-                    placeholder="Enter categoryName..." />
-                   <input className="btn submit" type="submit" value="Create Category" />
-                   {hasError && (
-                        <p>
-                           <span style={{fontSize: '20px', color: 'red'}}>{hasError.status}</span>
-                         </p>
-                    )}
-                </div>
-            </form>
-         </section>
-      
-    </>
+  <form className="create-card" onSubmit={submitHandler}>
+    <h1 className="create-title">📂 Създай категория</h1>
+
+    <div className="input-group">
+      <label htmlFor="categoryName">Име на категория</label>
+      <input
+        type="text"
+        id="categoryName"
+        name="categoryName"
+        value={values.categoryName}
+        onChange={changeHandler}
+        placeholder="Напр. Напитки"
+      />
+    </div>
+
+    {hasError && (
+      <div className="error-box">
+        {hasError.status}
+      </div>
+    )}
+
+    <button className="primary-btn" type="submit">
+      Създай категория
+    </button>
+  </form>
+     </section>
+
+
   
   );
 }

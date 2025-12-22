@@ -24,7 +24,7 @@ export default function Reports() {
               
             </tbody>
           </table>
-       
+  
        </>
   );
 }

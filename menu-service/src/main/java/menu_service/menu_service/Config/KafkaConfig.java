@@ -43,7 +43,6 @@ public class KafkaConfig {
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
 
-        // Настройка за JSON
         return new DefaultKafkaConsumerFactory<>(
                 props,
                 new StringDeserializer(),

@@ -2,6 +2,7 @@ import { useGetAllCategory } from "../../../../hooks/useCategory";
 import { useCreateMenuItem } from "../../../../hooks/useItem";
 import { useForm } from "../../../../hooks/useForm";
 import { Link, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 
 const initialValues = {
   name: "",
@@ -12,6 +13,9 @@ const initialValues = {
 
 export default function CreateItem() {
   const navigate = useNavigate();
+  const [successMsg, setSuccessMsg] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
+
   const optionTypeProduct = [
     { value: "BAR", label: "BAR" },
     { value: "KITCHEN", label: "KITCHEN" },
@@ -21,10 +25,24 @@ export default function CreateItem() {
   const createMenuItem = useCreateMenuItem();
 
   const createHandler = async (values) => {
-      const menuItemCreate = await createMenuItem(values);
-       if (menuItemCreate === "Created") {
-          navigate("/getAll-items")
-       } 
+    if (!values.name || !values.price || !values.category || !values.typeProduct) {
+      setErrorMsg("Моля попълнете всички полета!");
+      return;
+    }
+
+    try {
+      const res = await createMenuItem(values);
+      if (res === "Created") {
+        setSuccessMsg("Артикулът е създаден успешно!");
+        setErrorMsg("");
+        refreshCategories(); // 🔄 обновяване на категориите
+        setTimeout(() => navigate("/getAll-items"), 1200);
+      } else {
+        setErrorMsg("Грешка при създаване на артикул!");
+      }
+    } catch (err) {
+      setErrorMsg("Сървърна грешка!");
+    }
   };
 
   const { values, changeHandler, submitHandler } = useForm(
@@ -33,72 +51,68 @@ export default function CreateItem() {
   );
 
   return (
-    <>
-        <Link to="/getAll-items">Get All Items</Link>
-        <section id="create-page" className="auth">
-      <form id="create" onSubmit={submitHandler}>
-        <div className="container">
-          <h1>Create Item</h1>
+    <section className="create-page">
+      <Link to="/getAll-items" className="back-link">← Назад към всички артикули</Link>
+      <form className="create-form" onSubmit={submitHandler}>
+        <h1>➕ Създай артикул</h1>
 
-          <label htmlFor="name">Item Name:</label>
-          <input
-            type="text"
-            id="name"
-            name="name"
-            value={values.name}
-            onChange={changeHandler}
-            placeholder="Enter item name..."
-          />
+        {successMsg && <div className="success-box">{successMsg}</div>}
+        {errorMsg && <div className="error-box">{errorMsg}</div>}
 
-          <label htmlFor="price">Price:</label>
-          <input
-            type="number"
-            id="price"
-            name="price"
-            value={values.price}
-            onChange={changeHandler}
-            placeholder="Enter item price..."
-          />
+        <label htmlFor="name">Име на артикул</label>
+        <input
+          type="text"
+          id="name"
+          name="name"
+          value={values.name}
+          onChange={changeHandler}
+          placeholder="Въведи име..."
+        />
 
-          <label htmlFor="category">Category</label>
-          <select
-            id="category"
-            name="category"
-            value={values.category}
-            onChange={changeHandler}
-          >
-            <option value="">-- Избери категория --</option>
-            {categories.map((cat) => (
-              <option key={cat.id} value={cat.category}>
-                {cat.category}
-              </option>
-            ))}
-          </select>
+        <label htmlFor="price">Цена</label>
+        <input
+          type="number"
+          id="price"
+          name="price"
+          value={values.price}
+          onChange={changeHandler}
+          placeholder="Въведи цена..."
+        />
 
-          <label htmlFor="typeProduct">Type Product</label>
-          <select
-            id="typeProduct"
-            name="typeProduct"
-            value={values.typeProduct}
-            onChange={changeHandler}
-          >
-            <option value="">-- Избери тип продукт --</option>
-            {optionTypeProduct.map((type) => (
-              <option key={type.value} value={type.value}>
-                {type.label}
-              </option>
-            ))}
-          </select>
+        <label htmlFor="category">Категория</label>
+        <select
+          id="category"
+          name="category"
+          value={values.category}
+          onChange={changeHandler}
+        >
+          <option value="">-- Избери категория --</option>
+          {categories.map((cat) => (
+            <option key={cat.id} value={cat.category}>
+              {cat.category}
+            </option>
+          ))}
+        </select>
 
-          <input
-            className="btn submit"
-            type="submit"
-            value="Create Item"
-            style={{ marginTop: "10px" }}
-          />
-        </div>
+        <label htmlFor="typeProduct">Тип продукт</label>
+        <select
+          id="typeProduct"
+          name="typeProduct"
+          value={values.typeProduct}
+          onChange={changeHandler}
+        >
+          <option value="">-- Избери тип продукт --</option>
+          {optionTypeProduct.map((type) => (
+            <option key={type.value} value={type.value}>
+              {type.label}
+            </option>
+          ))}
+        </select>
+
+        <button className="btn btn-primary" type="submit">
+          Създай
+        </button>
       </form>
-        </section>
-    </>    
+    </section>
   );
 }
