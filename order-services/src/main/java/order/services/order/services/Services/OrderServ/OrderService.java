@@ -11,5 +11,7 @@ public interface OrderService {
 
     OrderResp getOrder(ReqOrder reqOrder);
 
-    List<CheckOrders> checkOrders (CheckOrders checkOrders);
+
+
+    List<OrderResp> getAll();
 }

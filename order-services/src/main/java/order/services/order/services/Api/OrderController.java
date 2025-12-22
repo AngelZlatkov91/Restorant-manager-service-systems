@@ -53,11 +53,6 @@ public class OrderController {
         return new ResponseEntity<>("Order updated", HttpStatus.OK);
     }
 
-    @PostMapping("/getAll")
-    public ResponseEntity<List<CheckOrders>> getAllOrders(@RequestBody CheckOrders checkOrders) {
-        return ResponseEntity.ok(orderService.checkOrders(checkOrders));
-    }
-
     @PostMapping("/complete")
     public ResponseEntity<String> completeOrder(@RequestBody PaymentMethodDTO paymentMethodDTO) {
        return ResponseEntity.ok(completeOrdersServ.completeOrder(paymentMethodDTO));
@@ -67,6 +62,11 @@ public class OrderController {
     public ResponseEntity<String> removeProduct(@RequestBody DeleteProduct deleteProduct) {
        String result =  deleteProductFormOrder.deleteProduct(deleteProduct);
         return ResponseEntity.ok(result);
+    }
+
+    @GetMapping("/getAll")
+    public ResponseEntity<List<OrderResp>> getAll() {
+        return ResponseEntity.ok(orderService.getAll());
     }
 
 

@@ -45,25 +45,14 @@ public class OrderServiceImpl implements OrderService {
 
     }
 
+
     @Override
-    public List<CheckOrders> checkOrders(CheckOrders checkOrders) {
-        Optional<Personal> byName = personalRepositories.findByName(checkOrders.getName());
-      return  orderRepositories
-              .findAllByPersonalAndOrderStatus(byName.get(), OrderStatus.PENDING)
-              .stream()
-              .map(this::mapCheckOrders)
-              .toList();
-
+    public List<OrderResp> getAll() {
+      return   orderRepositories.findAll().stream().map(this::mapToResponse).toList();
     }
 
 
-    private CheckOrders mapCheckOrders(Order order) {
-        CheckOrders checkOrders = new CheckOrders();
-        checkOrders.setOrderId(order.getId());
-        checkOrders.setName(order.getPersonal().getName());
-        checkOrders.setTableId(order.getTableEn().getId());
-        return checkOrders;
-    }
+
 
 
     private OrderResp mapToResponse(Order order) {
