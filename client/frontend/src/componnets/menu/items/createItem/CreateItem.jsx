@@ -32,19 +32,16 @@ export default function CreateItem() {
       return;
     }
 
-    try {
+   
       const res = await createMenuItem(values);
       if (res === "Created") {
         setSuccessMsg("Артикулът е създаден успешно!");
         setErrorMsg("");
-        refreshCategories(); // обновяване на категориите
+        refreshCategories(); 
         setTimeout(() => navigate("/getAll-items"), 1200);
       } else {
         setErrorMsg("Грешка при създаване на артикул!");
       }
-    } catch (err) {
-      setErrorMsg("Сървърна грешка!");
-    }
   };
 
   const { values, changeHandler, submitHandler } = useForm(
@@ -52,7 +49,6 @@ export default function CreateItem() {
     createHandler
   );
 
-  // Изчисляване на надценката при промяна на цена или costPrice
   useEffect(() => {
     const price = parseFloat(values.price);
     const cost = parseFloat(values.costPrice);

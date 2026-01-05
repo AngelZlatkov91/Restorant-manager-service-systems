@@ -18,6 +18,7 @@ export default function Header() {
               <Link to="/orders">Поръчки</Link>
               <Link to="/inventory">Инвентар</Link>
               <Link to="/reports">Отчети</Link>
+              <Link to="/personal">Персонал</Link>
             </div>
 
             <div className="menu-group">

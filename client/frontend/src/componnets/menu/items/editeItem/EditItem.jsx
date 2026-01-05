@@ -1,4 +1,4 @@
-import { useParams, useNavigate } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import { useGetAllCategory } from "../../../../hooks/useCategory";
 import { useGetItemById, useUpdateItem } from "../../../../hooks/useItem";
 import { useForm } from "../../../../hooks/useForm";
@@ -10,18 +10,15 @@ export default function EditItem() {
   const [item] = useGetItemById(id);
 
   const updateHandler = async (values) => {
-    try {
       await useUpdateItem(values);
-      navigate("/getAll-items");
-    } catch (err) {
-      console.log(err);
-    }
+      navigate("/getAll-items"); 
   };
 
   const { values, changeHandler, submitHandler } = useForm(item, updateHandler);
 
   return (
     <section className="edit-page">
+       <Link to="/getAll-items" className="back-link">← Назад към всички артикули</Link>
       <div className="edit-card">
         <h2>Edit Item</h2>
         <form onSubmit={submitHandler}>
@@ -44,6 +41,16 @@ export default function EditItem() {
               value={values.price}
               onChange={changeHandler}
               placeholder="Enter price"
+            />
+          </div>
+          <div className="form-group">
+            <label>Cost Price:</label>
+            <input
+              type="number"
+              name="costPrice"
+              value={values.costPrice}
+              onChange={changeHandler}
+              placeholder="Enter cost price"
             />
           </div>
 

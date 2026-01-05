@@ -148,7 +148,7 @@ public class MenuItemServiceImpl implements MenuItemService {
         } else {
             existing.setMarkupPercentage(0.0);
         }
-        existing.setMarkupPercentage(menuItemRes.getMarkupPercentage());
+
         existing.setCategory(category);
         existing.setUpdatedAt(LocalDateTime.now());
 
