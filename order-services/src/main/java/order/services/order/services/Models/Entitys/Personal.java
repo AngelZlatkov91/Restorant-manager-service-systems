@@ -1,13 +1,12 @@
 package order.services.order.services.Models.Entitys;
 
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import order.services.order.services.Models.Role;
 
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
@@ -20,5 +19,8 @@ public class Personal extends BaseEntity{
     private String name;
     @Column(unique=true, nullable = false)
     private String password;
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
 }

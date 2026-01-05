@@ -26,20 +26,21 @@ public class PersonalServicesImpl implements PersonalServices {
         Personal personal = new Personal();
         personal.setName(createdPersonal.getName());
         personal.setPassword(createdPersonal.getPassword());
+        personal.setRole(createdPersonal.getRole());
         personalRepositories.save(personal);
     }
 
     @Override
     @Transactional
-    public void updatePersonal(Long id ,PersonalResponse createdPersonal) {
-        Optional<Personal> byId = personalRepositories.findById(id);
+    public void updatePersonal(PersonalResponse createdPersonal) {
         Optional<Personal> byPassword = personalRepositories.findByPassword(createdPersonal.getPassword());
-        if (byId.isEmpty() ||  byPassword.isPresent()) {
+        if ( byPassword.isEmpty()) {
             throw new EntityNotFoundException("Personal with name " + createdPersonal.getName() + " not found");
         }
-        byId.get().setName(createdPersonal.getName());
-        byId.get().setPassword(createdPersonal.getPassword());
-        personalRepositories.save(byId.get());
+        byPassword.get().setName(createdPersonal.getName());
+        byPassword.get().setPassword(createdPersonal.getPassword());
+        byPassword.get().setRole(createdPersonal.getRole());
+        personalRepositories.save(byPassword.get());
     }
 
     @Override
@@ -68,6 +69,7 @@ public class PersonalServicesImpl implements PersonalServices {
         PersonalResponse personalResponse = new PersonalResponse();
         personalResponse.setId(personal.getId());
         personalResponse.setName(personal.getName());
+        personalResponse.setRole(personal.getRole());
         personalResponse.setPassword(personal.getPassword());
         return personalResponse;
     }
@@ -79,6 +81,6 @@ public class PersonalServicesImpl implements PersonalServices {
         if (byPassword.isEmpty()) {
             throw new EntityNotFoundException("Personal with password " + checkPersonal.getPassword() + " not found");
         }
-        return new ResPersonalName(byPassword.get().getName());
+        return new ResPersonalName(byPassword.get().getName(),byPassword.get().getRole());
     }
 }

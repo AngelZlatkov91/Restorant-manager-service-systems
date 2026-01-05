@@ -5,6 +5,7 @@ import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import order.services.order.services.Models.Role;
 import order.services.order.services.Validation.UniquePersonalPassword;
 
 @Data
@@ -19,4 +20,6 @@ public class CreatedPersonal {
     @Size(min = 4, max = 6)
     @UniquePersonalPassword
     private String password;
+
+    private Role role;
 }

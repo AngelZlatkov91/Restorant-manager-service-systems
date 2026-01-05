@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, use } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import MenuModal from "./MenuModal";
 import PaymentModal from "./PaymentModal";
@@ -22,15 +22,26 @@ export default function OrderClient() {
   const hasProduct = activeOrder.id ? true : false;
   const totalPrice = activeOrder.totalPrice || 0;
   const tableName = activeOrder.tableName || "Маса " + id;
+  const [ownerName, setOwnerName] = useState(false);
 
   useEffect(() => {
     (async () => {
-      const token = await window.electronAPI.getToken(); // token = персонал
+      const token = await window.electronAPI.getToken(); 
       setPersonal(token || "Гост");
       fetchOrder();
     })();
   }, []);
 
+  useEffect(() => {
+    if (activeOrder.personalName === personal) {
+      setOwnerName(true);
+      return;
+    } else { 
+      setOwnerName(false);
+    }
+  },[]);
+
+   console.log(activeOrder);
   const addProductNewProduct = (product) => {
     const exists = newProduct.find(p => p.id === product.id);
     if (exists) {
@@ -78,20 +89,18 @@ export default function OrderClient() {
 
   return (
     <div className="order-wrapper">
-      {/* HEADER */}
       <header className="order-header">
         <div className="order-header-left">
-          <h2>{tableName}</h2>
+          <h2 style={{color: "black"}}>{tableName}</h2>
           <span className="total-price">{totalPrice} EUR</span>
         </div>
         <div className="order-header-right">
-          <span>{personal}</span>
+          <span style={{color: "black"}} >{personal}</span>
           {!hasProduct && (<button className="logout-btn" onClick={handleLogout}>Изход</button>)}
         </div>
       </header>
 
       <div className="order-main">
-        {/* Списък на продуктите */}
         <div className="order-products">
           {(currentProducts.length + newProduct.length === 0) && (
             <p>Няма избрани продукти.</p>
@@ -118,7 +127,6 @@ export default function OrderClient() {
           ))}
         </div>
 
-        {/* Действия с поръчката */}
         <div className="order-actions">
           <button onClick={() => setShowMenu(true)}>Добави продукт</button>
           <button onClick={() => setShowSplit(true)}>Раздели поръчка</button>
@@ -127,7 +135,6 @@ export default function OrderClient() {
         </div>
       </div>
 
-      {/* Модали */}
       {showMenu && <MenuModal onClose={() => setShowMenu(false)} onAdd={addProductNewProduct} />}
       {showPayment && <PaymentModal onClose={() => setShowPayment(false)} products={activeOrder} />}
       {showSplit && <SplitOrderModal onClose={() => setShowSplit(false)} order={activeOrder} onUpdate={addProductNewProduct} />}

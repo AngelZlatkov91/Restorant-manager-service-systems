@@ -1,8 +1,6 @@
 package order.services.order.services.Models.Entitys;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,6 +15,8 @@ public class TableEn extends BaseEntity{
     private String tableName;
    @Column
     private boolean isEmpty;
+   @ManyToOne
+    private Personal isOwner;
 
 
 }

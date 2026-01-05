@@ -40,7 +40,7 @@ public class OrderServiceImpl implements OrderService {
         if (byId.isEmpty() || byName.isEmpty()) {
             throw  new NullPointerException("Table or Personal don't exist");
         }
-        Optional<Order> order = orderRepositories.getByPersonalAndOrderStatusAndTableEn(byName.get(),OrderStatus.PENDING,byId.get());
+        Optional<Order> order = orderRepositories.getByOrderStatusAndTableEn(OrderStatus.PENDING,byId.get());
         return order.map(this::mapToResponse).orElseGet(() -> new OrderResp(byId.get().getTableName(), byName.get().getName()));
 
     }

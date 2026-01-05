@@ -54,11 +54,15 @@ public class CompleteOrdersServImpl implements CompleteOrdersServ {
         Optional<Order> byId = orderRepositories.findById(paymentMethodDTO.getId());
         Optional<Personal> byName = personalRepositories.findByName(paymentMethodDTO.getPersonal());
 
-        if (byName.isEmpty() || byId.isEmpty() || byId.get().getOrderStatus() == OrderStatus.COMPLETED) {
+        if (byName.isEmpty() ||
+                byId.isEmpty() ||
+                byId.get().getOrderStatus() == OrderStatus.COMPLETED ||
+                !byId.get().getPersonal().getName().equals(byName.get().getName())) {
             throw new NullPointerException("The operation is not correct");
         }
         TableEn tableName = byId.get().getTableEn();
         tableName.setEmpty(true);
+        tableName.setIsOwner(null);
         tableRepositories.save(tableName);
 
         CompleteOrderDTO completeOrderDTO = mapOrderToDTO(byId.get());

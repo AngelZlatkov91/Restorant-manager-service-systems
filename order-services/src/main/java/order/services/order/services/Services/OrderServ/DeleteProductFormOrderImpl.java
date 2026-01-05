@@ -5,6 +5,7 @@ import order.services.order.services.Models.DTO.Order.DeleteProduct;
 import order.services.order.services.Models.Entitys.Order;
 import order.services.order.services.Models.Entitys.Personal;
 import order.services.order.services.Models.Entitys.TableEn;
+import order.services.order.services.Models.Role;
 import order.services.order.services.Repositories.OrderRepositories;
 import order.services.order.services.Repositories.PersonalRepositories;
 import order.services.order.services.Repositories.TableRepositories;
@@ -29,14 +30,19 @@ public class DeleteProductFormOrderImpl implements DeleteProductFormOrder {
     @Transactional
     public String deleteProduct(DeleteProduct deleteProduct) {
         Optional<Personal> byPassword = personalRepositories.findByPassword(deleteProduct.getPassword());
-        if (byPassword.isEmpty() || !deleteProduct.getPassword().contains("0000")) {
+        Optional<Order> byId = orderRepositories.findById(deleteProduct.getOrderId());
+        if (byPassword.isEmpty() ||
+                !deleteProduct.getPassword().contains("0000") ||
+                !byPassword.get().getRole().equals(Role.ADMIN) ||
+        byId.isEmpty()) {
             throw new NullPointerException("is not Admin");
         }
-        Optional<Order> byId = orderRepositories.findById(deleteProduct.getOrderId());
+
         byId.get().getProducts().remove(deleteProduct.getIndexProduct());
         if (byId.get().getProducts().isEmpty()) {
             Optional<TableEn> byTableName = tableRepositories.findByTableName(byId.get().getTableEn().getTableName());
             byTableName.get().setEmpty(true);
+            byTableName.get().setIsOwner(null);
             tableRepositories.save(byTableName.get());
             orderRepositories.delete(byId.get());
         } else {

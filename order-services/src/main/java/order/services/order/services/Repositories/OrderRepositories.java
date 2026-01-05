@@ -13,8 +13,7 @@ import java.util.Optional;
 @Repository
 public interface OrderRepositories extends JpaRepository<Order, Long> {
 
-    Optional<Order> getByPersonalAndOrderStatusAndTableEn(
-            Personal personal,
+    Optional<Order> getByOrderStatusAndTableEn(
             OrderStatus orderStatus,
             TableEn tableEn
     );

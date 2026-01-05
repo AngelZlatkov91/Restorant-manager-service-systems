@@ -29,9 +29,9 @@ public class PersonalController {
         return ResponseEntity.ok("Created");
     }
 
-    @PutMapping("/update/:id")
-    public ResponseEntity<String> update(@RequestParam Long id, @RequestBody PersonalResponse personal) {
-        personalServices.updatePersonal(id,personal);
+    @PutMapping("/update")
+    public ResponseEntity<String> update( @RequestBody PersonalResponse personal) {
+        personalServices.updatePersonal(personal);
         return ResponseEntity.ok("Personal updated");
     }
 

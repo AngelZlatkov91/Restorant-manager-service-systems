@@ -22,7 +22,7 @@ public class TableServiceImpl implements TableService {
 
     @Override
     public void createTable(CreateTable tableName) {
-        TableEn newTableEn = new TableEn(tableName.getTableName(), true);
+        TableEn newTableEn = new TableEn(tableName.getTableName(), true, null);
         tableRepositories.save(newTableEn);
     }
 
@@ -48,6 +48,16 @@ public class TableServiceImpl implements TableService {
     }
 
     private ResponseTable getCreateTable(TableEn tableEnName) {
-        return new ResponseTable(tableEnName.getId(), tableEnName.getTableName(), tableEnName.isEmpty());
+        ResponseTable responseTable = new ResponseTable(
+                tableEnName.getId(),
+                tableEnName.getTableName(),
+                tableEnName.isEmpty(),
+                Optional.ofNullable(tableEnName.getIsOwner())
+                        .map(owner -> owner.getName())
+                        .orElse(null)
+        );
+        return responseTable;
+
     }
+
 }

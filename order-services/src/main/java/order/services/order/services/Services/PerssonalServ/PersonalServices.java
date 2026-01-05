@@ -11,7 +11,7 @@ public interface PersonalServices {
 
     void createPersonal(CreatedPersonal createdPersonal);
 
-    void updatePersonal(Long id,PersonalResponse createdPersonal);
+    void updatePersonal(PersonalResponse createdPersonal);
 
     void deletePersonal(Long id);
 
