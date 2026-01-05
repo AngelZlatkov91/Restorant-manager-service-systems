@@ -37,7 +37,7 @@ public class PersonalController {
 
     @DeleteMapping("/remove/{id}")
     public ResponseEntity<String> delete(@PathVariable Long id) {
-        personalServices.deletePersonal(id);
+        personalServices.changeIsActivePersonal(id);
         return ResponseEntity.ok("Personal deleted");
     }
 

@@ -14,4 +14,5 @@ public class PersonalResponse {
     private String name;
     private String password;
     private Role role;
+    private boolean isActive;
 }

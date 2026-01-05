@@ -23,4 +23,7 @@ public class Personal extends BaseEntity{
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    @Column
+    private boolean isActive;
+
 }

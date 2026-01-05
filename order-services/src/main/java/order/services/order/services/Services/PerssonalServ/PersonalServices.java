@@ -13,7 +13,7 @@ public interface PersonalServices {
 
     void updatePersonal(PersonalResponse createdPersonal);
 
-    void deletePersonal(Long id);
+    void changeIsActivePersonal(Long id);
 
     List<PersonalResponse> getPersonal();
 
