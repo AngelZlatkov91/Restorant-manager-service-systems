@@ -22,7 +22,4 @@ export function useGetAllPersonal() {
     return [personals,fetchPersonal]
 }
 
-export function useDeletePersonal(id) {
-    const result = personalApi.deletePersonal(id);
-    return result;
-}
+

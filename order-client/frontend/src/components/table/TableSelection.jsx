@@ -5,10 +5,10 @@ import { useGetAllTable } from "../../hooks/useTable";
 export default function TableSelection() {
   const navigate = useNavigate();
   const location = useLocation();
-  const [name, setName] = useState("");
+
+  const [loggedUser, setLoggedUser] = useState("");
   const [tables, fetchTables] = useGetAllTable();
 
-  // Функция за зареждане на масите
   const loadTables = async () => {
     await fetchTables();
   };
@@ -16,12 +16,11 @@ export default function TableSelection() {
   useEffect(() => {
     (async () => {
       const token = await window.electronAPI.getToken();
-      setName(token || "Гост");
+      setLoggedUser(token?.name || "Гост");
       await loadTables();
     })();
   }, []);
 
-  // Автоматично обновяване при връщане от OrderClient
   useEffect(() => {
     if (location.state?.refresh) {
       loadTables();
@@ -33,14 +32,22 @@ export default function TableSelection() {
   };
 
   const handleLogout = () => {
-    window.electronAPI.logout(); 
+    window.electronAPI.logout();
+  };
+
+  const getTableClass = (table) => {
+    if (table.empty) return "free";
+    if (table.owner === loggedUser) return "busy-mine";
+    return "busy-other";
   };
 
   return (
     <div className="wrapper">
       <header className="header">
-        <h1 className="welcome">Добре дошъл, {name}</h1>
-        <button className="logout-btn" onClick={handleLogout}>Изход</button>
+        <h1 className="welcome">Добре дошъл, {loggedUser}</h1>
+        <button className="logout-btn" onClick={handleLogout}>
+          Изход
+        </button>
       </header>
 
       <section className="section">
@@ -49,11 +56,16 @@ export default function TableSelection() {
             {tables.map((table) => (
               <li key={table.id}>
                 <button
-                  className={`table-btn ${table.empty ? "free" : "busy"}`}
+                  className={`table-btn ${getTableClass(table)}`}
                   onClick={() => tableEventHandler(table.id)}
                 >
                   <div className="table-name">{table.tableName}</div>
-                  {!table.empty && <div className="table-status">Заета</div>}
+
+                  {!table.empty && (
+                    <div className="table-status">
+                      Заета от: {table.owner}
+                    </div>
+                  )}
                 </button>
               </li>
             ))}

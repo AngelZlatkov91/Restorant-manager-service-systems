@@ -21,16 +21,11 @@ export const getAllPersonal = async () => {
     return result;
 }
 
-export const deletePersonal = (id) => {
-    
-    const result = request.del(`${BASE_URL}/remove/${id}`,null,true);
-    return result;
-}
+
 
 const personalApi = {
     createPersonal,
     getAllPersonal,
-    deletePersonal,
 }
 
 export default personalApi;

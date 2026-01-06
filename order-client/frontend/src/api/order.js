@@ -13,8 +13,8 @@ const BASE_URL = 'http://localhost:8083/api/order';
  * 
  */
 export const getOrder = async (id) => {
-    const name = await getAccessToken(); 
-    const result = await request.post(`${BASE_URL}/getOrder`, {name, id});
+    const data = await getAccessToken(); 
+    const result = await request.post(`${BASE_URL}/getOrder`, {name: data.name, id});
     return result;
 }
 

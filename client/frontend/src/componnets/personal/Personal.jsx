@@ -1,33 +1,14 @@
 import { useNavigate } from "react-router-dom";
-import { useDeletePersonal, useGetAllPersonal } from "../../hooks/usePersonal";
-import ConfirmPopup from "../confirmModal/ConfirmPop";
-import { useState } from "react";
+import { useGetAllPersonal } from "../../hooks/usePersonal";
+
 
 export default function Personal() {
     const navigate = useNavigate();
     const [personals,fetchPersonal] = useGetAllPersonal();
-    const [isConfirmOpen, setIsConfirmOpen] = useState(null);
-    const [personalToDelete, setPersonalToDelete] = useState(null);
-    const [popupPos, setPopupPos] = useState({ top: 0, left: 0});
 
-    const handleDeleteClick = (e,personal) => {
-         const rect = e.target.getBoundingClientRect();
-         setPopupPos({ top: rect.top + window.scrollY + 30, left: rect.left + rect.width / 2 });
-         setPersonalToDelete(personal);
-         setIsConfirmOpen(true);
-    };
 
-    const handleConfirm = async () => {
-      if (!personalToDelete) return;
-      await useDeletePersonal(personalToDelete.id);
-      setIsConfirmOpen(false);
-      setPersonalToDelete(null);
-    };
 
-    const handleCancel = () => {
-      setIsConfirmOpen(false);
-      setPersonalToDelete(null);
-    };
+  
 
     const createPersonalHandler = () => {
       navigate('/createPersonal');
@@ -55,7 +36,7 @@ export default function Personal() {
                  <ul style={{ listStyle: "none", padding: 0 }}>
                    {personals.map((personal) => (
                      <li
-                       key={personal.id} // ✅ уникален key
+                       key={personal.id} 
                        style={{
                          display: "flex",
                          justifyContent: "space-between",
@@ -68,10 +49,11 @@ export default function Personal() {
                        }}
                      >
                        <div>
-                         <strong>Име: {personal.name}</strong>
+                         <strong>Name: {personal.name}</strong>
                          <p style={{ margin: "5px 0" }}>
                            Password: {personal.password} 
                          </p>
+                         <strong>ROLE: {personal.role}</strong>
                        </div>
          
                        <div style={{ display: "flex", gap: "10px" }}>
@@ -89,35 +71,15 @@ export default function Personal() {
                            Edit
                          </button>
          
-                         <button
-                           onClick={(e) => handleDeleteClick(e,personal)}
-                           style={{
-                             padding: "6px 12px",
-                             border: "none",
-                             borderRadius: "5px",
-                             background: "#f44336",
-                             color: "white",
-                             cursor: "pointer",
-                           }}
-                         >
-                           Delete
-                         </button>
          
                        </div>
                      </li>
                    ))}
                  </ul>
                ) : (
-                 <p>Няма налични артикули.</p>
+                 <p>Няма налични персонали.</p>
                )}
-         
-               <ConfirmPopup
-                   isOpen={isConfirmOpen}
-                    message={`Сигурен ли си, че искаш да изтриеш "${personalToDelete?.name}"?`}
-                   onConfirm={handleConfirm}
-                   onCancel={handleCancel}
-                  position={{ top: "50%", left: "50%" }}
-                 />
+
              </section>
   );
 }

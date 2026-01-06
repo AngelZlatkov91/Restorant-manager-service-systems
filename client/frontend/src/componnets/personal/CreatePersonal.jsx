@@ -7,8 +7,14 @@ import { useForm } from "../../hooks/useForm";
 const initialValues = {
   name: '',
   password: '',
+  role: '',
 }
 export default function CreatePersonal() {
+const optionRolePersonal = [
+    { value: "PERSONAL", label: "PERSONAL" },
+    { value: "ADMIN", label: "ADMIN" },
+  ];
+
 const [error, setError] = useState('');
 const addPersonal = useCreatePersonal();
 const navigate = useNavigate();
@@ -54,6 +60,20 @@ const {
                     value={values.password}
                     onChange={changeHandler}
                     />
+                    <label htmlFor="role">ROLE</label>
+                   <select
+                   id="role"
+                   name="role"
+                   value={values.role}
+                   onChange={changeHandler}
+                   >
+                    <option value="">-- Избери РОЛЯ--</option>
+                    {optionRolePersonal.map((role) => (
+                      <option key={role.value} value={role.value}>
+                      {role.label}
+                     </option>
+               ))}
+              </select>
 
                     {error && (
                         <p>

@@ -36,7 +36,7 @@ export default function LoginAuthWindow() {
     const result = await login(password);
 
     if (result?.name) {
-      window.electronAPI.loginSuccess(result.name);
+      window.electronAPI.loginSuccess(result);
     } else {
       setError("Грешна парола");
       setPassword("");

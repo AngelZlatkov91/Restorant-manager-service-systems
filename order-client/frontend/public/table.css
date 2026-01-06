@@ -85,3 +85,15 @@
   font-size: 16px;
   color: #555;
 }
+
+.table-btn.free {
+  background-color: #4caf50; /* зелено */
+}
+
+.table-btn.busy-mine {
+  background-color: #2196f3; /* синьо */
+}
+
+.table-btn.busy-other {
+  background-color: #f44336; /* червено */
+}
