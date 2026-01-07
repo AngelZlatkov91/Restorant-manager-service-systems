@@ -1,4 +1,4 @@
-import runConsumer from './kafka/consumer.js'
+import {runConsumer, printReport} from './kafka/consumer.js'
 import printer from './printer/printer.js';
 
 async function start() {
@@ -6,11 +6,16 @@ async function start() {
 
 runConsumer((data) => {
   orders = data;
+  console.log('Order data received', data);
 });
 
-// printTable((data) => {
-//   orders = data;
-// });
+
+
+printReport((data) => {
+  orders = data;
+  console.log('Report data received', data);
+});
+
 
 
   if (!orders) {

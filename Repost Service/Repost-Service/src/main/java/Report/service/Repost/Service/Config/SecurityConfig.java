@@ -21,7 +21,7 @@ public class SecurityConfig {
                     .cors(Customizer.withDefaults())
                     .csrf(AbstractHttpConfigurer::disable)
                     .authorizeHttpRequests(auth -> auth
-                            .requestMatchers("/api/getRepost").permitAll()
+                            .requestMatchers("/api/getRepost/**").permitAll()
                             .anyRequest().authenticated()
                     )
                     .oauth2ResourceServer(oauth2 -> oauth2

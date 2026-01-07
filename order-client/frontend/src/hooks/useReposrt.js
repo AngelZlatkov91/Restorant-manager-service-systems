@@ -19,3 +19,8 @@ export function useGetReport() {
     return [report, fetchReport];
 
 }
+
+export function useIsCheck(id) {
+     const result = reportApi.isCheck(id);
+    return result;
+}

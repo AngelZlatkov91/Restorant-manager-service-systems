@@ -16,25 +16,30 @@ const runConsumer = async (onMessage) => {
   await consumer.run({
     eachMessage: async ({ topic, partition, message }) => {
       const data = JSON.parse(message.value.toString());
-      console.log('📥 Получена поръчка:', data);
+      console.log('📥 Получена поръчка чек:', data);
       onMessage(data); // подай към callback за обработка
     },
   });
 };
 
-const printTable = async (onMessage) => {
+
+
+const printReport = async (onMessage) => {
   await consumer.connect();
-  await consumer.subscribe({ topic: 'print-table', fromBeginning: true });
+  await consumer.subscribe({ topic: 'daily-report', fromBeginning: true });
 
   await consumer.run({
     eachMessage: async ({ topic, partition, message }) => {
       const data = JSON.parse(message.value.toString());
-      console.log('📥 Получена поръчка:', data);
+      console.log('📥 Получена поръчка: отчет', data);
       onMessage(data); // подай към callback за обработка
     },
   });
 };
 
-export default runConsumer 
+export {
+  runConsumer,
+  printReport
+}
 
 

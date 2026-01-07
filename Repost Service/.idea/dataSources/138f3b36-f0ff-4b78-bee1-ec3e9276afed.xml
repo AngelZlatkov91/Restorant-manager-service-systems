@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataSource name="@localhost">
+  <database-model serializer="dbm" dbms="MONGO" family-id="MONGO" format-version="4.54">
+    <root id="1">
+      <ServerVersion>8.0.14</ServerVersion>
+    </root>
+    <schema id="2" parent="1" name="admin"/>
+    <schema id="3" parent="1" name="config"/>
+    <schema id="4" parent="1" name="local"/>
+    <schema id="5" parent="1" name="menu_db"/>
+    <schema id="6" parent="1" name="reports_db">
+      <LastIntrospectionLocalTimestamp>2026-01-07.11:33:33</LastIntrospectionLocalTimestamp>
+    </schema>
+    <table id="7" parent="6" name="dailyReport"/>
+    <table id="8" parent="6" name="reports"/>
+    <column id="9" parent="7" name="_id">
+      <Position>1</Position>
+      <StoredType>ObjectId|12s</StoredType>
+    </column>
+    <column id="10" parent="7" name="dailyReport">
+      <Position>1</Position>
+      <StoredType>Double|8s</StoredType>
+    </column>
+    <column id="11" parent="7" name="personalName">
+      <Position>1</Position>
+      <StoredType>String|12s</StoredType>
+    </column>
+    <column id="12" parent="7" name="_class">
+      <Position>2</Position>
+      <StoredType>String|12s</StoredType>
+    </column>
+    <column id="13" parent="7" name="isCheck">
+      <Position>2</Position>
+      <StoredType>Boolean|12s</StoredType>
+    </column>
+    <index id="14" parent="7" name="_id_">
+      <ColNames>_id</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <column id="15" parent="8" name="_id">
+      <Position>1</Position>
+      <StoredType>ObjectId|12s</StoredType>
+    </column>
+    <column id="16" parent="8" name="_class">
+      <Position>1</Position>
+      <StoredType>String|12s</StoredType>
+    </column>
+    <column id="17" parent="8" name="orderId">
+      <Position>1</Position>
+      <StoredType>Int64|12s</StoredType>
+    </column>
+    <column id="18" parent="8" name="personalName">
+      <Position>1</Position>
+      <StoredType>String|12s</StoredType>
+    </column>
+    <column id="19" parent="8" name="completedIn">
+      <Position>2</Position>
+      <StoredType>ISODate|91s</StoredType>
+    </column>
+    <column id="20" parent="8" name="paymentMethod">
+      <Position>2</Position>
+      <StoredType>String|12s</StoredType>
+    </column>
+    <column id="21" parent="8" name="totalCost">
+      <Position>2</Position>
+      <StoredType>Double|8s</StoredType>
+    </column>
+    <column id="22" parent="8" name="created">
+      <Position>3</Position>
+      <StoredType>ISODate|91s</StoredType>
+    </column>
+    <index id="23" parent="8" name="_id_">
+      <ColNames>_id</ColNames>
+      <Unique>1</Unique>
+    </index>
+  </database-model>
+</dataSource>

@@ -6,21 +6,14 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-
-@Document(collection = "reports")
-@Data
+@Document(collection = "dailyReport")
 @NoArgsConstructor
 @AllArgsConstructor
-public class Reports {
+@Data
+public class DailyReport {
     @Id
     private String id;
     private String personalName;
-    private Long orderId;
-    private LocalDateTime completedIn;
-    private Double totalCost;
-    private String paymentMethod;
-    private LocalDate created;
+    private Double dailyReport;
     private boolean isCheck;
 }
