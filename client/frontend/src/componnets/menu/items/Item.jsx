@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useDeleteMenuItem, useGetAllMenuItems } from "../../../hooks/useItem";
 import ConfirmPopup from "../../confirmModal/ConfirmPop";
 import { useNavigate } from "react-router-dom";
@@ -6,8 +6,16 @@ import { useNavigate } from "react-router-dom";
 export default function Item() {
   const navigate = useNavigate();
   const [items, fetchItems] = useGetAllMenuItems();
+
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [itemToDelete, setItemToDelete] = useState(null);
+
+  // 🔍 FILTER STATE
+  const [filters, setFilters] = useState({
+    name: "",
+    category: "",
+    typeProduct: "",
+  });
 
   useEffect(() => {
     fetchItems();
@@ -20,7 +28,6 @@ export default function Item() {
 
   const handleConfirm = async () => {
     if (!itemToDelete) return;
-
     await useDeleteMenuItem(itemToDelete.id);
     await fetchItems();
     setIsConfirmOpen(false);
@@ -32,19 +39,24 @@ export default function Item() {
     setItemToDelete(null);
   };
 
-  const stockColor = (status) => {
-    switch(status) {
-      case 'AVAILABLE': return 'green';
-      case 'LOW': return 'orange';
-      case 'OUT_OF_STOCK': return 'red';
-      default: return 'black';
-    }
-  };
+  // 🎯 FILTER LOGIC
+  const filteredItems = useMemo(() => {
+    return items?.filter((item) => {
+      const matchName =
+        item.name.toLowerCase().includes(filters.name.toLowerCase());
 
-  const calculateMarkup = (price, costPrice) => {
-    if (!costPrice || costPrice === 0) return 0;
-    return (((price - costPrice) / costPrice) * 100).toFixed(2);
-  };
+      const matchCategory =
+        !filters.category || item.category === filters.category;
+
+      const matchType =
+        !filters.typeProduct || item.typeProduct === filters.typeProduct;
+
+      return matchName && matchCategory && matchType;
+    });
+  }, [items, filters]);
+
+  const uniqueCategories = [...new Set(items?.map(i => i.category).filter(Boolean))];
+  const uniqueTypes = [...new Set(items?.map(i => i.typeProduct).filter(Boolean))];
 
   return (
     <section className="items-page">
@@ -55,9 +67,45 @@ export default function Item() {
         </button>
       </header>
 
-      {items && items.length > 0 ? (
+      {/* 🔍 FILTER BAR */}
+      <div className="filter-bar">
+        <input
+          type="text"
+          placeholder="Търси по име..."
+          value={filters.name}
+          onChange={(e) =>
+            setFilters((s) => ({ ...s, name: e.target.value }))
+          }
+        />
+
+        <select
+          value={filters.category}
+          onChange={(e) =>
+            setFilters((s) => ({ ...s, category: e.target.value }))
+          }
+        >
+          <option value="">Всички категории</option>
+          {uniqueCategories.map((c) => (
+            <option key={c} value={c}>{c}</option>
+          ))}
+        </select>
+
+        <select
+          value={filters.typeProduct}
+          onChange={(e) =>
+            setFilters((s) => ({ ...s, typeProduct: e.target.value }))
+          }
+        >
+          <option value="">Всички типове</option>
+          {uniqueTypes.map((t) => (
+            <option key={t} value={t}>{t}</option>
+          ))}
+        </select>
+      </div>
+
+      {filteredItems && filteredItems.length > 0 ? (
         <ul className="items-list">
-          {items.map((item) => (
+          {filteredItems.map((item) => (
             <li key={item.id} className="item-card">
               <div className="item-info">
                 <strong className={item.active ? "" : "inactive"}>
@@ -65,15 +113,9 @@ export default function Item() {
                 </strong>
 
                 <div className="item-meta">
-                  <span title={`Cost: ${item.costPrice} | Markup: ${item.markupPercentage || calculateMarkup(item.price, item.costPrice)}%`}>
-                    💰 {item.price} лв.
-                  </span>
+                  <span>💰 {item.price} лв.</span>
                   <span>🏷️ {item.category || "Няма"}</span>
                   <span>🍽️ {item.typeProduct}</span>
-                  <span>📅 Създадено: {new Date(item.createdAt).toLocaleString()}</span>
-                  <span>✏️ Последна промяна: {new Date(item.updatedAt).toLocaleString()}</span>
-                  {item.costPrice && <span>💲 Покупна цена: {item.costPrice} лв.</span>}
-                  {item.markupPercentage && <span>⬆ Надценка: {item.markupPercentage}%</span>}
                 </div>
               </div>
 
@@ -81,7 +123,6 @@ export default function Item() {
                 <button
                   className="btn btn-success"
                   onClick={() => navigate(`/editItem/${item.id}`)}
-                  title="Редактирай"
                 >
                   ✏️
                 </button>
@@ -89,7 +130,6 @@ export default function Item() {
                 <button
                   className="btn btn-danger"
                   onClick={() => handleDeleteClick(item)}
-                  title="Изтрий"
                 >
                   🗑
                 </button>
@@ -98,7 +138,7 @@ export default function Item() {
           ))}
         </ul>
       ) : (
-        <p className="empty-state">Няма налични артикули.</p>
+        <p className="empty-state">Няма резултати.</p>
       )}
 
       <ConfirmPopup
