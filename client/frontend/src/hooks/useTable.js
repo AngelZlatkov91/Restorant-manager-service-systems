@@ -30,3 +30,21 @@ export function useDeleteTable(id) {
     const result = tableApi.deleteTable(id);
     return result;
 }
+
+export function useGetTableById(id) {
+    const [table, setTable] = useState({
+    });
+
+    useEffect(() => {
+        (async () => {
+            try {
+                 const result =await tableApi.getOneTable(id);
+                 setTable(result);
+            } catch (err) {
+                console.error(err);
+            }
+        })();
+    }, [id]);
+
+    return table;
+}

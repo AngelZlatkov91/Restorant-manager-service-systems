@@ -8,7 +8,7 @@ export default function Table() {
   const [tables, fetchTables] = useGetAllTable();
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [tableToDelete, setTableToDelete] = useState(null);
-
+  console.log(tables);
   useEffect(() => {
     fetchTables();
   }, []);

@@ -14,6 +14,8 @@ public interface TableService {
 
     List<ResponseTable> getTables();
 
+    ResponseTable getById(Long id);
+
 
 
 

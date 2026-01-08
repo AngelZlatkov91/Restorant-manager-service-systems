@@ -19,6 +19,7 @@ import Personal from "./componnets/personal/Personal";
 import CreatePersonal from "./componnets/personal/CreatePersonal";
 import Orders from "./componnets/orders/orders";
 import PersonalEdit from "./componnets/personal/PersonalEdit";
+import EditTable from "./componnets/table/EditTable";
 
 function App() {
  
@@ -45,9 +46,11 @@ function App() {
          <Route path="/createPersonal" element={<CreatePersonal />} />
          <Route path="/editPersonal/:id" element={<PersonalEdit />} />
          <Route path="/orders" element={<Orders />} />
+         <Route path="/editTable/:id" element={<EditTable />} />"
        </Routes>
     </AuthProvider>
    </>
+   
   );
 }
 

@@ -6,7 +6,8 @@ const BASE_URL = 'http://localhost:8083/api/table';
 /**
  * @param {number} id
  * @param {string} tableName
- * 
+ * @param {string} owner
+ * @param {boolean} empty
  * 
  * 
  * 
@@ -27,13 +28,18 @@ export const getAllTable = async () => {
     const result = await request.get(`http://localhost:8083/api/check/table`);   
     const tables = Object.values(result);
     return tables;
+}
 
+export const getOneTable = (id) => {
+    const result = request.get(`${BASE_URL}/${id}`, true);
+    return result;
 }
 
 const tableApi = {
     createTable,
     deleteTable,
     getAllTable,
+    getOneTable,
 }
 
 export default tableApi;

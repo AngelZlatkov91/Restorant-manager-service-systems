@@ -94,3 +94,23 @@
   font-size: 1em;
   color: #777;
 }
+
+.filters {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+.filters input {
+  padding: 6px 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin: 20px 0;
+}

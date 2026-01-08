@@ -47,6 +47,10 @@ public class TableController {
         return new ResponseEntity<>("Table updated", HttpStatus.OK);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<ResponseTable> getTableById(@PathVariable Long id) {
+        return ResponseEntity.ok(tableService.getById(id));
+    }
 
 
 

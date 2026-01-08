@@ -47,6 +47,12 @@ public class TableServiceImpl implements TableService {
         return tableRepositories.findAll().stream().map(this::getCreateTable).collect(Collectors.toList());
     }
 
+    @Override
+    public ResponseTable getById(Long id) {
+
+        return getCreateTable(tableRepositories.findById(id).get());
+    }
+
     private ResponseTable getCreateTable(TableEn tableEnName) {
         ResponseTable responseTable = new ResponseTable(
                 tableEnName.getId(),
