@@ -1,85 +1,64 @@
 import { useNavigate } from "react-router-dom";
-import { useGetAllPersonal } from "../../hooks/usePersonal";
+import { useChangePersonalStatus, useGetAllPersonal } from "../../hooks/usePersonal";
 
 
 export default function Personal() {
-    const navigate = useNavigate();
-    const [personals,fetchPersonal] = useGetAllPersonal();
+  const navigate = useNavigate();
+  const [personals, fetchPersonal] = useGetAllPersonal();
+  const setStatus = useChangePersonalStatus();
 
+  const changeStatus = async (id) => {
+    await setStatus(id);
+    fetchPersonal();
+  };
 
+  return (
+    <section className="personal-section">
+      <div className="personal-header">
+        <h2>Персонал</h2>
+        <button className="btn btn-primary" onClick={() => navigate("/createPersonal")}>
+          + Create Personal
+        </button>
+      </div>
 
-  
-
-    const createPersonalHandler = () => {
-      navigate('/createPersonal');
-    }
-    
-
-    const handleEdit = (id) => {
-      navigate(`/editPersonal/${id}`);
-    };
-
-   return (
-         <section id="items" style={{ padding: "20px" }}>
-               <h2>Персонал</h2>
-               <div style={{ display: "flex", gap: "10px" }}>
-                <button onClick={createPersonalHandler} style={{
-                  padding: "6px 12px",
-                  border: "none",
-                  borderRadius: "5px",
-                  background: "#4caf50",
-                  color: "white",
-                  cursor: "pointer",
-                }}>Create Personal</button>
+      {personals && personals.length > 0 ? (
+        <ul className="personal-list">
+          {personals.map((personal) => (
+            <li key={personal.id} className="personal-card">
+              <div className="personal-info">
+                <h3>{personal.name}</h3>
+                <p><strong>Password:</strong> {personal.password}</p>
+                <p><strong>Role:</strong> {personal.role}</p>
+                <p>
+                  <strong>Status:</strong>{" "}
+                  <span className={personal.active ? "status active" : "status inactive"}>
+                    {personal.active ? "Active" : "Inactive"}
+                  </span>
+                </p>
               </div>
-               {personals && personals.length > 0 ? (
-                 <ul style={{ listStyle: "none", padding: 0 }}>
-                   {personals.map((personal) => (
-                     <li
-                       key={personal.id} 
-                       style={{
-                         display: "flex",
-                         justifyContent: "space-between",
-                         alignItems: "center",
-                         background: "#f9f9f9",
-                         marginBottom: "10px",
-                         padding: "10px 15px",
-                         borderRadius: "8px",
-                         boxShadow: "0 2px 5px rgba(0,0,0,0.1)",
-                       }}
-                     >
-                       <div>
-                         <strong>Name: {personal.name}</strong>
-                         <p style={{ margin: "5px 0" }}>
-                           Password: {personal.password} 
-                         </p>
-                         <strong>ROLE: {personal.role}</strong>
-                       </div>
-         
-                       <div style={{ display: "flex", gap: "10px" }}>
-                         <button
-                           onClick={() => handleEdit(personal.id)}
-                           style={{
-                             padding: "6px 12px",
-                             border: "none",
-                             borderRadius: "5px",
-                             background: "#4caf50",
-                             color: "white",
-                             cursor: "pointer",
-                           }}
-                         >
-                           Edit
-                         </button>
-         
-         
-                       </div>
-                     </li>
-                   ))}
-                 </ul>
-               ) : (
-                 <p>Няма налични персонали.</p>
-               )}
 
-             </section>
+              <div className="personal-actions">
+                <button
+                
+                  className="btn btn-secondary"
+                  onClick={() => navigate(`/editPersonal/${personal.id}`)}
+                >
+                  Edit
+                </button>
+
+                <button
+                  className="btn btn-warning"
+                  onClick={() => changeStatus(personal.id)}
+                >
+                  Change Status
+                </button>
+              </div>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p className="empty-text">Няма налични персонали.</p>
+      )}
+    </section>
   );
 }

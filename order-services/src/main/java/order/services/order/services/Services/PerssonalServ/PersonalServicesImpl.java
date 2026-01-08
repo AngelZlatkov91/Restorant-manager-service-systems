@@ -49,7 +49,12 @@ public class PersonalServicesImpl implements PersonalServices {
     @Transactional
     public void changeIsActivePersonal(Long id) {
         Optional<Personal> byId = personalRepositories.findById(id);
-        byId.get().setActive(false);
+        if (byId.get().isActive()) {
+            byId.get().setActive(false);
+        } else {
+            byId.get().setActive(true);
+        }
+
         personalRepositories.save(byId.get());
     }
 
@@ -80,5 +85,11 @@ public class PersonalServicesImpl implements PersonalServices {
             throw new EntityNotFoundException("Personal with password " + checkPersonal.getPassword() + " not found");
         }
         return new ResPersonalName(byPassword.get().getName(),byPassword.get().getRole());
+    }
+
+    @Override
+    public PersonalResponse getPersonalById(Long id) {
+        Optional<Personal> byId = personalRepositories.findById(id);
+        return mapPersonal(byId.get());
     }
 }

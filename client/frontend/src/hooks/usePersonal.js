@@ -22,4 +22,36 @@ export function useGetAllPersonal() {
     return [personals,fetchPersonal]
 }
 
+export function useChangePersonalStatus() {
+    const changeStatus = async (id) => {
+        const result = await personalApi.changePersonalStatus(id);
+        return result;
+    };
+
+    return changeStatus;
+}
+
+export function useGetPersonalById(id) {
+    const [personal, setPersonal] = useState({
+        id: '',
+        name: '',
+        password: '',
+        role: '',
+        active: Boolean,
+    });
+    useEffect(() => {
+        (async () => {
+            try {
+                 const result =await personalApi.getPersonalById(id);
+                 setPersonal(result);
+            } catch (err) {
+
+            }
+            })();
+    },[id])
+
+
+    return [personal, setPersonal];
+}
+
 

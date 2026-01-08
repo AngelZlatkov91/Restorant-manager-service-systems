@@ -35,10 +35,15 @@ public class PersonalController {
         return ResponseEntity.ok("Personal updated");
     }
 
-    @DeleteMapping("/remove/{id}")
+    @GetMapping("/change/status/{id}")
     public ResponseEntity<String> delete(@PathVariable Long id) {
         personalServices.changeIsActivePersonal(id);
         return ResponseEntity.ok("Personal deleted");
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<PersonalResponse> getOne(@PathVariable Long id) {
+        return ResponseEntity.ok(personalServices.getPersonalById(id));
     }
 
     @GetMapping()

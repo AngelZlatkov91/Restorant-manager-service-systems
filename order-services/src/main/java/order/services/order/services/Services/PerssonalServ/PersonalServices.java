@@ -20,4 +20,5 @@ public interface PersonalServices {
 
     ResPersonalName checkPersonal(CheckPersonal checkPersonal);
 
+    PersonalResponse getPersonalById(Long id);
 }
