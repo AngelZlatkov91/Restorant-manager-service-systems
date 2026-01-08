@@ -13,14 +13,14 @@ export default function Orders() {
   const [minAmount, setMinAmount] = useState("");
   const [maxAmount, setMaxAmount] = useState("");
 
-  // pagination
+
   const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     loadOrders();
   }, []);
 
-  // 🔍 FILTERED ORDERS
+  
   const filteredOrders = useMemo(() => {
     if (!orders) return [];
 
@@ -55,7 +55,7 @@ export default function Orders() {
     });
   }, [orders, fromDate, toDate, personalName, minAmount, maxAmount]);
 
-  // 📄 PAGINATION
+
   const totalPages = Math.ceil(filteredOrders.length / ITEMS_PER_PAGE);
 
   const paginatedOrders = useMemo(() => {
@@ -63,12 +63,10 @@ export default function Orders() {
     return filteredOrders.slice(start, start + ITEMS_PER_PAGE);
   }, [filteredOrders, currentPage]);
 
-  // 💰 TOTAL REVENUE (filtered)
   const totalRevenue = useMemo(() => {
     return filteredOrders.reduce((acc, o) => acc + o.totalPrice, 0);
   }, [filteredOrders]);
 
-  // reset page on filter change
   useEffect(() => {
     setCurrentPage(1);
   }, [fromDate, toDate, personalName, minAmount, maxAmount]);
@@ -81,7 +79,6 @@ export default function Orders() {
           Общ приход: {totalRevenue.toFixed(2)} €
         </div>
 
-        {/* 🔍 FILTER BAR */}
         <div className="filters">
           <input
             type="date"
@@ -158,7 +155,6 @@ export default function Orders() {
         <p className="empty-state">Няма резултати.</p>
       )}
 
-      {/* 📄 PAGINATION CONTROLS */}
       {totalPages > 1 && (
         <div className="pagination">
           <button
