@@ -5,6 +5,37 @@ Built with **Java (Spring Boot)**, **Node.js**, **Apache Kafka**, **MySQL**, and
 The system is designed for scalability, modularity, and real-time communication between services.
 
 ---
+## Project Status
+
+🚧 **Status: Temporarily Paused**
+
+This project is currently paused intentionally.
+
+### Current State
+The core architecture and key services are implemented and functional:
+- Authentication Service (JWT, role-based access)
+- Menu Service
+- Orders Service
+- Event-driven communication via Apache Kafka
+
+The project has reached a stable architectural milestone, demonstrating:
+- Microservices-based design
+- Secure inter-service communication
+- Event-driven workflows
+
+### Reason for Pause
+Development is paused to explore a different project and domain, with the goal of gaining broader architectural and technical experience.
+
+This pause is **intentional and planned**, not an abandonment of the project.
+
+### Planned Next Steps
+- Payment Service integration
+- Inventory synchronization
+- Observability (logging, metrics, tracing)
+- Production-ready deployment (Docker Compose / Kubernetes)
+
+The project may be resumed in the future.
+
 
 ## 🧱 Architecture Overview
 
